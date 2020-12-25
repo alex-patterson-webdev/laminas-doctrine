@@ -11,6 +11,13 @@ use Laminas\Hydrator\Exception\RuntimeException;
 use Laminas\Hydrator\Filter\FilterProviderInterface;
 
 /**
+ * When using hydrators and PHP 7.4+ type hinted properties, there will be times where our entity classes will be
+ * instantiated via reflection (due to the Doctrine/Laminas hydration processes). This instantiation will bypass the
+ * entity's __construct() and therefore not initialise the default class property values. This will lead to
+ * "Typed property must not be accessed before initialization" fatal errors, despite using the hydrators in their
+ * intended way. This class extends the existing DoctrineObject in order to first check if the requested property has
+ * been instantiated before attempting to use it as part of the extractByValue() method.
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Hydrator
  */
@@ -59,38 +66,14 @@ final class EntityHydrator extends DoctrineObject
                 continue;
             }
 
-            $find = [];
-            if (is_array($identifier)) {
-                foreach ($identifier as $field) {
-                    switch (gettype($value)) {
-                        case 'object':
-                            $getter = 'get' . ucfirst($field);
-
-                            if (is_callable([$value, $getter])) {
-                                $find[$field] = $value->$getter();
-                            } elseif (property_exists($value, $field)) {
-                                $find[$field] = $value->$field;
-                            }
-                            break;
-                        case 'array':
-                            if (array_key_exists($field, $value) && $value[$field] !== null) {
-                                $find[$field] = $value[$field];
-                                unset($value[$field]); // removed identifier from persistable data
-                            }
-                            break;
-                        default:
-                            $find[$field] = $value;
-                            break;
-                    }
-                }
-            }
+            $find = $this->getFindCriteria($identifier, $value);
 
             if (! empty($find) && $found = $this->find($find, $target)) {
-                $collection[] = (is_array($value)) ? $this->hydrate($value, $found) : $found;
+                $collection[] = is_array($value) ? $this->hydrate($value, $found) : $found;
             } else {
                 $newTarget = $this->createTargetEntity($target);
 
-                $collection[] = (is_array($value)) ? $this->hydrate($value, $newTarget) : $newTarget;
+                $collection[] = is_array($value) ? $this->hydrate($value, $newTarget) : $newTarget;
             }
         }
 
@@ -263,5 +246,44 @@ final class EntityHydrator extends DoctrineObject
         }
 
         return $this->reflectionClass;
+    }
+
+    /**
+     * @param array $identifier
+     * @param mixed  $value
+     *
+     * @return array
+     */
+    protected function getFindCriteria(array $identifier, $value): array
+    {
+        if (!is_array($identifier)) {
+            return [];
+        }
+
+        $find = [];
+        foreach ($identifier as $field) {
+            if (is_object($value)) {
+                $getter = 'get' . ucfirst($field);
+
+                if (is_callable([$value, $getter])) {
+                    $find[$field] = $value->$getter();
+                } elseif (property_exists($value, $field)) {
+                    $find[$field] = $value->{$field};
+                }
+                continue;
+            }
+
+            if (is_array($value)) {
+                if (isset($value[$field])) {
+                    $find[$field] = $value[$field];
+                    unset($value[$field]);
+                }
+                continue;
+            }
+
+            $find[$field] = $value;
+        }
+
+        return $find;
     }
 }
