@@ -1,0 +1,31 @@
+<?php
+
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver as MySQLDriver;
+
+return [
+    'doctrine' => [
+        'configuration' => [
+            'orm_default' => [
+                'generate_proxies' => true,
+            ],
+        ],
+        'entitymanager' => [
+            'orm_default' => [
+                'connection'    => 'development',
+                'configuration' => 'orm_default',
+            ],
+        ],
+        'connection' => [
+            'development' => [
+                'driverClass' => MySQLDriver::class,
+                'params'      => [
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'dashboard.local',
+                    'password' => '2XLAw&OuBja@Y40ml',
+                    'dbname'   => 'dashboard',
+                ],
+            ],
+        ],
+    ],
+];
