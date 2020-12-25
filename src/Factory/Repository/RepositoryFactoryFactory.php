@@ -7,10 +7,10 @@ namespace Arp\LaminasDoctrine\Factory\Repository;
 use Arp\LaminasDoctrine\Repository\RepositoryFactory as RepositoryFactoryService;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
-use Arp\LaminasFactory\Exception\ServiceNotFoundException;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>

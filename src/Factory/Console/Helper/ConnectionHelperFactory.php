@@ -11,9 +11,9 @@ use Arp\LaminasDoctrine\Service\ConnectionManager;
 use Arp\LaminasDoctrine\Service\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Doctrine\DBAL\Connection;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**

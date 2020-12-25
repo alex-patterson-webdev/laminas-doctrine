@@ -6,13 +6,13 @@ namespace Arp\LaminasDoctrine\Factory\Configuration;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Repository\RepositoryFactory;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceManager;
 

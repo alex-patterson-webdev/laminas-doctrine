@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceManager;
 
 /**

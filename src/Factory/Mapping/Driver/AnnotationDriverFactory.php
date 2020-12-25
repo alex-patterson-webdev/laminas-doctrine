@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\IndexedReader;
@@ -13,6 +12,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>

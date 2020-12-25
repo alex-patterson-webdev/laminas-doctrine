@@ -6,8 +6,8 @@ namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
