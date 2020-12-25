@@ -15,6 +15,7 @@
     "alex-patterson-webdev/laminas-date-time": "dev-feature/0.1.0",
     "alex-patterson-webdev/laminas-factory": "^2",
     "alex-patterson-webdev/laminas-symfony-console": "dev-feature/0.1.0",
+    "doctrine/doctrine-laminas-hydrator" : "^2",
     "doctrine/data-fixtures": "^1.4",
     "doctrine/orm": "^2.7"
   },
