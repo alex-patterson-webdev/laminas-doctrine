@@ -46,8 +46,8 @@ final class EntityHydrator extends DoctrineObject
         $metadata = $this->objectManager->getClassMetadata(ltrim($target, '\\'));
         $identifier = $metadata->getIdentifier();
 
-        if (! is_array($values) && ! $values instanceof \Traversable) {
-            $values = (array) $values;
+        if (!is_array($values) && !$values instanceof \Traversable) {
+            $values = (array)$values;
         }
 
         $collection = [];
@@ -236,7 +236,7 @@ final class EntityHydrator extends DoctrineObject
 
     /**
      * @param array $identifier
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return array
      */
