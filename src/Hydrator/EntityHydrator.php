@@ -98,7 +98,7 @@ final class EntityHydrator extends DoctrineObject
      */
     private function createTargetEntity(string $className): object
     {
-        return $this->getReflectionClass($className)->newInstanceWithoutConstructor();
+        return $this->createReflectionClass($className)->newInstanceWithoutConstructor();
     }
 
     /**
@@ -230,21 +230,7 @@ final class EntityHydrator extends DoctrineObject
         if (null !== $this->reflectionClass && $this->reflectionClass->getName() === $className) {
             return $this->reflectionClass;
         }
-
-        try {
-            $this->reflectionClass = new \ReflectionClass($className);
-        } catch (\Throwable $e) {
-            throw new RuntimeException(
-                sprintf(
-                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
-                    $className,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
+        $this->reflectionClass = $this->createReflectionClass($className);
         return $this->reflectionClass;
     }
 
@@ -281,5 +267,27 @@ final class EntityHydrator extends DoctrineObject
         }
 
         return $find;
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return \ReflectionClass
+     */
+    private function createReflectionClass(string $className): \ReflectionClass
+    {
+        try {
+            return new \ReflectionClass($className);
+        } catch (\Throwable $e) {
+            throw new RuntimeException(
+                sprintf(
+                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
+                    $className,
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }
