@@ -46,8 +46,8 @@ final class EntityHydrator extends DoctrineObject
         $metadata = $this->objectManager->getClassMetadata(ltrim($target, '\\'));
         $identifier = $metadata->getIdentifier();
 
-        if (! is_array($values) && ! $values instanceof \Traversable) {
-            $values = (array) $values;
+        if (!is_array($values) && !$values instanceof \Traversable) {
+            $values = (array)$values;
         }
 
         $collection = [];
@@ -55,26 +55,26 @@ final class EntityHydrator extends DoctrineObject
         // If the collection contains identifiers, fetch the objects from database
         foreach ($values as $value) {
             if ($value instanceof $target) {
-                // assumes modifications have already taken place in object
+                // Assumes modifications have already taken place in object
                 $collection[] = $value;
                 continue;
             }
 
             if (empty($value)) {
-                // assumes no id and retrieves new $target
+                // Assumes no id and retrieves new $target
                 $collection[] = $this->find($value, $target);
                 continue;
             }
 
-            $find = $this->getFindCriteria($identifier, $value);
+            $find = is_array($identifier) ? $this->getFindCriteria($identifier, $value) : [];
 
-            if (! empty($find) && $found = $this->find($find, $target)) {
+            if (!empty($find) && $found = $this->find($find, $target)) {
                 $collection[] = is_array($value) ? $this->hydrate($value, $found) : $found;
-            } else {
-                $newTarget = $this->createTargetEntity($target);
-
-                $collection[] = is_array($value) ? $this->hydrate($value, $newTarget) : $newTarget;
+                continue;
             }
+
+            $newTarget = $this->createTargetEntity($target);
+            $collection[] = is_array($value) ? $this->hydrate($value, $newTarget) : $newTarget;
         }
 
         $collection = array_filter(
@@ -98,7 +98,7 @@ final class EntityHydrator extends DoctrineObject
      */
     private function createTargetEntity(string $className): object
     {
-        return $this->getReflectionClass($className)->newInstanceWithoutConstructor();
+        return $this->createReflectionClass($className)->newInstanceWithoutConstructor();
     }
 
     /**
@@ -230,36 +230,18 @@ final class EntityHydrator extends DoctrineObject
         if (null !== $this->reflectionClass && $this->reflectionClass->getName() === $className) {
             return $this->reflectionClass;
         }
-
-        try {
-            $this->reflectionClass = new \ReflectionClass($className);
-        } catch (\Throwable $e) {
-            throw new RuntimeException(
-                sprintf(
-                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
-                    $className,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
+        $this->reflectionClass = $this->createReflectionClass($className);
         return $this->reflectionClass;
     }
 
     /**
      * @param array $identifier
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return array
      */
     protected function getFindCriteria(array $identifier, $value): array
     {
-        if (!is_array($identifier)) {
-            return [];
-        }
-
         $find = [];
         foreach ($identifier as $field) {
             if (is_object($value)) {
@@ -285,5 +267,27 @@ final class EntityHydrator extends DoctrineObject
         }
 
         return $find;
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return \ReflectionClass
+     */
+    private function createReflectionClass(string $className): \ReflectionClass
+    {
+        try {
+            return new \ReflectionClass($className);
+        } catch (\Throwable $e) {
+            throw new RuntimeException(
+                sprintf(
+                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
+                    $className,
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }

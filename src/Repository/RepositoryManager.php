@@ -21,12 +21,12 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
      *
      * @var bool
      */
-    protected $autoAddInvokableClass = false;
+    protected bool $autoAddInvokableClass = false;
 
     /**
      * @var string
      */
-    protected $instanceOf = EntityRepositoryInterface::class;
+    protected string $instanceOf = EntityRepositoryInterface::class;
 
     /**
      * @param string $entityName

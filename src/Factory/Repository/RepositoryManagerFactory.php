@@ -15,13 +15,15 @@ use Interop\Container\ContainerInterface;
 final class RepositoryManagerFactory extends AbstractFactory
 {
     /**
+     * @noinspection PhpMissingParamTypeInspection
+     *
      * @param ContainerInterface $container
      * @param string             $requestedName
      * @param array|null         $options
      *
-     * @return RepositoryManager|object
+     * @return RepositoryManager
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): RepositoryManager
     {
         $config = $options ?? $this->getApplicationOptions($container, 'repository_manager');
 

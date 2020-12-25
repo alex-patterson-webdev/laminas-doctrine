@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Config;
 
-use Arp\Container\Factory\Exception\ServiceFactoryException;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
 /**
@@ -25,7 +25,7 @@ final class DoctrineConfigFactory extends AbstractFactory
      *
      * @return DoctrineConfig
      *
-     * @throws ServiceFactoryException
+     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
@@ -33,7 +33,7 @@ final class DoctrineConfigFactory extends AbstractFactory
         $options = $options ?? $this->getApplicationOptions($container, 'doctrine');
 
         if (empty($options['connection'])) {
-            throw new ServiceFactoryException(
+            throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'connection\' configuration key is missing for service \'%s\'',
                     $requestedName
@@ -42,7 +42,7 @@ final class DoctrineConfigFactory extends AbstractFactory
         }
 
         if (empty($options['configuration'])) {
-            throw new ServiceFactoryException(
+            throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'configuration\' configuration key is missing for service \'%s\'',
                     $requestedName
@@ -51,7 +51,7 @@ final class DoctrineConfigFactory extends AbstractFactory
         }
 
         if (empty($options['entitymanager'])) {
-            throw new ServiceFactoryException(
+            throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'entitymanager\' configuration key is missing for service \'%s\'',
                     $requestedName
@@ -60,7 +60,7 @@ final class DoctrineConfigFactory extends AbstractFactory
         }
 
         if (empty($options['driver'])) {
-            throw new ServiceFactoryException(
+            throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'driver\' configuration key is missing for service \'%s\'',
                     $requestedName

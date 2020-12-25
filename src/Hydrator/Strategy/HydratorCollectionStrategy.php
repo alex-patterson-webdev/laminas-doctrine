@@ -6,7 +6,6 @@ namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
 use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\Entity\EntityInterface;
-use Arp\LaminasDoctrine\Hydrator\Strategy\HydrationObjectAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Laminas\Hydrator\HydratorInterface;

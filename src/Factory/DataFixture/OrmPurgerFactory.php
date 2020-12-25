@@ -7,9 +7,9 @@ namespace Arp\LaminasDoctrine\Factory\DataFixture;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
