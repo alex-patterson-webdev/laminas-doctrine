@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace ArpTest\LaminasDoctrine\Service;
+namespace ArpTest\LaminasDoctrine\Service\Configuration;
 
-use Arp\LaminasDoctrine\Service\ConfigurationFactory;
-use Arp\LaminasDoctrine\Service\ConfigurationFactoryInterface;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactoryInterface;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers  \Arp\LaminasDoctrine\Service\ConfigurationFactory
+ * @covers  \Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\LaminasDoctrine\Service
+ * @package ArpTest\LaminasDoctrine\Service\Configuration
  */
-class ConfigurationFactoryTest extends TestCase
+final class ConfigurationFactoryTest extends TestCase
 {
     /**
      * @var ServiceManager|MockObject
