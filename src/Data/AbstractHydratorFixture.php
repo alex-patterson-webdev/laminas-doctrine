@@ -42,6 +42,4 @@ abstract class AbstractHydratorFixture extends AbstractFixture
         $this->hydrator = $hydrator;
         $this->data = $data;
     }
-
-
 }

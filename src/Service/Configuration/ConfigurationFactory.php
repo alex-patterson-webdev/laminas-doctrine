@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Service;
+namespace Arp\LaminasDoctrine\Service\Configuration;
 
-use Arp\LaminasDoctrine\Service\Exception\ConfigurationFactoryException;
+use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationFactoryException;
 use Doctrine\ORM\Configuration;
 use Laminas\ServiceManager\ServiceManager;
 
@@ -14,7 +14,7 @@ use Laminas\ServiceManager\ServiceManager;
  * of ConfigurationManager.
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
+ * @package Arp\LaminasDoctrine\Service\Configuration
  */
 final class ConfigurationFactory implements ConfigurationFactoryInterface
 {

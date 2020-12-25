@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Service;
+namespace Arp\LaminasDoctrine\Service\Connection;
 
-use Arp\LaminasDoctrine\Service\Exception\ConnectionManagerException;
+use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
+ * @package Arp\LaminasDoctrine\Service\Connection
  */
 interface ConnectionManagerInterface
 {

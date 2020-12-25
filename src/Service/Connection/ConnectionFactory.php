@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Service;
+namespace Arp\LaminasDoctrine\Service\Connection;
 
 use Arp\LaminasDoctrine\Service\Exception\ConnectionFactoryException;
 use Doctrine\Common\EventManager;
@@ -13,7 +13,7 @@ use Doctrine\DBAL\DriverManager;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
+ * @package Arp\LaminasDoctrine\Service\Connection
  */
 final class ConnectionFactory implements ConnectionFactoryInterface
 {

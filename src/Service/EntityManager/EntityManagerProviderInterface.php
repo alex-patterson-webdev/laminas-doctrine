@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Service;
+namespace Arp\LaminasDoctrine\Service\EntityManager;
 
-use Arp\LaminasDoctrine\Service\Exception\EntityManagerProviderException;
+use Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service that managers a collection of entity managers
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
+ * @package Arp\LaminasDoctrine\Service\EntityManager
  */
 interface EntityManagerProviderInterface
 {
