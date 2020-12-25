@@ -55,26 +55,26 @@ final class EntityHydrator extends DoctrineObject
         // If the collection contains identifiers, fetch the objects from database
         foreach ($values as $value) {
             if ($value instanceof $target) {
-                // assumes modifications have already taken place in object
+                // Assumes modifications have already taken place in object
                 $collection[] = $value;
                 continue;
             }
 
             if (empty($value)) {
-                // assumes no id and retrieves new $target
+                // Assumes no id and retrieves new $target
                 $collection[] = $this->find($value, $target);
                 continue;
             }
 
-            $find = $this->getFindCriteria($identifier, $value);
+            $find = is_array($identifier) ? $this->getFindCriteria($identifier, $value) : [];
 
-            if (! empty($find) && $found = $this->find($find, $target)) {
+            if (!empty($find) && $found = $this->find($find, $target)) {
                 $collection[] = is_array($value) ? $this->hydrate($value, $found) : $found;
-            } else {
-                $newTarget = $this->createTargetEntity($target);
-
-                $collection[] = is_array($value) ? $this->hydrate($value, $newTarget) : $newTarget;
+                continue;
             }
+
+            $newTarget = $this->createTargetEntity($target);
+            $collection[] = is_array($value) ? $this->hydrate($value, $newTarget) : $newTarget;
         }
 
         $collection = array_filter(
@@ -256,10 +256,6 @@ final class EntityHydrator extends DoctrineObject
      */
     protected function getFindCriteria(array $identifier, $value): array
     {
-        if (!is_array($identifier)) {
-            return [];
-        }
-
         $find = [];
         foreach ($identifier as $field) {
             if (is_object($value)) {
