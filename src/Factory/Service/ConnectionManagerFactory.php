@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\ConnectionFactory;
-use Arp\LaminasDoctrine\Service\ConnectionManager;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
 use Interop\Container\ContainerInterface;

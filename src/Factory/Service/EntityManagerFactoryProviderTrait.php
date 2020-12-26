@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Service;
 
-use Arp\LaminasDoctrine\Service\EntityManagerProvider;
-use Arp\LaminasDoctrine\Service\EntityManagerProviderInterface;
-use Arp\LaminasDoctrine\Service\Exception\EntityManagerProviderException;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProviderInterface;
+use Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;

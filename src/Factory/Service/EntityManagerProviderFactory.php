@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\EntityManagerManager;
-use Arp\LaminasDoctrine\Service\EntityManagerProvider;
-use Arp\LaminasDoctrine\Service\EntityManagerProviderInterface;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerManager;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProviderInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -26,6 +28,9 @@ final class EntityManagerProviderFactory extends AbstractFactory
      * @param array|null         $options
      *
      * @return EntityManagerProviderInterface
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(
         ContainerInterface $container,

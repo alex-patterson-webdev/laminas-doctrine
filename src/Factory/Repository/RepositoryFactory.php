@@ -13,6 +13,7 @@ use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceManager;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -33,6 +34,7 @@ final class RepositoryFactory extends AbstractFactory
      * @return EntityRepositoryInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(
         ContainerInterface $container,

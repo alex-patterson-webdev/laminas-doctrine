@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Service;
 
-use Arp\LaminasDoctrine\Service\ConfigurationFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\ServiceManager;

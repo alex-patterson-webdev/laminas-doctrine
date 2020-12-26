@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\ConfigurationManager;
-use Arp\LaminasDoctrine\Service\ConnectionManager;
-use Arp\LaminasDoctrine\Service\Exception\ConfigurationManagerException;
-use Arp\LaminasDoctrine\Service\Exception\ConnectionManagerException;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
+use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;

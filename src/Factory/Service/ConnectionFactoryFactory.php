@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Service;
 
-use Arp\LaminasDoctrine\Service\ConfigurationManager;
-use Arp\LaminasDoctrine\Service\ConnectionFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;

@@ -7,6 +7,8 @@ namespace Arp\LaminasDoctrine\Factory\Repository;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -22,6 +24,9 @@ final class RepositoryManagerFactory extends AbstractFactory
      * @param array|null         $options
      *
      * @return RepositoryManager
+     *
+     * @throws InvalidArgumentException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): RepositoryManager
     {
