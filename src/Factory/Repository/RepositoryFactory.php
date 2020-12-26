@@ -14,6 +14,7 @@ use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceManager;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
@@ -64,9 +65,15 @@ final class RepositoryFactory extends AbstractFactory
             $requestedName
         );
 
+        $logger = $options['logger'] ?? NullLogger::class;
+        if (is_string($logger)) {
+            /** @var LoggerInterface|string $logger */
+            $logger = $this->getService($container, $logger, $requestedName);
+        }
+
         $className = $this->resolveClassName($entityName, $options);
 
-        return new $className($entityName, $queryService, $persistService, new NullLogger());
+        return new $className($entityName, $queryService, $persistService, $logger);
     }
 
     /**

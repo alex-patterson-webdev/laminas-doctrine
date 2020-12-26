@@ -55,7 +55,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'arp' => [
-        'services'      => [
+        'services' => [
             QueryService::class   => [
                 'entity_manager' => 'orm_default',
             ],
@@ -89,7 +89,7 @@ return [
         ],
         'factories' => [
             // Config
-            DoctrineConfig::class                => DoctrineConfigFactory::class,
+            DoctrineConfig::class => DoctrineConfigFactory::class,
 
             // Services
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
@@ -130,7 +130,7 @@ return [
         ],
     ],
 
-    'repository_manager'     => [
+    'repository_manager' => [
         'factories' => [
 
         ],

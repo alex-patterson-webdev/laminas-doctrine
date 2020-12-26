@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Service\Connection;
 
-use Arp\LaminasDoctrine\Service\Exception\ConnectionFactoryException;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionFactoryException;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
