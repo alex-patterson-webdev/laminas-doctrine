@@ -16,5 +16,5 @@ final class EntityManagerManager extends AbstractPluginManager
     /**
      * @var string
      */
-    protected string $instanceOf = EntityManagerInterface::class;
+    protected $instanceOf = EntityManagerInterface::class;
 }

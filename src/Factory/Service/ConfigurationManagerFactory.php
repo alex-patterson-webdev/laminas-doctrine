@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Factory\Configuration\ConfigurationFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactoryInterface;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
 use Arp\LaminasFactory\AbstractFactory;

@@ -6,6 +6,7 @@ namespace Arp\LaminasDoctrine\Service\EntityManager;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactory;
+use Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
