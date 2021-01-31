@@ -87,7 +87,7 @@ final class PersistServiceFactory extends AbstractFactory
         }
 
         if (is_array($eventDispatcher)) {
-            $eventDispatcher = $this->buildService($container, EventDispatcher::class, $eventDispatcher, $serviceName);
+            $eventDispatcher = $this->buildService($container, 'EntityEventDispatcher', $eventDispatcher, $serviceName);
         }
 
         if (!$eventDispatcher instanceof EventDispatcherInterface) {

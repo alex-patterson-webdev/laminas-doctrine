@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
+use Arp\Dashboard\Event\Factory\EventDispatcherFactory;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
@@ -120,6 +121,8 @@ return [
             ORMPurger::class                  => OrmPurgerFactory::class,
 
             // Repository Event Listeners
+            'EntityEventDispatcher' => EventDispatcherFactory::class,
+
             EntityListenerProvider::class     => EntityListenerProviderFactory::class,
         ],
     ],
