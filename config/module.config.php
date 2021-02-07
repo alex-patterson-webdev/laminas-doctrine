@@ -6,7 +6,6 @@ namespace Arp\LaminasDoctrine;
 
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\EventDispatcher\Factory\EventDispatcherFactory;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
@@ -45,6 +44,7 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerManager;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasEvent\Factory\EventDispatcherFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
