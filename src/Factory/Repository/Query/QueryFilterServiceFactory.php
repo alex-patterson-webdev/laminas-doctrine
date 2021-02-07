@@ -11,6 +11,7 @@ use Arp\LaminasDoctrine\Repository\Query\QueryFilterService;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceManager;
 
 /**
@@ -29,6 +30,7 @@ final class QueryFilterServiceFactory extends AbstractFactory
      * @return QueryServiceInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(
         ContainerInterface $container,
@@ -50,9 +52,14 @@ final class QueryFilterServiceFactory extends AbstractFactory
         $className = $options['class_name'] ?? QueryFilterService::class;
         $queryFilterManager = $options['query_filter_manager'] ?? QueryFilterManager::class;
 
+        $queryServiceOptions = [
+            'entity_name' => $options['entity_name'] ?? null,
+            'entity_manager' => $options['entity_manager'] ?? null,
+        ];
+
         return new $className(
             $entityName,
-            $this->buildService($container, QueryService::class, $options['query_service'] ?? [], $requestedName),
+            $this->buildService($container, QueryService::class, $queryServiceOptions, $requestedName),
             $this->getService($container, $queryFilterManager, $requestedName)
         );
     }

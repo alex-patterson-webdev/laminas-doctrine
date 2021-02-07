@@ -146,6 +146,8 @@ class QueryFilterService implements QueryServiceInterface
     }
 
     /**
+     * Apply query $criteria filtering to the provided $queryBuilder
+     *
      * @param array                              $filters
      * @param QueryBuilder|QueryBuilderInterface $queryBuilder
      *
@@ -153,6 +155,7 @@ class QueryFilterService implements QueryServiceInterface
      */
     public function filter(array $filters, $queryBuilder = null): void
     {
+        $queryBuilder = $queryBuilder ?? $this->createQueryBuilder();
         $criteria = [
             'filters' => $filters,
         ];
