@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
+use Laminas\ModuleManager\Feature\DependencyIndicatorInterface;
+
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine
  */
-final class Module
+final class Module implements DependencyIndicatorInterface
 {
+    /**
+     * @return array
+     */
+    public function getModuleDependencies(): array
+    {
+        return [
+            'Arp\\LaminasDateTime',
+            'Arp\\LaminasDoctrine\\Query',
+            'Arp\\LaminasSymfonyConsole',
+        ];
+    }
+
     /**
      * Return the module configuration array.
      *

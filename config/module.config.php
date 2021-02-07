@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
-use Arp\Dashboard\Event\Factory\EventDispatcherFactory;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
+use Arp\EventDispatcher\Factory\EventDispatcherFactory;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
@@ -20,6 +20,9 @@ use Arp\LaminasDoctrine\Factory\Hydrator\EntityHydratorFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\AnnotationDriverFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\MappingDriverChainFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\EntityListenerProviderFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\PersistServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Query\QueryFilterServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConfigurationFactoryFactory;
@@ -28,10 +31,10 @@ use Arp\LaminasDoctrine\Factory\Service\ConnectionFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConnectionManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerProviderFactory;
-use Arp\LaminasDoctrine\Factory\Service\PersistServiceFactory;
-use Arp\LaminasDoctrine\Factory\Service\QueryServiceFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
+use Arp\LaminasDoctrine\Query\QueryFilterManager;
 use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
+use Arp\LaminasDoctrine\Repository\Query\QueryFilterService;
 use Arp\LaminasDoctrine\Repository\RepositoryFactory;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory as ConfigurationFactoryService;
@@ -60,6 +63,12 @@ return [
             QueryService::class   => [
                 'entity_manager' => 'orm_default',
             ],
+
+            QueryFilterService::class => [
+                'query_service' => QueryService::class,
+                'query_filter_manager' => QueryFilterManager::class,
+            ],
+
             PersistService::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -104,6 +113,7 @@ return [
             RepositoryManager::class          => RepositoryManagerFactory::class,
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
             QueryService::class               => QueryServiceFactory::class,
+            QueryFilterService::class         => QueryFilterServiceFactory::class,
             PersistService::class             => PersistServiceFactory::class,
 
             // Drivers

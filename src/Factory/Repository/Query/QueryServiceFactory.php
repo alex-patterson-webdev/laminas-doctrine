@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Factory\Service;
+namespace Arp\LaminasDoctrine\Factory\Repository\Query;
 
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -13,9 +14,9 @@ use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Service
+ * @package Arp\LaminasDoctrine\Factory\Repository\Query
  */
-final class QueryServiceFactory extends AbstractFactory
+class QueryServiceFactory extends AbstractFactory
 {
     use EntityManagerFactoryProviderTrait;
 

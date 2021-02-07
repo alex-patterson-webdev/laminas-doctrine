@@ -122,9 +122,12 @@ final class RepositoryFactory extends AbstractFactory
         );
         $options['entity_name'] ??= $entityName;
 
-        /** @var PersistServiceInterface $persistService */
-        $persistService = $this->buildService($container, PersistService::class, $options, $serviceName);
-        return $persistService;
+        return $this->buildService(
+            $container,
+            $options['service_name'] ?? PersistService::class,
+            $options,
+            $serviceName
+        );
     }
 
     /**
@@ -149,8 +152,11 @@ final class RepositoryFactory extends AbstractFactory
         );
         $options['entity_name'] ??= $entityName;
 
-        /** @var QueryServiceInterface $queryService */
-        $queryService = $this->buildService($container, QueryService::class, $options, $serviceName);
-        return $queryService;
+        return $this->buildService(
+            $container,
+            $options['service_name'] ?? QueryService::class,
+            $options,
+            $serviceName
+        );
     }
 }

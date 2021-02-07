@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Factory\Service;
+namespace Arp\LaminasDoctrine\Factory\Repository\Persistence;
 
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\EventDispatcher\EventDispatcher;
+use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -17,7 +18,7 @@ use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Service
+ * @package Arp\LaminasDoctrine\Factory\Repository\Persistence
  */
 final class PersistServiceFactory extends AbstractFactory
 {
