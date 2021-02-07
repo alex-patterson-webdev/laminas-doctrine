@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef38bc135037154ea553047bf483ff1f",
+    "content-hash": "672e472c6784fbb7b5dd1c2b5eda12fb",
     "packages": [
         {
             "name": "alex-patterson-webdev/date-time",
@@ -233,22 +233,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-date-time.git",
-                "reference": "71009a2564dea631f36d1b0270c4e8d07983451e"
+                "reference": "594ada0f66b429b2ec80b8e68b0352fffd9cd8bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/71009a2564dea631f36d1b0270c4e8d07983451e",
-                "reference": "71009a2564dea631f36d1b0270c4e8d07983451e",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/594ada0f66b429b2ec80b8e68b0352fffd9cd8bc",
+                "reference": "594ada0f66b429b2ec80b8e68b0352fffd9cd8bc",
                 "shasum": ""
             },
             "require": {
                 "alex-patterson-webdev/date-time": "^2",
-                "alex-patterson-webdev/laminas-factory": "^2",
-                "laminas/laminas-mvc": "^3.1",
-                "php": ">=7.4"
+                "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
+                "laminas/laminas-eventmanager": "^3.3",
+                "laminas/laminas-modulemanager": "^2.10",
+                "laminas/laminas-servicemanager": "^3.0",
+                "laminas/laminas-view": "^2.12.0",
+                "php": ">=7.4 || >=8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.4"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -270,7 +273,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-date-time/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-date-time/tree/feature/0.1.0"
             },
-            "time": "2020-11-22T22:56:04+00:00"
+            "time": "2021-02-07T14:30:23+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-doctrine-query-filter",
@@ -278,16 +281,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-doctrine-query-filter.git",
-                "reference": "202c52904000b220dea60e5ca911e0f32f8206d1"
+                "reference": "ab626ccee561bf721369d5b3fb1daad1b7547673"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-doctrine-query-filter/zipball/202c52904000b220dea60e5ca911e0f32f8206d1",
-                "reference": "202c52904000b220dea60e5ca911e0f32f8206d1",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-doctrine-query-filter/zipball/ab626ccee561bf721369d5b3fb1daad1b7547673",
+                "reference": "ab626ccee561bf721369d5b3fb1daad1b7547673",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/laminas-factory": "^2",
+                "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
                 "doctrine/orm": "^2.7",
                 "php": ">=7.4 || >=8.0"
             },
@@ -311,28 +314,28 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-doctrine-query-filter/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-doctrine-query-filter/tree/feature/0.2.0"
             },
-            "time": "2021-02-07T00:49:42+00:00"
+            "time": "2021-02-07T14:36:45+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-factory",
-            "version": "2.0.0",
+            "version": "dev-feature/3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-factory.git",
-                "reference": "895d0cf8c63b34d3317e5e44f6476a54b47a00f1"
+                "reference": "2c65ee53952ebdd3e9e1f63863d0302b6bd895aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/895d0cf8c63b34d3317e5e44f6476a54b47a00f1",
-                "reference": "895d0cf8c63b34d3317e5e44f6476a54b47a00f1",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/2c65ee53952ebdd3e9e1f63863d0302b6bd895aa",
+                "reference": "2c65ee53952ebdd3e9e1f63863d0302b6bd895aa",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-servicemanager": "^3.4",
-                "php": ">=7.4"
+                "php": ">=7.4 || >=8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.4"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -341,11 +344,17 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Alex Patterson",
+                    "email": "alex.patterson.webdev@gmail.com"
+                }
+            ],
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/laminas-factory/issues",
-                "source": "https://github.com/alex-patterson-webdev/laminas-factory/tree/2.0.0"
+                "source": "https://github.com/alex-patterson-webdev/laminas-factory/tree/feature/3.0.0"
             },
-            "time": "2020-11-15T14:02:04+00:00"
+            "time": "2021-02-07T12:57:09+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-symfony-console",
@@ -353,22 +362,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-symfony-console.git",
-                "reference": "26bd5980d1bdfcf12f30745999b7fd4a57d3c26d"
+                "reference": "eded11778c1feee93c34da6d07d91bba353e4d2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-symfony-console/zipball/26bd5980d1bdfcf12f30745999b7fd4a57d3c26d",
-                "reference": "26bd5980d1bdfcf12f30745999b7fd4a57d3c26d",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-symfony-console/zipball/eded11778c1feee93c34da6d07d91bba353e4d2e",
+                "reference": "eded11778c1feee93c34da6d07d91bba353e4d2e",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/laminas-factory": "^2",
+                "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
                 "laminas/laminas-mvc": "^3.1",
-                "php": ">=7.4",
+                "php": ">=7.4 || >=8.0",
                 "symfony/console": "^5.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.1"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -391,7 +400,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-symfony-console/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-symfony-console/tree/feature/0.1.0"
             },
-            "time": "2020-11-15T22:46:29+00:00"
+            "time": "2021-02-07T14:47:26+00:00"
         },
         {
             "name": "alex-patterson-webdev/log",
@@ -5841,6 +5850,7 @@
         "alex-patterson-webdev/doctrine-entity-repository": 20,
         "alex-patterson-webdev/laminas-doctrine-query-filter": 20,
         "alex-patterson-webdev/laminas-date-time": 20,
+        "alex-patterson-webdev/laminas-factory": 20,
         "alex-patterson-webdev/laminas-symfony-console": 20
     },
     "prefer-stable": true,
