@@ -93,7 +93,7 @@ final class ConnectionManager implements ConnectionManagerInterface
         } catch (ConnectionFactoryException $e) {
             throw new ConnectionManagerException(
                 sprintf('Failed to establish connection \'%s\': %s', $name, $e->getMessage()),
-                $e->getMessage(),
+                $e->getCode(),
                 $e
             );
         }

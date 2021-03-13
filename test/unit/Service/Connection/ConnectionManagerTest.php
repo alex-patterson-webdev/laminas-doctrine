@@ -8,13 +8,14 @@ use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
+use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionFactoryException;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Arp\LaminasDoctrine\Service\Connection\ConnectionManager
+ * @covers  \Arp\LaminasDoctrine\Service\Connection\ConnectionManager
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\LaminasDoctrine\Service\Connection
@@ -64,12 +65,12 @@ final class ConnectionManagerTest extends TestCase
         $manager = new ConnectionManager($this->config, $this->connectionFactory, $this->connections);
 
         $connections = [
-            'baz' => $this->createMock(Connection::class),
-            'bar' => $this->createMock(Connection::class),
+            'baz'  => $this->createMock(Connection::class),
+            'bar'  => $this->createMock(Connection::class),
             'test' => [
                 'hello' => 123,
-                'fred' => true,
-                'test' => 'Hello',
+                'fred'  => true,
+                'test'  => 'Hello',
             ],
         ];
 
@@ -114,6 +115,56 @@ final class ConnectionManagerTest extends TestCase
     }
 
     /**
+     * Asset A ConnectionManagerException is thrown should a call to getConnection() be unable to return a
+     * connection for a known connection $name
+     *
+     * @throws ConnectionManagerException
+     */
+    public function testGetConnectionWillThrowConnectionManagerExceptionIfUnableToCreateNamedConnection(): void
+    {
+        $manager = new ConnectionManager($this->config, $this->connectionFactory, $this->connections);
+
+        $name = 'FooConnection';
+        $connections = [
+            $name => [
+                'foo'  => 123,
+                'test' => 'abc',
+            ],
+        ];
+
+        $this->config->expects($this->once())
+            ->method('setConnectionConfig')
+            ->with($name, $connections[$name]);
+
+        $this->config->expects($this->once())
+            ->method('hasConnectionConfig')
+            ->with($name)
+            ->willReturn(true);
+
+        $this->config->expects($this->once())
+            ->method('getConnectionConfig')
+            ->with($name)
+            ->willReturn($connections[$name]);
+
+        $exceptionMessage = 'This is a test exception message for ' . __FUNCTION__;
+        $exceptionCode = 876;
+        $exception = new ConnectionFactoryException($exceptionMessage, $exceptionCode);
+
+        $this->connectionFactory->expects($this->once())
+            ->method('create')
+            ->with($connections[$name])
+            ->willThrowException($exception);
+
+        $this->expectException(ConnectionManagerException::class);
+        $this->expectExceptionCode($exceptionCode);
+        $this->expectExceptionMessage(sprintf('Failed to establish connection \'%s\': %s', $name, $exceptionMessage));
+
+        $manager->setConnections($connections);
+
+        $manager->getConnection($name);
+    }
+
+    /**
      * Assert that a collection can be lazy loaded from the collection by its $name
      *
      * @throws ConnectionManagerException
@@ -125,7 +176,7 @@ final class ConnectionManagerTest extends TestCase
         $name = 'FooConnection';
         $connections = [
             $name => [
-                'foo' => 123,
+                'foo'  => 123,
                 'test' => 'abc',
             ],
             'foo' => $this->createMock(Connection::class),
@@ -156,5 +207,29 @@ final class ConnectionManagerTest extends TestCase
         $manager->setConnections($connections);
 
         $this->assertSame($expected, $manager->getConnection($name));
+    }
+
+    /**
+     * Assert that calling getConnection() with a non-existing connection $name a ConnectionManagerException is thrown
+     *
+     * @throws ConnectionManagerException
+     */
+    public function testGetConnectionWillThrowConnectionManagerExceptionIfNotFound(): void
+    {
+        $manager = new ConnectionManager($this->config, $this->connectionFactory, $this->connections);
+
+        $name = 'NonExistingName';
+
+        $this->config->expects($this->once())
+            ->method('hasConnectionConfig')
+            ->with($name)
+            ->willReturn(false);
+
+        $this->expectException(ConnectionManagerException::class);
+        $this->expectExceptionMessage(
+            sprintf('Failed to establish connection \'%s\': Failed to find a the required configuration', $name)
+        );
+
+        $manager->getConnection($name);
     }
 }
