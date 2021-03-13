@@ -109,9 +109,9 @@ final class ConnectionManager implements ConnectionManagerInterface
         foreach ($connections as $name => $connection) {
             if (is_array($connection)) {
                 $this->addConnectionConfig($name, $connection);
-                continue;
+            } else {
+                $this->setConnection($name, $connection);
             }
-            $this->setConnection($name, $connection);
         }
     }
 

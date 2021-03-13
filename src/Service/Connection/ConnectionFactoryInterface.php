@@ -18,13 +18,13 @@ interface ConnectionFactoryInterface
     /**
      * Create a new connection from the provided $params
      *
-     * @param array                     $params
+     * @param array                     $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|string|null  $eventManager
+     * @param EventManager|null         $eventManager
      *
      * @return Connection
      *
      * @throws ConnectionFactoryException
      */
-    public function create(array $params, $configuration = null, $eventManager = null): Connection;
+    public function create(array $config, $configuration = null, ?EventManager $eventManager = null): Connection;
 }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Service\Connection;
 
-use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionFactoryException;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -19,16 +19,35 @@ use Doctrine\DBAL\DriverManager;
 final class ConnectionFactory implements ConnectionFactoryInterface
 {
     /**
-     * @var ConfigurationManager
+     * @var ConfigurationManagerInterface
      */
-    private ConfigurationManager $configurationManager;
+    private ConfigurationManagerInterface $configurationManager;
 
     /**
-     * @param ConfigurationManager $configurationManager
+     * @var \Closure|null
      */
-    public function __construct(ConfigurationManager $configurationManager)
-    {
+    private ?\Closure $factoryWrapper;
+
+    /**
+     * @var array
+     */
+    private array $defaultConfig;
+
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @param callable|null                 $factory
+     * @param array $defaultConfig
+     *
+     * @noinspection ProperNullCoalescingOperatorUsageInspection [$this, 'doCreate'] is of type callable
+     */
+    public function __construct(
+        ConfigurationManagerInterface $configurationManager,
+        ?callable $factory = null,
+        array $defaultConfig = []
+    ) {
         $this->configurationManager = $configurationManager;
+        $this->factoryWrapper = \Closure::fromCallable($factory ?? [$this, 'doCreate']);
+        $this->defaultConfig = $defaultConfig;
     }
 
     /**
@@ -36,39 +55,48 @@ final class ConnectionFactory implements ConnectionFactoryInterface
      *
      * @param array                     $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|string|null  $eventManager
+     * @param EventManager|null         $eventManager
      *
      * @return Connection
      *
      * @throws ConnectionFactoryException
      */
-    public function create(array $config, $configuration = null, $eventManager = null): Connection
+    public function create(array $config, $configuration = null, ?EventManager $eventManager = null): Connection
     {
-        $params = array_merge(
-            [
-                'driverClass'  => $config['driverClass'] ?? Driver::class,
-                'wrapperClass' => $config['wrapperClass'] ?? null,
-                'pdo'          => $config['pdo'] ?? null,
-            ],
-            $config['params'] ?? []
-        );
-
-        if (!empty($config['platform'])) {
-            $platform = null;
-        }
+        $config = array_replace_recursive($this->defaultConfig, $config);
 
         try {
             if (is_string($configuration)) {
                 $configuration = $this->configurationManager->getConfiguration($configuration);
             }
 
-            return DriverManager::getConnection($params, $configuration, $eventManager);
-        } catch (\Throwable $e) {
+            return call_user_func($this->factoryWrapper, $config['params'] ?? [], $configuration, $eventManager);
+        } catch (\Exception $e) {
             throw new ConnectionFactoryException(
                 sprintf('Failed to create new connection: %s', $e->getMessage()),
                 $e->getCode(),
                 $e
             );
         }
+    }
+
+    /**
+     * Default factory creation callable
+     *
+     * @param array             $params
+     * @param Configuration     $configuration
+     * @param EventManager|null $eventManager
+     *
+     * @return Connection
+     *
+     * @throws Exception
+     * @noinspection PhpUnusedPrivateMethodInspection
+     */
+    private function doCreate(
+        array $params,
+        Configuration $configuration,
+        ?EventManager $eventManager = null
+    ): Connection {
+        return DriverManager::getConnection($params, $configuration, $eventManager);
     }
 }
