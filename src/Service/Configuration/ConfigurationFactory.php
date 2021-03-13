@@ -6,7 +6,8 @@ namespace Arp\LaminasDoctrine\Service\Configuration;
 
 use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationFactoryException;
 use Doctrine\ORM\Configuration;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerExceptionInterface;
 
 /**
  * Factory class for the Doctrine Configuration via the Laminas ServiceManager. This is not ideal as we treat the
@@ -19,14 +20,14 @@ use Laminas\ServiceManager\ServiceManager;
 final class ConfigurationFactory implements ConfigurationFactoryInterface
 {
     /**
-     * @var ServiceManager
+     * @var ServiceLocatorInterface
      */
-    private ServiceManager $serviceManager;
+    private ServiceLocatorInterface $serviceManager;
 
     /**
-     * @param ServiceManager $serviceManager
+     * @param ServiceLocatorInterface $serviceManager
      */
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ServiceLocatorInterface $serviceManager)
     {
         $this->serviceManager = $serviceManager;
     }
@@ -42,7 +43,7 @@ final class ConfigurationFactory implements ConfigurationFactoryInterface
     {
         try {
             return $this->serviceManager->build(Configuration::class, $config);
-        } catch (\Throwable $e) {
+        } catch (ContainerExceptionInterface $e) {
             throw new ConfigurationFactoryException(
                 sprintf('Failed to create ORM Configuration: %s', $e->getMessage()),
                 $e->getCode(),

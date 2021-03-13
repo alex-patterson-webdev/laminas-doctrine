@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Service\Configuration;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationFactoryException;
 use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException;
 use Doctrine\ORM\Configuration;
 
@@ -47,15 +48,6 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     public function hasConfiguration(string $name): bool
     {
         return isset($this->configurations[$name]) || $this->config->hasConfigurationConfig($name);
-    }
-
-    /**
-     * @param string $name
-     * @param array  $config
-     */
-    public function addConfigurationConfig(string $name, array $config): void
-    {
-        $this->config->setConfigurationConfig($name, $config);
     }
 
     /**
@@ -103,6 +95,15 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     public function setConfiguration(string $name, Configuration $configuration): void
     {
         $this->configurations[$name] = $configuration;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $config
+     */
+    public function addConfigurationConfig(string $name, array $config): void
+    {
+        $this->config->setConfigurationConfig($name, $config);
     }
 
     /**
