@@ -8,24 +8,25 @@
     "packages": [
         {
             "name": "alex-patterson-webdev/date-time",
-            "version": "2.0.0",
+            "version": "dev-feature/3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/date-time.git",
-                "reference": "162c9055262b8070e08ee61618d06f1549ecaeb3"
+                "reference": "b2f53deeeec91453586f46b844047a6b0c801215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/date-time/zipball/162c9055262b8070e08ee61618d06f1549ecaeb3",
-                "reference": "162c9055262b8070e08ee61618d06f1549ecaeb3",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/date-time/zipball/b2f53deeeec91453586f46b844047a6b0c801215",
+                "reference": "b2f53deeeec91453586f46b844047a6b0c801215",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/factory": "^1",
-                "php": ">=7.4"
+                "alex-patterson-webdev/factory": "dev-feature/2.0.0",
+                "php": ">=7.4 || >=8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.3"
+                "phpunit/phpunit": "^9.3",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "autoload": {
@@ -43,11 +44,12 @@
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "Components for creating PHP DateTime objects",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/date-time/issues",
-                "source": "https://github.com/alex-patterson-webdev/date-time/tree/master"
+                "source": "https://github.com/alex-patterson-webdev/date-time/tree/feature/3.0.0"
             },
-            "time": "2020-08-30T10:51:47+00:00"
+            "time": "2021-03-04T23:12:19+00:00"
         },
         {
             "name": "alex-patterson-webdev/doctrine-entity-repository",
@@ -55,18 +57,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/doctrine-entity-repository.git",
-                "reference": "a6ad708fa22c3cbb4112a99e29bfd0e01bd9fea4"
+                "reference": "4680f9d7ac1f9c31cf01ea1f6a8dbdde186b3b80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/a6ad708fa22c3cbb4112a99e29bfd0e01bd9fea4",
-                "reference": "a6ad708fa22c3cbb4112a99e29bfd0e01bd9fea4",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/4680f9d7ac1f9c31cf01ea1f6a8dbdde186b3b80",
+                "reference": "4680f9d7ac1f9c31cf01ea1f6a8dbdde186b3b80",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/date-time": "^2",
+                "alex-patterson-webdev/date-time": "dev-feature/3.0.0",
                 "alex-patterson-webdev/entity": "^0.1.1",
-                "alex-patterson-webdev/event-dispatcher": "dev-feature/1.1.0",
+                "alex-patterson-webdev/event-dispatcher": "dev-feature/2.0.0",
                 "alex-patterson-webdev/log": "dev-feature/0.1.0",
                 "doctrine/orm": "^2.7",
                 "php": ">=7.4 || >=8.0",
@@ -88,11 +90,12 @@
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "An event based implementation of the Doctrine ORM Entity Repository",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/issues",
                 "source": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/tree/feature/0.2.0"
             },
-            "time": "2021-02-10T00:45:18+00:00"
+            "time": "2021-03-07T23:08:55+00:00"
         },
         {
             "name": "alex-patterson-webdev/entity",
@@ -142,28 +145,26 @@
         },
         {
             "name": "alex-patterson-webdev/event-dispatcher",
-            "version": "dev-feature/1.1.0",
+            "version": "dev-feature/2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/event-dispatcher.git",
-                "reference": "18b4ce73db1b7c54d26c02be7c2f96387a9b767b"
+                "reference": "98f6ff6a8150989f4d6cf6bfd5c855c559261e09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/event-dispatcher/zipball/18b4ce73db1b7c54d26c02be7c2f96387a9b767b",
-                "reference": "18b4ce73db1b7c54d26c02be7c2f96387a9b767b",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/event-dispatcher/zipball/98f6ff6a8150989f4d6cf6bfd5c855c559261e09",
+                "reference": "98f6ff6a8150989f4d6cf6bfd5c855c559261e09",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/factory": "^1",
-                "php": ">=7.3",
+                "alex-patterson-webdev/factory": "dev-feature/2.0.0",
+                "php": ">=7.4 || >=8.0",
                 "psr/event-dispatcher": "^1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "phpmd/phpmd": "@stable",
-                "phpunit/phpunit": "^9.1",
-                "squizlabs/php_codesniffer": "3.*"
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "autoload": {
@@ -181,31 +182,32 @@
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "Simple implementation of the PSR-14 event dispatcher",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/event-dispatcher/issues",
-                "source": "https://github.com/alex-patterson-webdev/event-dispatcher/tree/feature/1.1.0"
+                "source": "https://github.com/alex-patterson-webdev/event-dispatcher/tree/feature/2.0.0"
             },
-            "time": "2020-08-09T17:14:21+00:00"
+            "time": "2021-03-07T22:25:56+00:00"
         },
         {
             "name": "alex-patterson-webdev/factory",
-            "version": "1.0.0",
+            "version": "dev-feature/2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/factory.git",
-                "reference": "59815fc82ffe88e91e3ad45c93b6b3e0af9df1c0"
+                "reference": "f4e81d8bc872362a3e0f02673363b43160401a3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/factory/zipball/59815fc82ffe88e91e3ad45c93b6b3e0af9df1c0",
-                "reference": "59815fc82ffe88e91e3ad45c93b6b3e0af9df1c0",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/factory/zipball/f4e81d8bc872362a3e0f02673363b43160401a3b",
+                "reference": "f4e81d8bc872362a3e0f02673363b43160401a3b",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": ">=7.4 || >=8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8"
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "autoload": {
@@ -214,17 +216,21 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Alex Patterson",
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "Generic interfaces and classes for creating other services",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/factory/issues",
-                "source": "https://github.com/alex-patterson-webdev/factory/tree/master"
+                "source": "https://github.com/alex-patterson-webdev/factory/tree/feature/2.0.0"
             },
-            "time": "2020-02-09T19:17:23+00:00"
+            "time": "2021-03-04T22:03:49+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-date-time",
@@ -232,16 +238,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-date-time.git",
-                "reference": "fe7a35e8f1402ed40edfcd088e1541ed3cc0773d"
+                "reference": "dcd5d2677ea77813c1579e8b68df969d70dbbbf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/fe7a35e8f1402ed40edfcd088e1541ed3cc0773d",
-                "reference": "fe7a35e8f1402ed40edfcd088e1541ed3cc0773d",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/dcd5d2677ea77813c1579e8b68df969d70dbbbf0",
+                "reference": "dcd5d2677ea77813c1579e8b68df969d70dbbbf0",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/date-time": "^2",
+                "alex-patterson-webdev/date-time": "dev-feature/3.0.0",
                 "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
                 "laminas/laminas-eventmanager": "^3.3",
                 "laminas/laminas-modulemanager": "^2.10",
@@ -273,11 +279,12 @@
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "Date and Time component module for the Laminas Framework",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/laminas-date-time/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-date-time/tree/feature/0.2.0"
             },
-            "time": "2021-02-24T21:53:36+00:00"
+            "time": "2021-03-06T22:35:23+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-factory",
@@ -285,12 +292,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-factory.git",
-                "reference": "2c65ee53952ebdd3e9e1f63863d0302b6bd895aa"
+                "reference": "11369cdf106032da7cd281f7325a7c8f2867a240"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/2c65ee53952ebdd3e9e1f63863d0302b6bd895aa",
-                "reference": "2c65ee53952ebdd3e9e1f63863d0302b6bd895aa",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/11369cdf106032da7cd281f7325a7c8f2867a240",
+                "reference": "11369cdf106032da7cd281f7325a7c8f2867a240",
                 "shasum": ""
             },
             "require": {
@@ -317,7 +324,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-factory/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-factory/tree/feature/3.0.0"
             },
-            "time": "2021-02-07T12:57:09+00:00"
+            "time": "2021-03-11T22:37:39+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-symfony-console",
@@ -371,22 +378,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/log.git",
-                "reference": "05b703b029af656c959c2568255406776a1c08be"
+                "reference": "baa32237f261f359d1af76764cfcfdbbb3fd2811"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/log/zipball/05b703b029af656c959c2568255406776a1c08be",
-                "reference": "05b703b029af656c959c2568255406776a1c08be",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/log/zipball/baa32237f261f359d1af76764cfcfdbbb3fd2811",
+                "reference": "baa32237f261f359d1af76764cfcfdbbb3fd2811",
                 "shasum": ""
             },
             "require": {
-                "alex-patterson-webdev/factory": "^1",
+                "alex-patterson-webdev/factory": "dev-feature/2.0.0",
                 "laminas/laminas-log": "^2.12",
-                "php": "^7.3",
+                "php": ">=7.4 || >=8.0",
                 "psr/log": "^1.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.1"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -401,11 +408,12 @@
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "PSR-3 logger factories using Laminas Log",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/log/issues",
                 "source": "https://github.com/alex-patterson-webdev/log/tree/feature/0.1.0"
             },
-            "time": "2020-08-10T18:57:18+00:00"
+            "time": "2021-03-06T22:54:34+00:00"
         },
         {
             "name": "brick/varexporter",
@@ -1796,16 +1804,16 @@
         },
         {
             "name": "laminas/laminas-eventmanager",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-eventmanager.git",
-                "reference": "1940ccf30e058b2fd66f5a9d696f1b5e0027b082"
+                "reference": "966c859b67867b179fde1eff0cd38df51472ce4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-eventmanager/zipball/1940ccf30e058b2fd66f5a9d696f1b5e0027b082",
-                "reference": "1940ccf30e058b2fd66f5a9d696f1b5e0027b082",
+                "url": "https://api.github.com/repos/laminas/laminas-eventmanager/zipball/966c859b67867b179fde1eff0cd38df51472ce4a",
+                "reference": "966c859b67867b179fde1eff0cd38df51472ce4a",
                 "shasum": ""
             },
             "require": {
@@ -1827,12 +1835,6 @@
                 "laminas/laminas-stdlib": "^2.7.3 || ^3.0, to use the FilterChain feature"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3.x-dev",
-                    "dev-develop": "3.4.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Laminas\\EventManager\\": "src/"
@@ -1864,7 +1866,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-08-25T11:10:44+00:00"
+            "time": "2021-03-08T15:24:29+00:00"
         },
         {
             "name": "laminas/laminas-http",
@@ -2840,24 +2842,26 @@
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "6ede70583e101030bcace4dcddd648f760ddf642"
+                "reference": "6cccbddfcfc742eb02158d6137ca5687d92cee32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/6ede70583e101030bcace4dcddd648f760ddf642",
-                "reference": "6ede70583e101030bcace4dcddd648f760ddf642",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/6cccbddfcfc742eb02158d6137ca5687d92cee32",
+                "reference": "6cccbddfcfc742eb02158d6137ca5687d92cee32",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0 || ^8.0"
+                "php": "^7.3 || ^8.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1 || ^9.3",
-                "squizlabs/php_codesniffer": "^3.5"
+                "psalm/plugin-phpunit": "^0.15.1",
+                "squizlabs/php_codesniffer": "^3.5",
+                "vimeo/psalm": "^4.6"
             },
             "type": "library",
             "extra": {
@@ -2896,7 +2900,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-09-14T14:23:00+00:00"
+            "time": "2021-02-25T21:54:58+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -2956,27 +2960,22 @@
         },
         {
             "name": "psr/container",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/8622567409010282b7aeebe4bb841fe98b58dcaf",
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Psr\\Container\\": "src/"
@@ -2989,7 +2988,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common Container Interface (PHP FIG PSR-11)",
@@ -3003,9 +3002,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/master"
+                "source": "https://github.com/php-fig/container/tree/1.1.1"
             },
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2021-03-05T17:36:06+00:00"
         },
         {
             "name": "psr/event-dispatcher",
@@ -3109,16 +3108,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.2.3",
+            "version": "v5.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "89d4b176d12a2946a1ae4e34906a025b7b6b135a"
+                "reference": "938ebbadae1b0a9c9d1ec313f87f9708609f1b79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/89d4b176d12a2946a1ae4e34906a025b7b6b135a",
-                "reference": "89d4b176d12a2946a1ae4e34906a025b7b6b135a",
+                "url": "https://api.github.com/repos/symfony/console/zipball/938ebbadae1b0a9c9d1ec313f87f9708609f1b79",
+                "reference": "938ebbadae1b0a9c9d1ec313f87f9708609f1b79",
                 "shasum": ""
             },
             "require": {
@@ -3186,7 +3185,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.2.3"
+                "source": "https://github.com/symfony/console/tree/v5.2.5"
             },
             "funding": [
                 {
@@ -3202,7 +3201,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-28T22:06:19+00:00"
+            "time": "2021-03-06T13:42:15+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3771,16 +3770,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.2.3",
+            "version": "v5.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "c95468897f408dd0aca2ff582074423dd0455122"
+                "reference": "4e78d7d47061fa183639927ec40d607973699609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/c95468897f408dd0aca2ff582074423dd0455122",
-                "reference": "c95468897f408dd0aca2ff582074423dd0455122",
+                "url": "https://api.github.com/repos/symfony/string/zipball/4e78d7d47061fa183639927ec40d607973699609",
+                "reference": "4e78d7d47061fa183639927ec40d607973699609",
                 "shasum": ""
             },
             "require": {
@@ -3834,7 +3833,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.2.3"
+                "source": "https://github.com/symfony/string/tree/v5.2.4"
             },
             "funding": [
                 {
@@ -3850,7 +3849,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-25T15:14:59+00:00"
+            "time": "2021-02-16T10:20:28+00:00"
         },
         {
             "name": "webimpress/safe-writer",
@@ -5744,30 +5743,35 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.9.1",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
+                "reference": "6964c76c7804814a842473e0c8fd15bab0f18e25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/6964c76c7804814a842473e0c8fd15bab0f18e25",
+                "reference": "6964c76c7804814a842473e0c8fd15bab0f18e25",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
                 "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<3.9.1"
+                "vimeo/psalm": "<4.6.1 || 4.6.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.36 || ^7.5.13"
+                "phpunit/phpunit": "^8.5.13"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Webmozart\\Assert\\": "src/"
@@ -5791,9 +5795,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
+                "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
-            "time": "2020-07-08T17:02:28+00:00"
+            "time": "2021-03-09T10:59:23+00:00"
         }
     ],
     "aliases": [],
