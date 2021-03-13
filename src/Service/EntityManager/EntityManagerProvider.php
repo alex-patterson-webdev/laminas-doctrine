@@ -102,9 +102,9 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     public function refresh(string $name): EntityManagerInterface
     {
-        if ($this->container->has($name)) {
-            $entityManager = $this->getEntityManager($name);
+        $entityManager = $this->getEntityManager($name);
 
+        if ($this->container->has($name)) {
             if ($entityManager->isOpen()) {
                 $entityManager->close();
             }
@@ -113,7 +113,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
             $this->container->setService($name, $entityManager);
         }
 
-        return $this->getEntityManager($name);
+        return $entityManager;
     }
 
     /**
