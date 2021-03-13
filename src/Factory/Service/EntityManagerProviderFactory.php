@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerManager;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProviderInterface;
 use Arp\LaminasFactory\AbstractFactory;
@@ -40,8 +40,8 @@ final class EntityManagerProviderFactory extends AbstractFactory
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
-        /** @var EntityManagerManager $entityManagerManager */
-        $entityManagerManager = $this->getService($container, EntityManagerManager::class, $requestedName);
+        /** @var EntityManagerContainer $entityManagerManager */
+        $entityManagerManager = $this->getService($container, EntityManagerContainer::class, $requestedName);
 
         /** @var EntityManagerInterface[] $entityManagers */
         $entityManagers = [];

@@ -21,19 +21,19 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     private DoctrineConfig $config;
 
     /**
-     * @var EntityManagerManager
+     * @var ContainerInterface
      */
-    private EntityManagerManager $manager;
+    private ContainerInterface $container;
 
     /**
-     * @param DoctrineConfig       $config
-     * @param EntityManagerManager $manager
-     * @param array                $entityManagers
+     * @param DoctrineConfig     $config
+     * @param ContainerInterface $container
+     * @param array              $entityManagers
      */
-    public function __construct(DoctrineConfig $config, EntityManagerManager $manager, array $entityManagers = [])
+    public function __construct(DoctrineConfig $config, ContainerInterface $container, array $entityManagers = [])
     {
         $this->config = $config;
-        $this->manager = $manager;
+        $this->container = $container;
 
         $this->setEntityManagers($entityManagers);
     }
@@ -58,7 +58,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     public function hasEntityManager(string $name): bool
     {
-        return $this->manager->has($name) || $this->config->hasEntityManagerConfig($name);
+        return $this->container->has($name) || $this->config->hasEntityManagerConfig($name);
     }
 
     /**
@@ -71,12 +71,12 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     public function getEntityManager(string $name): EntityManagerInterface
     {
         try {
-            if (!$this->manager->has($name) && $this->config->hasEntityManagerConfig($name)) {
-                $this->manager->setService($name, $this->create($name, $this->config->getEntityManagerConfig($name)));
+            if (!$this->container->has($name) && $this->config->hasEntityManagerConfig($name)) {
+                $this->container->setService($name, $this->create($name, $this->config->getEntityManagerConfig($name)));
             }
 
-            if ($this->manager->has($name)) {
-                return $this->manager->get($name);
+            if ($this->container->has($name)) {
+                return $this->container->get($name);
             }
         } catch (EntityManagerProviderException $e) {
             throw $e;
@@ -102,7 +102,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     public function refresh(string $name): EntityManagerInterface
     {
-        if ($this->manager->has($name)) {
+        if ($this->container->has($name)) {
             $entityManager = $this->getEntityManager($name);
 
             if ($entityManager->isOpen()) {
@@ -110,7 +110,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
             }
 
             $entityManager = $this->create($name, $this->config->getEntityManagerConfig($name));
-            $this->manager->setService($name, $entityManager);
+            $this->container->setService($name, $entityManager);
         }
 
         return $this->getEntityManager($name);
@@ -122,7 +122,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     public function setEntityManager(string $name, EntityManagerInterface $entityManager): void
     {
-        $this->manager->setService($name, $entityManager);
+        $this->container->setService($name, $entityManager);
     }
 
     /**
@@ -146,14 +146,16 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     private function create(string $name, array $config, string $factoryClassName = null): EntityManagerInterface
     {
-        if (!$this->manager->has($name)) {
-            // There is no manual entry for this entity manager. We can manually add it so we do not need
-            // to explicitly define it each time with the 'entity_manager_manager'
-            $this->manager->setFactory($name, $factoryClassName ?? EntityManagerFactory::class);
+        if (!$this->container->has($name)) {
+            /**
+             * There is no manual entry for this entity manager. We can manually add it so we do not need
+             * to explicitly define it each time with the 'entity_manager_manager'
+             */
+            $this->container->setFactory($name, $factoryClassName ?? EntityManagerFactory::class);
         }
 
         try {
-            return $this->manager->build($name, $config);
+            return $this->container->build($name, $config);
         } catch (\Throwable $e) {
             throw new EntityManagerProviderException(
                 sprintf('Failed to create entity manager \'%s\' from configuration: %s', $name, $e->getMessage()),

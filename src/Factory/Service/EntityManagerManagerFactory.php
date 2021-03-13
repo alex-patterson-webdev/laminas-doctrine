@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Service;
 
-use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerManager;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -21,17 +21,17 @@ final class EntityManagerManagerFactory extends AbstractFactory
      * @param string             $requestedName
      * @param array|null         $options
      *
-     * @return EntityManagerManager
+     * @return EntityManagerContainer
      *
      * @noinspection PhpMissingParamTypeInspection
      *
      * @throws InvalidArgumentException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityManagerManager
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityManagerContainer
     {
         $config = $this->getApplicationOptions($container, 'entity_manager_manager') ?: [];
 
-        return new EntityManagerManager($container, $config);
+        return new EntityManagerContainer($container, $config);
     }
 }

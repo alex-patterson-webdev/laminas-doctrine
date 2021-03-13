@@ -65,7 +65,7 @@ use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
-use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerManager;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
 use Arp\LaminasEvent\Factory\EventDispatcherFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -127,7 +127,7 @@ return [
             ConnectionManagerInterface::class => ConnectionManagerFactory::class,
             ConnectionFactory::class          => ConnectionFactoryFactory::class,
             EntityManagerProvider::class      => EntityManagerProviderFactory::class,
-            EntityManagerManager::class       => EntityManagerManagerFactory::class,
+            EntityManagerContainer::class     => EntityManagerManagerFactory::class,
             RepositoryManager::class          => RepositoryManagerFactory::class,
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
             QueryService::class               => QueryServiceFactory::class,

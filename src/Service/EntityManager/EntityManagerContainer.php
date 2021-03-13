@@ -11,7 +11,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Service\EntityManager
  */
-final class EntityManagerManager extends AbstractPluginManager
+final class EntityManagerContainer extends AbstractPluginManager implements ContainerInterface
 {
     /**
      * @var string
