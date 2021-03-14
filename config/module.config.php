@@ -53,7 +53,7 @@ use Arp\LaminasDoctrine\Factory\Service\ConfigurationFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConfigurationManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConnectionFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConnectionManagerFactory;
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerManagerFactory;
+use Arp\LaminasDoctrine\Factory\Service\EntityManagerContainerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerProviderFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
@@ -127,7 +127,7 @@ return [
             ConnectionManagerInterface::class => ConnectionManagerFactory::class,
             ConnectionFactory::class          => ConnectionFactoryFactory::class,
             EntityManagerProvider::class      => EntityManagerProviderFactory::class,
-            EntityManagerContainer::class     => EntityManagerManagerFactory::class,
+            EntityManagerContainer::class     => EntityManagerContainerFactory::class,
             RepositoryManager::class          => RepositoryManagerFactory::class,
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
             QueryService::class               => QueryServiceFactory::class,
@@ -179,7 +179,8 @@ return [
 
         ],
     ],
-    'entity_manager_manager' => [
+
+    'entity_manager_container' => [
         'factories' => [
 
         ],

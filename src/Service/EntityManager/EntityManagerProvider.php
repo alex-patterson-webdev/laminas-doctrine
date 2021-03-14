@@ -8,6 +8,7 @@ use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactory;
 use Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -39,29 +40,6 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
-     * Set the configuration options for a single entity manager with the provided $name
-     *
-     * @param string $name
-     * @param array  $config
-     */
-    public function setEntityManagerConfig(string $name, array $config): void
-    {
-        $this->config->setEntityManagerConfig($name, $config);
-    }
-
-    /**
-     * Check if the entity manager is registered with the provider
-     *
-     * @param string $name The name of the entity manager to check
-     *
-     * @return bool
-     */
-    public function hasEntityManager(string $name): bool
-    {
-        return $this->container->has($name) || $this->config->hasEntityManagerConfig($name);
-    }
-
-    /**
      * @param string $name
      *
      * @return EntityManagerInterface
@@ -80,9 +58,9 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
             }
         } catch (EntityManagerProviderException $e) {
             throw $e;
-        } catch (\Throwable $e) {
+        } catch (ContainerExceptionInterface $e) {
             throw new EntityManagerProviderException(
-                sprintf('Failed return entity manager \'%s\': %s', $name, $e->getMessage()),
+                sprintf('Failed retrieve entity manager \'%s\': %s', $name, $e->getMessage()),
                 $e->getCode(),
                 $e
             );
@@ -117,6 +95,29 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
+     * Set the configuration options for a single entity manager with the provided $name
+     *
+     * @param string $name
+     * @param array  $config
+     */
+    public function setEntityManagerConfig(string $name, array $config): void
+    {
+        $this->config->setEntityManagerConfig($name, $config);
+    }
+
+    /**
+     * Check if the entity manager is registered with the provider
+     *
+     * @param string $name The name of the entity manager to check
+     *
+     * @return bool
+     */
+    public function hasEntityManager(string $name): bool
+    {
+        return $this->container->has($name) || $this->config->hasEntityManagerConfig($name);
+    }
+
+    /**
      * @param string                 $name
      * @param EntityManagerInterface $entityManager
      */
@@ -131,7 +132,11 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     public function setEntityManagers(array $entityManagers): void
     {
         foreach ($entityManagers as $name => $entityManager) {
-            $this->setEntityManager($name, $entityManager);
+            if (is_array($entityManager)) {
+                $this->setEntityManagerConfig($name, $entityManager);
+            } else {
+                $this->setEntityManager($name, $entityManager);
+            }
         }
     }
 
@@ -146,17 +151,18 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      */
     private function create(string $name, array $config, string $factoryClassName = null): EntityManagerInterface
     {
+        // We must exclude calls from refresh() so we need to check
         if (!$this->container->has($name)) {
             /**
              * There is no manual entry for this entity manager. We can manually add it so we do not need
-             * to explicitly define it each time with the 'entity_manager_manager'
+             * to explicitly define it each time with the 'entity_manager_container'
              */
             $this->container->setFactory($name, $factoryClassName ?? EntityManagerFactory::class);
         }
 
         try {
             return $this->container->build($name, $config);
-        } catch (\Throwable $e) {
+        } catch (ContainerExceptionInterface $e) {
             throw new EntityManagerProviderException(
                 sprintf('Failed to create entity manager \'%s\' from configuration: %s', $name, $e->getMessage()),
                 $e->getCode(),

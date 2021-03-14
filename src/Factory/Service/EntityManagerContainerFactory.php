@@ -14,7 +14,7 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Factory\Service
  */
-final class EntityManagerManagerFactory extends AbstractFactory
+final class EntityManagerContainerFactory extends AbstractFactory
 {
     /**
      * @param ContainerInterface $container
@@ -30,7 +30,7 @@ final class EntityManagerManagerFactory extends AbstractFactory
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityManagerContainer
     {
-        $config = $this->getApplicationOptions($container, 'entity_manager_manager') ?: [];
+        $config = $this->getApplicationOptions($container, 'entity_manager_container') ?: [];
 
         return new EntityManagerContainer($container, $config);
     }
