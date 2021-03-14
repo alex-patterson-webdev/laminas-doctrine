@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "test": "php vendor/bin/phpunit"
+    "test": "php vendor/bin/phpunit --coverage-clover=clover.xml"
   },
   "config": {
     "optimize-autoloader": true,
