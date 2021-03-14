@@ -6,8 +6,8 @@ namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\ServiceManager;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
