@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
 use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException;
-use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
@@ -43,21 +43,21 @@ final class EntityManagerFactory extends AbstractFactory
 
         $entityManagerConfig = $options ?? $doctrineConfig->getEntityManagerConfig($requestedName);
 
-        $connection = $entityManagerConfig['connection'] ?? null;
-        if (null === $connection) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'connection\' configuration option is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
-
         $configuration = $entityManagerConfig['configuration'] ?? null;
         if (null === $configuration) {
             throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'configuration\' configuration option is missing for service \'%s\'',
+                    $requestedName
+                )
+            );
+        }
+
+        $connection = $entityManagerConfig['connection'] ?? null;
+        if (null === $connection) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The required \'connection\' configuration option is missing for service \'%s\'',
                     $requestedName
                 )
             );
@@ -88,8 +88,8 @@ final class EntityManagerFactory extends AbstractFactory
      */
     private function getConfiguration(ContainerInterface $container, $configuration, string $serviceName): Configuration
     {
-        /** @var ConfigurationManager $configurationManager */
-        $configurationManager = $container->get(ConfigurationManager::class);
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = $this->getService($container, ConfigurationManagerInterface::class, $serviceName);
 
         if (is_array($configuration)) {
             $configurationManager->addConfigurationConfig($serviceName, $configuration);
@@ -115,16 +115,16 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ConfigurationManager $configurationManager
-     * @param string               $name
-     * @param string               $serviceName
+     * @param ConfigurationManagerInterface $configurationManager
+     * @param string                        $name
+     * @param string                        $serviceName
      *
      * @return Configuration
      *
      * @throws ServiceNotCreatedException
      */
     private function loadConfiguration(
-        ConfigurationManager $configurationManager,
+        ConfigurationManagerInterface $configurationManager,
         string $name,
         string $serviceName
     ): Configuration {
@@ -158,9 +158,9 @@ final class EntityManagerFactory extends AbstractFactory
     /**
      * Resolve the required Doctrine Connection instance to use from the provided $connection.
      *
-     * @param ContainerInterface      $container
+     * @param ContainerInterface $container
      * @param string|array|Connection $connection
-     * @param string                  $serviceName
+     * @param string $serviceName
      *
      * @return Connection
      *
@@ -168,8 +168,8 @@ final class EntityManagerFactory extends AbstractFactory
      */
     private function getConnection(ContainerInterface $container, $connection, string $serviceName): Connection
     {
-        /** @var ConnectionManager $connectionManager */
-        $connectionManager = $container->get(ConnectionManager::class);
+        /** @var ConnectionManagerInterface $connectionManager */
+        $connectionManager = $this->getService($container, ConnectionManagerInterface::class, $serviceName);
 
         if (is_array($connection)) {
             $connectionManager->addConnectionConfig($serviceName, $connection);
@@ -195,16 +195,19 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ConnectionManager $connectionManager
-     * @param string            $name
-     * @param string            $serviceName
+     * @param ConnectionManagerInterface $connectionManager
+     * @param string                     $name
+     * @param string                     $serviceName
      *
      * @return Connection
      *
      * @throws ServiceNotCreatedException
      */
-    private function loadConnection(ConnectionManager $connectionManager, string $name, string $serviceName): Connection
-    {
+    private function loadConnection(
+        ConnectionManagerInterface $connectionManager,
+        string $name,
+        string $serviceName
+    ): Connection {
         if (!$connectionManager->hasConnection($name)) {
             throw new ServiceNotCreatedException(
                 sprintf(
