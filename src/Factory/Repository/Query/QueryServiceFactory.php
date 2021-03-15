@@ -10,6 +10,7 @@ use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Log\NullLogger;
 
 /**
@@ -30,6 +31,7 @@ class QueryServiceFactory extends AbstractFactory
      * @return QueryServiceInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(
         ContainerInterface $container,

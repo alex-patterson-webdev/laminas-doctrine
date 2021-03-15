@@ -85,6 +85,7 @@ final class EntityManagerFactory extends AbstractFactory
      * @return Configuration
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getConfiguration(ContainerInterface $container, $configuration, string $serviceName): Configuration
     {
@@ -158,13 +159,14 @@ final class EntityManagerFactory extends AbstractFactory
     /**
      * Resolve the required Doctrine Connection instance to use from the provided $connection.
      *
-     * @param ContainerInterface $container
+     * @param ContainerInterface      $container
      * @param string|array|Connection $connection
-     * @param string $serviceName
+     * @param string                  $serviceName
      *
      * @return Connection
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getConnection(ContainerInterface $container, $connection, string $serviceName): Connection
     {

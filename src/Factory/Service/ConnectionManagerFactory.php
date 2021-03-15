@@ -10,6 +10,9 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -18,21 +21,30 @@ use Interop\Container\ContainerInterface;
 final class ConnectionManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface|ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array|null                                 $options
      *
      * @return ConnectionManager
      *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      * @noinspection PhpMissingParamTypeInspection
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConnectionManager
     {
+        $options = $options ?? $this->getServiceOptions($container, $requestedName);
+
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
         /** @var ConnectionFactory $connectionFactory */
-        $connectionFactory = $this->getService($container, ConnectionFactory::class, $requestedName);
+        $connectionFactory = $this->buildService(
+            $container,
+            ConnectionFactory::class,
+            $options['connection_factory_options'] ?? [],
+            $requestedName
+        );
 
         /** @var Connection[] $connections */
         $connections = [];

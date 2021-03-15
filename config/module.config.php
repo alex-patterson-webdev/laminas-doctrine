@@ -63,6 +63,7 @@ use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory as Configurat
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
@@ -74,6 +75,7 @@ use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
@@ -82,8 +84,8 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'arp' => [
-        'services' => [
-            QueryService::class   => [
+        'services'      => [
+            QueryService::class => [
                 'entity_manager' => 'orm_default',
             ],
 
@@ -96,8 +98,21 @@ return [
 
                 ],
             ],
+
+            ConnectionManager::class => [
+                'connection_factory'         => ConnectionFactoryInterface::class,
+                'connection_factory_options' => [
+                    'default_options' => [
+                        'params' => [
+                            'driverClass'  => Driver::class,
+                            'wrapperClass' => null,
+                            'pdo'          => null,
+                        ],
+                    ],
+                ],
+            ],
         ],
-        'hydrators' => [
+        'hydrators'     => [
             EntityHydrator::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -117,7 +132,7 @@ return [
         ],
         'factories' => [
             // Config
-            DoctrineConfig::class => DoctrineConfigFactory::class,
+            DoctrineConfig::class                => DoctrineConfigFactory::class,
 
             // Services
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
@@ -148,22 +163,22 @@ return [
             ORMPurger::class                  => OrmPurgerFactory::class,
 
             // Repository Event Listeners
-            'EntityEventDispatcher' => EventDispatcherFactory::class,
-            EntityListenerProvider::class => EntityListenerProviderFactory::class,
+            'EntityEventDispatcher'           => EventDispatcherFactory::class,
+            EntityListenerProvider::class     => EntityListenerProviderFactory::class,
 
             EntityValidationListener::class => EntityValidationListenerFactory::class,
-            TransactionListener::class => TransactionListenerFactory::class,
-            ErrorListener::class => ErrorListenerFactory::class,
-            DateTimeListener::class => DateTimeListenerFactory::class,
-            DateCreatedListener::class => DateCreatedListenerFactory::class,
-            DateUpdatedListener::class => DateUpdatedListenerFactory::class,
-            DateDeletedListener::class => DateDeletedListenerFactory::class,
-            CascadeSaveListener::class => CascadeSaveListenerFactory::class,
-            PersistListener::class => PersistListenerFactory::class,
-            FlushListener::class => FlushListenerFactory::class,
-            ClearListener::class => ClearListenerFactory::class,
-            SoftDeleteListener::class => SoftDeleteListenerFactory::class,
-            HardDeleteListener::class => HardDeleteListenerFactory::class,
+            TransactionListener::class      => TransactionListenerFactory::class,
+            ErrorListener::class            => ErrorListenerFactory::class,
+            DateTimeListener::class         => DateTimeListenerFactory::class,
+            DateCreatedListener::class      => DateCreatedListenerFactory::class,
+            DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
+            DateDeletedListener::class      => DateDeletedListenerFactory::class,
+            CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
+            PersistListener::class          => PersistListenerFactory::class,
+            FlushListener::class            => FlushListenerFactory::class,
+            ClearListener::class            => ClearListenerFactory::class,
+            SoftDeleteListener::class       => SoftDeleteListenerFactory::class,
+            HardDeleteListener::class       => HardDeleteListenerFactory::class,
 
         ],
     ],

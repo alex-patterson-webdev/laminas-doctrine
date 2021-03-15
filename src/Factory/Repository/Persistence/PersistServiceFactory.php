@@ -6,7 +6,6 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Persistence;
 
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
-use Arp\EventDispatcher\EventDispatcher;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Interop\Container\ContainerInterface;
