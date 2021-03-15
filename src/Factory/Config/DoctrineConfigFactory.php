@@ -28,7 +28,7 @@ final class DoctrineConfigFactory extends AbstractFactory
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): DoctrineConfig
     {
         $options = $options ?? $this->getApplicationOptions($container, 'doctrine');
 

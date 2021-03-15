@@ -7,9 +7,8 @@ namespace Arp\LaminasDoctrine\Factory\Console\Helper;
 use Arp\LaminasDoctrine\Console\Helper\ConnectionHelper;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
-use Arp\LaminasDoctrine\Service\ConnectionManager;
-use Arp\LaminasDoctrine\Service\ConnectionManagerInterface;
-use Arp\LaminasDoctrine\Service\Exception\ConnectionManagerException;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
+use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
 use Interop\Container\ContainerInterface;
@@ -99,7 +98,7 @@ final class ConnectionHelperFactory extends AbstractFactory
             $connectionName = $connection;
 
             /** @var ConnectionManagerInterface $connectionManager */
-            $connectionManager = $this->getService($container, ConnectionManager::class, $serviceName);
+            $connectionManager = $this->getService($container, ConnectionManagerInterface::class, $serviceName);
 
             try {
                 $connection = $connectionManager->getConnection($connection);

@@ -29,7 +29,7 @@ final class ObjectManagerOptionFactory extends AbstractFactory
      *
      * @noinspection PhpMissingParamTypeInspection
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ObjectManagerOption
     {
         return new ObjectManagerOption(
             'object-manager',
