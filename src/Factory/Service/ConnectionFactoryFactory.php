@@ -9,6 +9,7 @@ use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
 use Arp\LaminasFactory\AbstractFactory;
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
@@ -19,6 +20,19 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
  */
 final class ConnectionFactoryFactory extends AbstractFactory
 {
+    /**
+     * @var array
+     */
+    private array $defaultConnectionConfig = [
+        'default_options' => [
+            'params' => [
+                'driverClass'  => Driver::class,
+                'wrapperClass' => null,
+                'pdo'          => null,
+            ],
+        ],
+    ];
+
     /**
      * @noinspection PhpMissingParamTypeInspection
      *
@@ -60,10 +74,14 @@ final class ConnectionFactoryFactory extends AbstractFactory
             $requestedName
         );
 
-        return new ConnectionFactory(
-            $configurationManager,
-            $connectionFactory,
-            $this->factoryOptions['default_options'] ?? []
-        );
+        return new ConnectionFactory($configurationManager, $connectionFactory, $this->defaultConnectionConfig);
+    }
+
+    /**
+     * @param array $defaultConnectionConfig
+     */
+    public function setDefaultConnectionConfig(array $defaultConnectionConfig): void
+    {
+        $this->defaultConnectionConfig = $defaultConnectionConfig;
     }
 }

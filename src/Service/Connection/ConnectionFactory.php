@@ -36,7 +36,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * @param ConfigurationManagerInterface $configurationManager
      * @param callable|null                 $factory
-     * @param array $defaultConfig
+     * @param array                         $defaultConfig
      *
      * @noinspection ProperNullCoalescingOperatorUsageInspection [$this, 'doCreate'] is of type callable
      */
@@ -70,7 +70,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
                 $configuration = $this->configurationManager->getConfiguration($configuration);
             }
 
-            return call_user_func($this->factoryWrapper, $config['params'] ?? [], $configuration, $eventManager);
+            return call_user_func($this->factoryWrapper, $config, $configuration, $eventManager);
         } catch (\Exception $e) {
             throw new ConnectionFactoryException(
                 sprintf('Failed to create new connection: %s', $e->getMessage()),
@@ -83,9 +83,9 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * Default factory creation callable
      *
-     * @param array             $params
-     * @param Configuration     $configuration
-     * @param EventManager|null $eventManager
+     * @param array              $config
+     * @param Configuration|null $configuration
+     * @param EventManager|null  $eventManager
      *
      * @return Connection
      *
@@ -93,10 +93,10 @@ final class ConnectionFactory implements ConnectionFactoryInterface
      * @noinspection PhpUnusedPrivateMethodInspection
      */
     private function doCreate(
-        array $params,
-        Configuration $configuration,
+        array $config,
+        ?Configuration $configuration,
         ?EventManager $eventManager = null
     ): Connection {
-        return DriverManager::getConnection($params, $configuration, $eventManager);
+        return DriverManager::getConnection($config, $configuration, $eventManager);
     }
 }

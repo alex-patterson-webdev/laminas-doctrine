@@ -99,17 +99,8 @@ return [
                 ],
             ],
 
-            ConnectionManager::class => [
-                'connection_factory'         => ConnectionFactoryInterface::class,
-                'connection_factory_options' => [
-                    'default_options' => [
-                        'params' => [
-                            'driverClass'  => Driver::class,
-                            'wrapperClass' => null,
-                            'pdo'          => null,
-                        ],
-                    ],
-                ],
+            ConnectionManagerInterface::class => [
+                'connection_factory' => ConnectionFactoryInterface::class,
             ],
         ],
         'hydrators'     => [
@@ -129,10 +120,11 @@ return [
 
             ConfigurationManager::class => ConfigurationManagerInterface::class,
             ConnectionManager::class    => ConnectionManagerInterface::class,
+            ConnectionFactory::class    => ConnectionFactoryInterface::class,
         ],
         'factories' => [
             // Config
-            DoctrineConfig::class                => DoctrineConfigFactory::class,
+            DoctrineConfig::class => DoctrineConfigFactory::class,
 
             // Services
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
@@ -140,7 +132,7 @@ return [
             Configuration::class                 => ConfigurationFactory::class,
 
             ConnectionManagerInterface::class => ConnectionManagerFactory::class,
-            ConnectionFactory::class          => ConnectionFactoryFactory::class,
+            ConnectionFactoryInterface::class => ConnectionFactoryFactory::class,
             EntityManagerProvider::class      => EntityManagerProviderFactory::class,
             EntityManagerContainer::class     => EntityManagerContainerFactory::class,
             RepositoryManager::class          => RepositoryManagerFactory::class,

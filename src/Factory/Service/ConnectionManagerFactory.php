@@ -6,6 +6,7 @@ namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
@@ -38,16 +39,21 @@ final class ConnectionManagerFactory extends AbstractFactory
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
-        /** @var ConnectionFactory $connectionFactory */
-        $connectionFactory = $this->buildService(
+        /** @var ConnectionFactoryInterface|string $connectionFactory */
+        $connectionFactory = $this->getService(
             $container,
-            ConnectionFactory::class,
-            $options['connection_factory_options'] ?? [],
+            $options['factory'] ?? ConnectionFactoryInterface::class,
             $requestedName
         );
 
-        /** @var Connection[] $connections */
         $connections = [];
+        if (!empty($options['connections'])) {
+            foreach ($options['connections'] as $name => $connection) {
+                if ($connection instanceof Connection) {
+                    $connections[$name] = $connection;
+                }
+            }
+        }
 
         return new ConnectionManager($doctrineConfig, $connectionFactory, $connections);
     }
