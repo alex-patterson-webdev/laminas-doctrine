@@ -24,13 +24,8 @@ final class ConnectionFactoryFactory extends AbstractFactory
      * @var array
      */
     private array $defaultConnectionConfig = [
-        'default_options' => [
-            'params' => [
-                'driverClass'  => Driver::class,
-                'wrapperClass' => null,
-                'pdo'          => null,
-            ],
-        ],
+        'driverClass'  => Driver::class,
+        'driverOptions' => null,
     ];
 
     /**
