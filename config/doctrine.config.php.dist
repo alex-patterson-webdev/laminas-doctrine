@@ -11,20 +11,18 @@ return [
         ],
         'entitymanager' => [
             'orm_default' => [
-                'connection'    => 'development',
                 'configuration' => 'orm_default',
+                'connection'    => 'development',
             ],
         ],
         'connection' => [
             'development' => [
                 'driverClass' => MySQLDriver::class,
-                'params'      => [
-                    'host'     => 'localhost',
-                    'port'     => '3306',
-                    'user'     => 'dashboard.local',
-                    'password' => '2XLAw&OuBja@Y40ml',
-                    'dbname'   => 'dashboard',
-                ],
+                'host'     => 'localhost',
+                'port'     => '3306',
+                'user'     => 'username',
+                'password' => '',
+                'dbname'   => 'database',
             ],
         ],
     ],

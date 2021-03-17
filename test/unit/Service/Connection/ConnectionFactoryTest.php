@@ -121,7 +121,7 @@ final class ConnectionFactoryTest extends TestCase
             Assert::assertSame($eventManagerArg, $eventManager);
             Assert::assertSame(
                 $params,
-                array_replace_recursive($defaultConfig['params'] ?? [], $config['params'] ?? [])
+                array_replace_recursive($defaultConfig ?? [], $config ?? [])
             );
             return $connection;
         };
@@ -155,10 +155,11 @@ final class ConnectionFactoryTest extends TestCase
             [
                 [],
                 [
-                    'foo'    => 'bar',
-                    'params' => [
-                        'test' => 123,
-                    ],
+                    'host'     => 'localhost',
+                    'port'     => 3306,
+                    'user'     => 'username',
+                    'password' => '',
+                    'dbname'   => 'database',
                 ],
                 $configuration
             ],
@@ -173,15 +174,15 @@ final class ConnectionFactoryTest extends TestCase
             // Config & Configuration
             [
                 [
-                    'params' => [
-                        'hello' => 123,
-                    ],
+                    'host'     => 'localhost',
+                    'port'     => 3306,
+                    'user'     => 'default_username'
                 ],
                 [
-                    'foo'    => 'bar',
-                    'params' => [
-                        'test' => 123,
-                    ],
+                    'host'     => 'new_replaced_hostname',
+                    'user'     => 'username',
+                    'password' => '234_^&%$sdfg&*(',
+                    'dbname'   => 'database',
                 ],
                 $configuration
             ],
@@ -189,16 +190,13 @@ final class ConnectionFactoryTest extends TestCase
             // Config, Configuration, EventManager
             [
                 [
-                    'params' => [
-                        'test' => 999,
-                    ],
+                    'port' => 999,
                 ],
                 [
                     'bar'    => 'foo',
-                    'params' => [
-                        'database' => 'hello',
-                        'user' => 'fred',
-                    ],
+                    'database' => 'hello',
+                    'port' => 1234,
+                    'user' => 'fred',
                 ],
                 $configuration,
                 $eventManager
