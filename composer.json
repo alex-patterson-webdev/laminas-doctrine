@@ -3,6 +3,7 @@
   "description": "A Doctrine integration module for Laminas Applications",
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "license": "MIT",
   "authors": [
     {
       "name": "Alex Patterson",
@@ -52,7 +53,7 @@
     "test:phpcs": "php vendor/bin/phpcs --standard=phpcs.xml --colors src/",
     "test:phpcbf-dry-run": "php vendor/bin/php-cs-fixer fix src/ --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose --rules=@PSR12",
     "test:phpcbf-fix": "php vendor/bin/php-cs-fixer fix src/ --diff-format=udiff --show-progress=dots --using-cache=no --verbose --rules=@PSR12",
-    "test:phpstan": "php vendor/bin/phpstan analyse src --level=5",
+    "test:phpstan": "php vendor/bin/phpstan analyse src --level=6",
     "test:phpstan-dev": "php vendor/bin/phpstan analyse src --level=8",
     "test:phpunit": [
       "@putenv XDEBUG_MODE=coverage",
