@@ -12,5 +12,4 @@ use Arp\EventDispatcher\Listener\ListenerProvider;
  */
 final class EntityListenerProvider extends ListenerProvider
 {
-
 }

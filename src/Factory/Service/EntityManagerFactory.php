@@ -27,9 +27,9 @@ final class EntityManagerFactory extends AbstractFactory
     /**
      * @noinspection PhpMissingParamTypeInspection
      *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return EntityManager
      *
@@ -78,9 +78,9 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param Configuration|string|array        $configuration
-     * @param string                            $serviceName
+     * @param ContainerInterface|ServiceManager               $container
+     * @param Configuration|string|array<string, mixed>|mixed $configuration
+     * @param string                                          $serviceName
      *
      * @return Configuration
      *
@@ -159,9 +159,9 @@ final class EntityManagerFactory extends AbstractFactory
     /**
      * Resolve the required Doctrine Connection instance to use from the provided $connection.
      *
-     * @param ContainerInterface      $container
-     * @param string|array|Connection $connection
-     * @param string                  $serviceName
+     * @param ContainerInterface                           $container
+     * @param string|array<string, mixed>|Connection|mixed $connection
+     * @param string                                       $serviceName
      *
      * @return Connection
      *

@@ -10,5 +10,4 @@ namespace Arp\LaminasDoctrine\Service\Connection\Exception;
  */
 class ConnectionFactoryException extends \Exception
 {
-
 }

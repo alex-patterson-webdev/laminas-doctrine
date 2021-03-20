@@ -6,9 +6,9 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -19,19 +19,20 @@ use Psr\Log\NullLogger;
 final class SoftDeleteListenerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return SoftDeleteListener
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): SoftDeleteListener
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): SoftDeleteListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         $logger = $options['logger'] ?? NullLogger::class;

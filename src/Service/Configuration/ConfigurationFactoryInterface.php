@@ -14,7 +14,7 @@ use Doctrine\ORM\Configuration;
 interface ConfigurationFactoryInterface
 {
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      *
      * @return Configuration
      *

@@ -51,8 +51,8 @@ final class HydratorStrategy extends AbstractHydratorStrategy
     }
 
     /**
-     * @param mixed      $value
-     * @param array|null $data
+     * @param mixed             $value
+     * @param array<mixed>|null $data
      *
      * @return mixed|object|string|null
      *

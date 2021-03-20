@@ -11,10 +11,10 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Repository\RepositoryFactory;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -23,7 +23,7 @@ use Laminas\ServiceManager\ServiceManager;
 final class ConfigurationFactory extends AbstractFactory
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $defaultOptions = [
         'repository_factory' => DefaultRepositoryFactory::class,
@@ -35,19 +35,20 @@ final class ConfigurationFactory extends AbstractFactory
     ];
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $serviceName
-     * @param array|null         $options
+     * @param ServiceLocatorInterface   $container
+     * @param string                    $serviceName
+     * @param array<string, mixed>|null $options
      *
      * @return Configuration
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $serviceName, array $options = null): Configuration
-    {
+    public function __invoke(
+        ServiceLocatorInterface $container,
+        string $serviceName,
+        array $options = null
+    ): Configuration {
         $options = $this->getOptions($container, $serviceName, $options);
 
         $configuration = new Configuration();
@@ -80,7 +81,9 @@ final class ConfigurationFactory extends AbstractFactory
         }
 
         $configuration->setEntityNamespaces($options['entity_namespaces'] ?? []);
-        $configuration->setMetadataDriverImpl($this->getMappingDriver($container, $options['driver'], $serviceName));
+        $configuration->setMetadataDriverImpl(
+            $this->getMappingDriver($container, $options['driver'], $serviceName)
+        );
 
         $configuration->setProxyDir($options['proxy_dir']);
         $configuration->setAutoGenerateProxyClasses($options['generate_proxies']);
@@ -106,8 +109,8 @@ final class ConfigurationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param string|array|MappingDriver        $driver
+     * @param ServiceLocatorInterface           $container
+     * @param string|array<mixed>|MappingDriver $driver
      * @param string                            $serviceName
      *
      * @return MappingDriver
@@ -115,7 +118,7 @@ final class ConfigurationFactory extends AbstractFactory
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    private function getMappingDriver(ContainerInterface $container, $driver, string $serviceName): MappingDriver
+    private function getMappingDriver(ServiceLocatorInterface $container, $driver, string $serviceName): MappingDriver
     {
         if (is_string($driver)) {
             /** @var DoctrineConfig $doctrineConfig */
@@ -148,21 +151,22 @@ final class ConfigurationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param string|array|Cache                $cache
-     * @param string                            $serviceName
+     * @param ServiceLocatorInterface   $container
+     * @param string|array<mixed>|Cache $cache
+     * @param string                    $serviceName
      *
      * @return Cache
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    private function getCache(ContainerInterface $container, $cache, string $serviceName): Cache
+    private function getCache(ServiceLocatorInterface $container, $cache, string $serviceName): Cache
     {
         if (is_string($cache)) {
             /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $container->get(DoctrineConfig::class);
+            $doctrineConfig = $this->getService($container, DoctrineConfig::class, $serviceName);
 
-            if (!$doctrineConfig->hasCacheConfig($cache)) {
+            if (!$doctrineConfig instanceof DoctrineConfig || !$doctrineConfig->hasCacheConfig($cache)) {
                 throw new ServiceNotCreatedException(
                     sprintf(
                         'The cache configuration \'%s\' could not be found for service \'%s\'',
@@ -229,19 +233,20 @@ final class ConfigurationFactory extends AbstractFactory
     /**
      * @param ContainerInterface $container
      * @param string             $serviceName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
-     * @return array
+     * @return array<mixed>
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getOptions(ContainerInterface $container, string $serviceName, ?array $options): array
     {
         if (null === $options) {
             /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $container->get(DoctrineConfig::class);
+            $doctrineConfig = $this->getService($container, DoctrineConfig::class, $serviceName);
 
-            if (!$doctrineConfig->hasConfigurationConfig($serviceName)) {
+            if (!$doctrineConfig instanceof DoctrineConfig || !$doctrineConfig->hasConfigurationConfig($serviceName)) {
                 throw new ServiceNotCreatedException(
                     sprintf('Unable to find configuration for \'%s\'', $serviceName)
                 );

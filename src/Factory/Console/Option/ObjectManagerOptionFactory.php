@@ -6,7 +6,8 @@ namespace Arp\LaminasDoctrine\Factory\Console\Option;
 
 use Arp\LaminasDoctrine\Console\Option\ObjectManagerOption;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -21,22 +22,33 @@ final class ObjectManagerOptionFactory extends AbstractFactory
     private ?string $defaultObjectManagerName = null;
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ObjectManagerOption
      *
-     * @noinspection PhpMissingParamTypeInspection
+     * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ObjectManagerOption
-    {
-        return new ObjectManagerOption(
-            'object-manager',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'The object manager that should be used',
-            $this->defaultObjectManagerName
-        );
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ObjectManagerOption {
+        try {
+            return new ObjectManagerOption(
+                'object-manager',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The object manager that should be used',
+                $this->defaultObjectManagerName
+            );
+        } catch (\Exception $e) {
+            throw new ServiceNotCreatedException(
+                sprintf('Failed to create object manager options \'%s\': %s', $requestedName, $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }

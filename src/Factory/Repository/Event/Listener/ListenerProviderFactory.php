@@ -10,9 +10,9 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
@@ -27,12 +27,12 @@ class ListenerProviderFactory extends AbstractFactory
     private string $defaultClassName = ListenerProvider::class;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected array $defaultListenerConfig = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected array $defaultAggregateListenerConfig = [];
 
@@ -41,7 +41,7 @@ class ListenerProviderFactory extends AbstractFactory
      *
      * @param ContainerInterface $container
      * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
      * @return ListenerProviderInterface
      *
@@ -104,10 +104,10 @@ class ListenerProviderFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface        $container
-     * @param AddListenerAwareInterface $listenerProvider
-     * @param callable[][]              $listenerConfig
-     * @param string                    $requestedName
+     * @param ContainerInterface                $container
+     * @param AddListenerAwareInterface         $listenerProvider
+     * @param array<string,callable|string>[][] $listenerConfig
+     * @param string                            $requestedName
      *
      * @throws EventListenerException
      * @throws ServiceNotCreatedException
@@ -145,10 +145,10 @@ class ListenerProviderFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface        $container
-     * @param AddListenerAwareInterface $listenerProvider
-     * @param array                     $listenerConfig
-     * @param string                    $requestedName
+     * @param ContainerInterface                             $container
+     * @param AddListenerAwareInterface                      $listenerProvider
+     * @param array<string|AggregateListenerInterface|mixed> $listenerConfig
+     * @param string                                         $requestedName
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

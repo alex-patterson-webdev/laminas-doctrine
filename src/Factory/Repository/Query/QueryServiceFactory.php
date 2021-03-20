@@ -8,9 +8,9 @@ use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 
 /**
@@ -22,11 +22,9 @@ class QueryServiceFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return QueryServiceInterface
      *
@@ -35,7 +33,7 @@ class QueryServiceFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): QueryServiceInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'query_services');

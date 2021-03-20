@@ -39,8 +39,8 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
     }
 
     /**
-     * @param string $entityName
-     * @param array  $options
+     * @param string               $entityName
+     * @param array<string, mixed> $options
      *
      * @return EntityRepositoryInterface
      *

@@ -38,7 +38,7 @@ interface EntityManagerProviderInterface
     /**
      * Set a collection of entity managers
      *
-     * @param array $entityManagers
+     * @param array<string, EntityManagerInterface> $entityManagers
      */
     public function setEntityManagers(array $entityManagers): void;
 

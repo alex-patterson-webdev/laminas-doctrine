@@ -11,8 +11,9 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -23,13 +24,14 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
     /**
      * @noinspection PhpMissingParamTypeInspection
      *
-     * @param ContainerInterface $container
-     * @param string             $serviceName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $serviceName
+     * @param array<string, mixed>|null $options
      *
      * @return MappingDriver
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     public function __invoke(ContainerInterface $container, $serviceName, array $options = null): MappingDriver
     {
@@ -69,8 +71,9 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
      * @return Reader
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    private function getReader(ContainerInterface $container, string $reader, string $serviceName): Reader
+    private function getReader(ContainerInterface $container, $reader, string $serviceName): Reader
     {
         if (is_string($reader)) {
             $reader = $this->getService($container, $reader, $serviceName);

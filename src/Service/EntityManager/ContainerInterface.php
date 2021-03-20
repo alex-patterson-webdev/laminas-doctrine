@@ -14,8 +14,10 @@ use Laminas\ServiceManager\PluginManagerInterface;
 interface ContainerInterface extends PluginManagerInterface
 {
     /**
-     * @param string       $name
-     * @param array|object $service
+     * @param string $name
+     * @param mixed  $service
+     *
+     * @return mixed
      *
      * @throws ContainerModificationsNotAllowedException
      * @noinspection PhpMissingParamTypeInspection
@@ -27,6 +29,8 @@ interface ContainerInterface extends PluginManagerInterface
      *
      * @param string          $name
      * @param string|callable $factory
+     *
+     * @return mixed
      *
      * @throws ContainerModificationsNotAllowedException
      * @noinspection PhpMissingParamTypeInspection

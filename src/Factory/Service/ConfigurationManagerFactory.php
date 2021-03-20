@@ -20,19 +20,20 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class ConfigurationManagerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ConfigurationManager
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConfigurationManager
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConfigurationManager {
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 

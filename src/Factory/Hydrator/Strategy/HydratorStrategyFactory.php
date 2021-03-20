@@ -8,12 +8,12 @@ use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\LaminasDoctrine\Hydrator\Strategy\HydratorStrategy;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\Hydrator\HydratorPluginManager;
 use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 use Laminas\Hydrator\Strategy\HydratorStrategy as LaminasHydratorStrategy;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * Create a hydrator strategy instance based on configuration options
@@ -24,11 +24,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class HydratorStrategyFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return HydratorStrategy
      *
@@ -36,8 +34,11 @@ final class HydratorStrategyFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      * @throws InvalidArgumentException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): HydratorStrategy
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): HydratorStrategy {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         $entityName = $options['entity_name'] ?? null;

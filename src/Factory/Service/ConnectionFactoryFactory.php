@@ -21,27 +21,28 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class ConnectionFactoryFactory extends AbstractFactory
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $defaultConnectionConfig = [
-        'driverClass'  => Driver::class,
+        'driverClass'   => Driver::class,
         'driverOptions' => null,
     ];
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ConnectionFactory
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConnectionFactory
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConnectionFactory {
         if (null === $options) {
             /** @var DoctrineConfig $doctrineConfig */
             $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
@@ -73,7 +74,7 @@ final class ConnectionFactoryFactory extends AbstractFactory
     }
 
     /**
-     * @param array $defaultConnectionConfig
+     * @param array<mixed> $defaultConnectionConfig
      */
     public function setDefaultConnectionConfig(array $defaultConnectionConfig): void
     {

@@ -46,7 +46,7 @@ final class RepositoryFactory implements RepositoryFactoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      *
-     * @return EntityRepositoryInterface|ObjectRepository
+     * @return EntityRepositoryInterface|ObjectRepository<object>
      *
      * @throws \Throwable
      */

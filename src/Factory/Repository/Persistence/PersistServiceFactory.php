@@ -8,10 +8,9 @@ use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 
@@ -24,19 +23,20 @@ final class PersistServiceFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ServiceLocatorInterface $container
+     * @param string                  $requestedName
+     * @param array<mixed>|null       $options
      *
      * @return PersistServiceInterface
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {
+    public function __invoke(
+        ServiceLocatorInterface $container,
+        string $requestedName,
+        array $options = null
+    ): PersistServiceInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         $entityName = $options['entity_name'] ?? null;
@@ -68,9 +68,9 @@ final class PersistServiceFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager     $container
-     * @param EventDispatcherInterface|string|array $eventDispatcher
-     * @param string                                $serviceName
+     * @param ServiceLocatorInterface                      $container
+     * @param EventDispatcherInterface|string|array<mixed> $eventDispatcher
+     * @param string                                       $serviceName
      *
      * @return EventDispatcherInterface
      *
@@ -78,7 +78,7 @@ final class PersistServiceFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      */
     private function getEventDispatcher(
-        ContainerInterface $container,
+        ServiceLocatorInterface $container,
         $eventDispatcher,
         string $serviceName
     ): EventDispatcherInterface {

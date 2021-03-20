@@ -9,10 +9,9 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -21,24 +20,26 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 final class ConnectionManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface|ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array|null                                 $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ConnectionManager
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
-     * @noinspection PhpMissingParamTypeInspection
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConnectionManager
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConnectionManager {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
-        /** @var ConnectionFactoryInterface|string $connectionFactory */
+        /** @var ConnectionFactoryInterface $connectionFactory */
         $connectionFactory = $this->getService(
             $container,
             $options['factory'] ?? ConnectionFactoryInterface::class,

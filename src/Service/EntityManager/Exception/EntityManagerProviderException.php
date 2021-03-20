@@ -10,5 +10,4 @@ namespace Arp\LaminasDoctrine\Service\EntityManager\Exception;
  */
 class EntityManagerProviderException extends \Exception
 {
-
 }

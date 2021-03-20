@@ -11,10 +11,9 @@ use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -25,11 +24,9 @@ use Psr\Log\NullLogger;
 final class RepositoryFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface|ServiceManager $container
-     * @param string                            $requestedName
-     * @param array|null                        $options
+     * @param ServiceLocatorInterface   $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return EntityRepositoryInterface
      *
@@ -37,8 +34,8 @@ final class RepositoryFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      */
     public function __invoke(
-        ContainerInterface $container,
-        $requestedName,
+        ServiceLocatorInterface $container,
+        string $requestedName,
         array $options = null
     ): EntityRepositoryInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'repositories');
@@ -79,8 +76,8 @@ final class RepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param string $entityName
-     * @param array  $options
+     * @param string               $entityName
+     * @param array<string, mixed> $options
      *
      * @return string
      */
@@ -101,17 +98,18 @@ final class RepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceManager $container
-     * @param string         $entityName
-     * @param array          $options
-     * @param string         $serviceName
+     * @param ServiceLocatorInterface $container
+     * @param string                  $entityName
+     * @param array<string, mixed>    $options
+     * @param string                  $serviceName
      *
      * @return PersistServiceInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getPersistService(
-        ServiceManager $container,
+        ServiceLocatorInterface $container,
         string $entityName,
         array $options,
         string $serviceName
@@ -131,17 +129,18 @@ final class RepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceManager $container
-     * @param string         $entityName
-     * @param array          $options
-     * @param string         $serviceName
+     * @param ServiceLocatorInterface $container
+     * @param string                  $entityName
+     * @param array<string, mixed>    $options
+     * @param string                  $serviceName
      *
      * @return QueryServiceInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getQueryService(
-        ServiceManager $container,
+        ServiceLocatorInterface $container,
         string $entityName,
         array $options,
         string $serviceName

@@ -10,9 +10,9 @@ use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProviderInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -21,11 +21,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class EntityManagerProviderFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return EntityManagerProviderInterface
      *
@@ -34,7 +32,7 @@ final class EntityManagerProviderFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): EntityManagerProviderInterface {
         /** @var DoctrineConfig $doctrineConfig */

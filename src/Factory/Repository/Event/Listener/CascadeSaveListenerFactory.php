@@ -7,9 +7,9 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 use Arp\DoctrineEntityRepository\Persistence\CascadeSaveService;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeSaveListener;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -20,19 +20,20 @@ use Psr\Log\NullLogger;
 final class CascadeSaveListenerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return CascadeSaveListener
      *
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): CascadeSaveListener
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): CascadeSaveListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         /** @var CascadeSaveService|string $cascadeSaveService */

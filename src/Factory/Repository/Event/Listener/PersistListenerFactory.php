@@ -6,9 +6,9 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\PersistListener;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 
 /**
@@ -23,19 +23,20 @@ final class PersistListenerFactory extends AbstractFactory
     private string $defaultClassName = PersistListener::class;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return PersistListener
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): PersistListener
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): PersistListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         $className = $options['class_name'] ?? $this->defaultClassName;

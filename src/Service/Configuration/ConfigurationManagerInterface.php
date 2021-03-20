@@ -21,8 +21,8 @@ interface ConfigurationManagerInterface
     public function hasConfiguration(string $name): bool;
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function addConfigurationConfig(string $name, array $config): void;
 
@@ -36,7 +36,7 @@ interface ConfigurationManagerInterface
     public function getConfiguration(string $name): Configuration;
 
     /**
-     * @param iterable $configurations
+     * @param iterable<string, Configuration> $configurations
      */
     public function setConfigurations(iterable $configurations): void;
 

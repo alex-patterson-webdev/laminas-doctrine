@@ -10,5 +10,4 @@ namespace Arp\LaminasDoctrine\Service\Configuration\Exception;
  */
 class ConfigurationManagerException extends \Exception
 {
-
 }

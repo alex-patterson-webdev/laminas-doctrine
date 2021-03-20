@@ -12,5 +12,4 @@ use Arp\LaminasSymfonyConsole\Service\Application;
  */
 final class DoctrineApplication extends Application
 {
-
 }

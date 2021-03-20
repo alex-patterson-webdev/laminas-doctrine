@@ -24,19 +24,19 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     private ConfigurationManagerInterface $configurationManager;
 
     /**
-     * @var \Closure|null
+     * @var \Closure
      */
-    private ?\Closure $factoryWrapper;
+    private \Closure $factoryWrapper;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private array $defaultConfig;
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
      * @param callable|null                 $factory
-     * @param array                         $defaultConfig
+     * @param array<mixed>                  $defaultConfig
      *
      * @noinspection ProperNullCoalescingOperatorUsageInspection [$this, 'doCreate'] is of type callable
      */
@@ -53,7 +53,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * Create a new connection from the provided $config
      *
-     * @param array                     $config
+     * @param array<mixed>              $config
      * @param Configuration|string|null $configuration
      * @param EventManager|null         $eventManager
      *
@@ -70,7 +70,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
                 $configuration = $this->configurationManager->getConfiguration($configuration);
             }
 
-            return call_user_func($this->factoryWrapper, $config, $configuration, $eventManager);
+            return $this->factoryWrapper->call($this, $config, $configuration, $eventManager);
         } catch (\Exception $e) {
             throw new ConnectionFactoryException(
                 sprintf('Failed to create new connection: %s', $e->getMessage()),
@@ -83,7 +83,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * Default factory creation callable
      *
-     * @param array              $config
+     * @param array<mixed>       $config
      * @param Configuration|null $configuration
      * @param EventManager|null  $eventManager
      *

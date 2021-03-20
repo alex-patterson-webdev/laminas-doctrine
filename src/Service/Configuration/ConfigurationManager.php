@@ -73,7 +73,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param iterable $configurations
+     * @param iterable<string, Configuration|array> $configurations
      */
     public function setConfigurations(iterable $configurations): void
     {
@@ -98,8 +98,8 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function addConfigurationConfig(string $name, array $config): void
     {
@@ -107,8 +107,8 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      *
      * @return Configuration
      *

@@ -8,10 +8,10 @@ use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,18 +20,16 @@ use Psr\Container\ContainerExceptionInterface;
 final class LoaderFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return Loader
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): Loader
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): Loader
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
@@ -63,11 +61,11 @@ final class LoaderFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param array              $fixtures
-     * @param string             $requestedName
+     * @param ContainerInterface             $container
+     * @param array<string|FixtureInterface> $fixtures
+     * @param string                         $requestedName
      *
-     * @return array
+     * @return array<FixtureInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

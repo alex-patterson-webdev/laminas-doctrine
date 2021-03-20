@@ -41,8 +41,8 @@ interface ConnectionManagerInterface
     public function setConnection(string $name, Connection $connection): void;
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string       $name
+     * @param array<mixed> $config
      */
     public function addConnectionConfig(string $name, array $config): void;
 }

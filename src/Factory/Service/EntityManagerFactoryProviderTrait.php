@@ -18,9 +18,9 @@ use Psr\Container\ContainerInterface;
 trait EntityManagerFactoryProviderTrait
 {
     /**
-     * @param ContainerInterface            $container
-     * @param string|EntityManagerInterface $name
-     * @param string                        $serviceName
+     * @param ContainerInterface                  $container
+     * @param string|EntityManagerInterface|mixed $name
+     * @param string                              $serviceName
      *
      * @return EntityManagerInterface
      *
@@ -57,7 +57,7 @@ trait EntityManagerFactoryProviderTrait
                 sprintf(
                     'The entity manager must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
                     EntityManagerInterface::class,
-                    (is_object($entityManager) ? get_class($entityManager) : gettype($entityManager)),
+                    is_object($entityManager) ? get_class($entityManager) : gettype($entityManager),
                     $serviceName
                 )
             );

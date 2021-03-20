@@ -33,7 +33,7 @@ final class ConfigurationFactory implements ConfigurationFactoryInterface
     }
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      *
      * @return Configuration
      *

@@ -79,8 +79,8 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string       $name
+     * @param array<mixed> $config
      *
      * @return Connection
      *
@@ -100,7 +100,7 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param Connection[]|array[] $connections
+     * @param array<Connection|array> $connections
      */
     public function setConnections(array $connections): void
     {
@@ -125,8 +125,8 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string       $name
+     * @param array<mixed> $config
      */
     public function addConnectionConfig(string $name, array $config): void
     {
