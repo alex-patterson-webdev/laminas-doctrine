@@ -80,7 +80,7 @@ final class EntityHydrator extends DoctrineObject
 
         $collection = array_filter(
             $collection,
-            static fn($item) => null !== $item
+            static fn ($item) => null !== $item
         );
 
         /** @var AbstractCollectionStrategy $collectionStrategy */

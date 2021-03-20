@@ -206,7 +206,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
                 : $entity;
         }
 
-        return array_filter($collection, static fn($item) => null !== $item);
+        return array_filter($collection, static fn ($item) => null !== $item);
     }
 
     /**

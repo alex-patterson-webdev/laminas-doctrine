@@ -70,7 +70,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
                 $configuration = $this->configurationManager->getConfiguration($configuration);
             }
 
-            return $this->factoryWrapper->call($this, $config, $configuration, $eventManager);
+            return call_user_func($this->factoryWrapper, $config, $configuration, $eventManager);
         } catch (\Exception $e) {
             throw new ConnectionFactoryException(
                 sprintf('Failed to create new connection: %s', $e->getMessage()),

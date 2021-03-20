@@ -12,5 +12,4 @@ use Laminas\Hydrator\Strategy\Exception\ExceptionInterface;
  */
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
-
 }
