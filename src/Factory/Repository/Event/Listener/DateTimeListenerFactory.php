@@ -41,15 +41,9 @@ final class DateTimeListenerFactory extends AbstractFactory
         $dateDeletedListener = $options['delete_listener'] ?? DateDeletedListener::class;
 
         return new DateTimeListener(
-            is_string($dateCreatedListener)
-                ? $this->getService($container, $dateCreatedListener, $requestedName)
-                : $dateCreatedListener,
-            is_string($dateUpdatedListener)
-                ? $this->getService($container, $dateUpdatedListener, $requestedName)
-                : $dateUpdatedListener,
-            is_string($dateDeletedListener)
-                ? $this->getService($container, $dateDeletedListener, $requestedName)
-                : $dateDeletedListener
+            $this->getService($container, $dateCreatedListener, $requestedName),
+            $this->getService($container, $dateUpdatedListener, $requestedName),
+            $this->getService($container, $dateDeletedListener, $requestedName)
         );
     }
 }

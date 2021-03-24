@@ -8,7 +8,7 @@ use Arp\DoctrineEntityRepository\Constant\EntityEventName;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ClearListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\EntityValidationListener;
-use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ErrorListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ExceptionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\FlushListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\HardDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\PersistListener;
@@ -27,7 +27,7 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
     protected array $defaultAggregateListenerConfig = [
         EntityValidationListener::class,
         TransactionListener::class,
-        ErrorListener::class,
+        ExceptionListener::class,
         DateTimeListener::class,
     ];
 

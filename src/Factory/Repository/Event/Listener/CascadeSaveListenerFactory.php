@@ -10,8 +10,6 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -42,12 +40,6 @@ final class CascadeSaveListenerFactory extends AbstractFactory
             $cascadeSaveService = $this->getService($container, $cascadeSaveService, $requestedName);
         }
 
-        /** @var LoggerInterface|string $logger */
-        $logger = $options['logger'] ?? NullLogger::class;
-        if (is_string($logger)) {
-            $logger = $this->getService($container, $logger, $requestedName);
-        }
-
-        return new CascadeSaveListener($cascadeSaveService, $logger);
+        return new CascadeSaveListener($cascadeSaveService);
     }
 }

@@ -10,7 +10,6 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -35,15 +34,12 @@ final class DateUpdatedListenerFactory extends AbstractFactory
     ): DateUpdatedListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
-        $dateTimeFactory = $options['date_time_factory'] ?? DateTimeFactory::class;
-        $logger = $options['logger'] ?? NullLogger::class;
+        $dateTimeFactory = $this->getService(
+            $container,
+            $options['date_time_factory'] ?? DateTimeFactory::class,
+            $requestedName
+        );
 
-        $dateTimeFactory = $this->getService($container, $dateTimeFactory, $requestedName);
-
-        if (is_string($logger)) {
-            $logger = $this->getService($container, $logger, $requestedName);
-        }
-
-        return new DateUpdatedListener($dateTimeFactory, $logger);
+        return new DateUpdatedListener($dateTimeFactory);
     }
 }
