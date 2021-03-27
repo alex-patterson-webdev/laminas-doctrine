@@ -7,11 +7,13 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 use Arp\DoctrineEntityRepository\Constant\EntityEventName;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ClearListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DeleteCollectionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\EntityValidationListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ExceptionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\FlushListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\HardDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\PersistListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SaveCollectionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 
@@ -55,6 +57,16 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
                 FlushListener::class,
                 ClearListener::class,
             ],
+        ],
+        EntityEventName::SAVE_COLLECTION => [
+            1 => [
+                SaveCollectionListener::class,
+            ]
+        ],
+        EntityEventName::DELETE_COLLECTION => [
+            1 => [
+                DeleteCollectionListener::class,
+            ]
         ],
     ];
 }

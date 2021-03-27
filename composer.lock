@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/doctrine-entity-repository.git",
-                "reference": "9073ffa91eddc17ee0d8c7654c29f5f81f3696c5"
+                "reference": "aeac37efdc544ede9e00972b592b1d73d65eec6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/9073ffa91eddc17ee0d8c7654c29f5f81f3696c5",
-                "reference": "9073ffa91eddc17ee0d8c7654c29f5f81f3696c5",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/aeac37efdc544ede9e00972b592b1d73d65eec6b",
+                "reference": "aeac37efdc544ede9e00972b592b1d73d65eec6b",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/issues",
                 "source": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/tree/feature/0.2.0"
             },
-            "time": "2021-03-24T22:20:42+00:00"
+            "time": "2021-03-27T11:13:34+00:00"
         },
         {
             "name": "alex-patterson-webdev/entity",
@@ -4001,16 +4001,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4"
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f28d44c286812c714741478d968104c5e604a1d4",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
                 "shasum": ""
             },
             "require": {
@@ -4018,7 +4018,8 @@
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -4044,7 +4045,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
+                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
             },
             "funding": [
                 {
@@ -4060,7 +4061,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T08:04:11+00:00"
+            "time": "2021-03-25T17:01:18+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",

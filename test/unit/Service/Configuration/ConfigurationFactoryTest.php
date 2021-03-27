@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 final class ConfigurationFactoryTest extends TestCase
 {
     /**
-     * @var ServiceLocatorInterface|MockObject
+     * @var ServiceLocatorInterface&MockObject
      */
     private $serviceManager;
 
@@ -92,7 +92,7 @@ final class ConfigurationFactoryTest extends TestCase
 
         $factory = new ConfigurationFactory($this->serviceManager);
 
-        /** @var Configuration|MockObject $configuration */
+        /** @var Configuration&MockObject $configuration */
         $configuration = $this->createMock(Configuration::class);
 
         $this->serviceManager->expects($this->once())

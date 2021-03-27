@@ -80,7 +80,6 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      * @return EntityManagerInterface
      *
      * @throws EntityManagerProviderException
-     * @throws ContainerModificationsNotAllowedException
      */
     public function refresh(string $name): EntityManagerInterface
     {
@@ -92,7 +91,16 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
             }
 
             $entityManager = $this->create($name, $this->config->getEntityManagerConfig($name));
-            $this->container->setService($name, $entityManager);
+
+            try {
+                $this->container->setService($name, $entityManager);
+            } catch (ContainerExceptionInterface $e) {
+                throw new EntityManagerProviderException(
+                    sprintf('Failed to set create service \'%s\': %s', $name, $e->getMessage()),
+                    $e->getCode(),
+                    $e
+                );
+            }
         }
 
         return $entityManager;

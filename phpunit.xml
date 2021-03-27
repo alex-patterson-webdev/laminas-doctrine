@@ -14,6 +14,7 @@
             <directory>./test/unit</directory>
         </testsuite>
     </testsuites>
+
     <coverage processUncoveredFiles="false">
         <include>
             <directory suffix=".php">src</directory>

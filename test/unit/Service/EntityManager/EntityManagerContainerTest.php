@@ -6,6 +6,7 @@ namespace ArpTest\LaminasDoctrine\Service\EntityManager;
 
 use Arp\LaminasDoctrine\Service\EntityManager\ContainerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
@@ -19,7 +20,7 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 final class EntityManagerContainerTest extends TestCase
 {
     /**
-     * @var ContainerInterface|MockObject
+     * @var PsrContainerInterface&MockObject
      */
     private $psrContainer;
 
@@ -33,6 +34,8 @@ final class EntityManagerContainerTest extends TestCase
 
     /**
      * Assert the class implements ContainerInterface
+     *
+     * @throws InvalidArgumentException
      */
     public function testImplementsContainerInterface(): void
     {

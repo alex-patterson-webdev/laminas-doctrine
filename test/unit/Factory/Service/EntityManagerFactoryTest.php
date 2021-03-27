@@ -13,6 +13,7 @@ use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -26,22 +27,22 @@ use Psr\Container\ContainerInterface;
 final class EntityManagerFactoryTest extends TestCase
 {
     /**
-     * @var ContainerInterface|MockObject
+     * @var ContainerInterface&MockObject
      */
     private $container;
 
     /**
-     * @var DoctrineConfig
+     * @var DoctrineConfig&MockObject
      */
     private $doctrineConfig;
 
     /**
-     * @var ConfigurationManagerInterface|MockObject
+     * @var ConfigurationManagerInterface&MockObject
      */
     private $configurationManager;
 
     /**
-     * @var ConnectionManagerInterface|MockObject
+     * @var ConnectionManagerInterface&MockObject
      */
     private $connectionManager;
 
@@ -72,10 +73,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert a ServiceNotCreateException is thrown from __invoke() if the required 'configuration' configuration
      * option is missing or null
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheRequiredConfigurationConfigIsMissing(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $serviceName = 'doctrine.entitymanager.orm_default';
@@ -113,10 +115,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert a ServiceNotCreateException is thrown from __invoke() if the required 'connection' configuration
      * option is missing or null
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheRequiredConnectionConfigIsMissing(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $serviceName = 'doctrine.entitymanager.orm_default';
@@ -154,10 +157,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert a ServiceNotCreateException is thrown from __invoke() if the required 'configuration' object
      * is of an invalid type
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheRequiredConfigurationIsInvalid(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $configuration = new \stdClass(); // invalid configuration class
@@ -198,10 +202,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert a ServiceNotCreateException is thrown from __invoke() if the required 'connection' object
      * is of an invalid type
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheRequiredConnectionIsInvalid(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $connection = new \stdClass(); // invalid configuration class
@@ -258,10 +263,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert that a ServiceNotCreatedException is thrown from __invoke if the provided 'configuration'
      * string is not a valid configuration
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheStringConfigurationCannotBeFound(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $configurationName = 'BarConfigurationName';
@@ -316,10 +322,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert that a ServiceNotCreatedException is thrown from __invoke if the provided 'configuration'
      * string is unable to be created
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheStringConfigurationCannotBeCreated(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         $configurationName = 'BarConfigurationName';
@@ -380,27 +387,14 @@ final class EntityManagerFactoryTest extends TestCase
         $factory($this->container, $serviceName);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Assert that a ServiceNotCreatedException is thrown from __invoke if the provided 'connection'
      * string is not a valid connection
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheStringConnectionCannotBeFound(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         /** @var Configuration|MockObject $configuration */
@@ -460,10 +454,11 @@ final class EntityManagerFactoryTest extends TestCase
     /**
      * Assert that a ServiceNotCreatedException is thrown from __invoke if the provided 'connection'
      * string is unable to be created
+     *
+     * @throws ServiceNotFoundException
      */
     public function testInvokeWillThrowServiceNotCreatedExceptionIfTheStringConnectionCannotBeCreated(): void
     {
-        /** @var EntityManagerFactory|MockObject $factory */
         $factory = new EntityManagerFactory();
 
         /** @var Configuration|MockObject $configuration */

@@ -23,17 +23,17 @@ use PHPUnit\Framework\TestCase;
 final class ConnectionManagerTest extends TestCase
 {
     /**
-     * @var DoctrineConfig|MockObject
+     * @var DoctrineConfig&MockObject
      */
     private DoctrineConfig $config;
 
     /**
-     * @var ConnectionFactoryInterface|MockObject
+     * @var ConnectionFactoryInterface&MockObject
      */
     private ConnectionFactoryInterface $connectionFactory;
 
     /**
-     * @var Connection[]|MockObject[]|array
+     * @var array<Connection&MockObject>
      */
     private array $connections = [];
 
@@ -80,8 +80,8 @@ final class ConnectionManagerTest extends TestCase
 
         $this->config->expects($this->exactly(2))
             ->method('hasConnectionConfig')
-            ->withConsecutive(['test'], ['fred']
-            )->willReturnOnConsecutiveCalls(true, false);
+            ->withConsecutive(['test'], ['fred'])
+            ->willReturnOnConsecutiveCalls(true, false);
 
         $manager->setConnections($connections);
 
@@ -101,7 +101,7 @@ final class ConnectionManagerTest extends TestCase
         $manager = new ConnectionManager($this->config, $this->connectionFactory, $this->connections);
 
         $name = 'FooConnection';
-        /** @var Connection|MockObject $expected */
+        /** @var Connection&MockObject $expected */
         $expected = $this->createMock(Connection::class);
 
         $connections = [
@@ -196,7 +196,7 @@ final class ConnectionManagerTest extends TestCase
             ->with($name)
             ->willReturn($connections[$name]);
 
-        /** @var Connection|MockObject $expected */
+        /** @var Connection&MockObject $expected */
         $expected = $this->createMock(Connection::class);
 
         $this->connectionFactory->expects($this->once())

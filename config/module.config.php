@@ -10,15 +10,18 @@ use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateCreatedListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateDeletedListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateUpdatedListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DeleteCollectionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\EntityValidationListener;
-use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ErrorListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ExceptionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\FlushListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\HardDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\PersistListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SaveCollectionListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
+use Arp\EventDispatcher\Factory\EventDispatcherFactory;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
@@ -32,19 +35,11 @@ use Arp\LaminasDoctrine\Factory\Hydrator\EntityHydratorFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\AnnotationDriverFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\MappingDriverChainFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\CascadeSaveListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\ClearListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateCreatedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateDeletedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateTimeListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateUpdatedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\EntityListenerProviderFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\EntityValidationListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\ErrorListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\FlushListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\HardDeleteListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\PersistListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\SoftDeleteListenerFactory;
-use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\TransactionListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Persistence\PersistServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryFactoryFactory;
@@ -68,7 +63,6 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
-use Arp\LaminasEvent\Factory\EventDispatcherFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
@@ -123,7 +117,7 @@ return [
         ],
         'factories' => [
             // Config
-            DoctrineConfig::class => DoctrineConfigFactory::class,
+            DoctrineConfig::class                => DoctrineConfigFactory::class,
 
             // Services
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
@@ -157,19 +151,21 @@ return [
             'EntityEventDispatcher'           => EventDispatcherFactory::class,
             EntityListenerProvider::class     => EntityListenerProviderFactory::class,
 
-            EntityValidationListener::class => EntityValidationListenerFactory::class,
-            TransactionListener::class      => TransactionListenerFactory::class,
-            ErrorListener::class            => ErrorListenerFactory::class,
+            EntityValidationListener::class => InvokableFactory::class,
+            TransactionListener::class      => InvokableFactory::class,
+            ExceptionListener::class        => InvokableFactory::class,
             DateTimeListener::class         => DateTimeListenerFactory::class,
             DateCreatedListener::class      => DateCreatedListenerFactory::class,
             DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
             DateDeletedListener::class      => DateDeletedListenerFactory::class,
             CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
-            PersistListener::class          => PersistListenerFactory::class,
-            FlushListener::class            => FlushListenerFactory::class,
-            ClearListener::class            => ClearListenerFactory::class,
-            SoftDeleteListener::class       => SoftDeleteListenerFactory::class,
-            HardDeleteListener::class       => HardDeleteListenerFactory::class,
+            PersistListener::class          => InvokableFactory::class,
+            FlushListener::class            => InvokableFactory::class,
+            ClearListener::class            => InvokableFactory::class,
+            SoftDeleteListener::class       => InvokableFactory::class,
+            HardDeleteListener::class       => InvokableFactory::class,
+            SaveCollectionListener::class   => InvokableFactory::class,
+            DeleteCollectionListener::class => InvokableFactory::class,
 
         ],
     ],

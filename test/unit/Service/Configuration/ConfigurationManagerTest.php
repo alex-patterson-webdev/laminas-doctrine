@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager
+ * @covers  \Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\LaminasDoctrine\Service\Configuration
@@ -23,12 +23,12 @@ use PHPUnit\Framework\TestCase;
 final class ConfigurationManagerTest extends TestCase
 {
     /**
-     * @var ConfigurationFactoryInterface|MockObject
+     * @var ConfigurationFactoryInterface&MockObject
      */
     private $configurationFactory;
 
     /**
-     * @var DoctrineConfig|MockObject
+     * @var DoctrineConfig&MockObject
      */
     private $doctrineConfig;
 
@@ -151,7 +151,7 @@ final class ConfigurationManagerTest extends TestCase
 
         $name = 'TestConnectionName';
 
-        /** @var Configuration|MockObject $createdConfiguration */
+        /** @var Configuration&MockObject $createdConfiguration */
         $createdConfiguration = $this->createMock(Configuration::class);
 
         $this->doctrineConfig->expects($this->once())
@@ -186,9 +186,9 @@ final class ConfigurationManagerTest extends TestCase
         $manager = new ConfigurationManager($this->configurationFactory, $this->doctrineConfig);
 
         $configs = [
-            'fred' => $this->createMock(Configuration::class),
-            'bob' => $this->createMock(Configuration::class),
-            'dick' => $this->createMock(Configuration::class),
+            'fred'  => $this->createMock(Configuration::class),
+            'bob'   => $this->createMock(Configuration::class),
+            'dick'  => $this->createMock(Configuration::class),
             'harry' => $this->createMock(Configuration::class),
         ];
 
@@ -207,10 +207,10 @@ final class ConfigurationManagerTest extends TestCase
         $manager = new ConfigurationManager($this->configurationFactory, $this->doctrineConfig);
 
         $configs = [
-            'fred' => [
+            'fred'     => [
                 'test' => 123,
             ],
-            'bob' => [
+            'bob'      => [
                 'test' => 456,
             ],
             'jennifer' => [
@@ -233,9 +233,9 @@ final class ConfigurationManagerTest extends TestCase
     /**
      * Assert has will return $expected bool value if the connection is set in $config or the $doctrineConfig
      *
-     * @param bool   $expected
-     * @param string $name
-     * @param array  $configs
+     * @param bool         $expected
+     * @param string       $name
+     * @param array<mixed> $configs
      *
      * @dataProvider getHasConfigurationData
      */
@@ -258,7 +258,7 @@ final class ConfigurationManagerTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getHasConfigurationData(): array
     {
@@ -268,8 +268,8 @@ final class ConfigurationManagerTest extends TestCase
                 true,
                 'fred',
                 [
-                    'fred' => $this->createMock(Configuration::class)
-                ]
+                    'fred' => $this->createMock(Configuration::class),
+                ],
             ],
 
             // Missing from both
@@ -277,8 +277,8 @@ final class ConfigurationManagerTest extends TestCase
                 false,
                 'Kitty',
                 [
-                    'fred' => $this->createMock(Configuration::class)
-                ]
+                    'fred' => $this->createMock(Configuration::class),
+                ],
             ],
 
             // In Doctrine Config
@@ -287,8 +287,8 @@ final class ConfigurationManagerTest extends TestCase
                 'Barney',
                 [
                     'fred' => $this->createMock(Configuration::class),
-                    'bob' => $this->createMock(Configuration::class)
-                ]
+                    'bob'  => $this->createMock(Configuration::class),
+                ],
             ],
         ];
     }

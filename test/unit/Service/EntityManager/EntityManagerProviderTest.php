@@ -24,12 +24,12 @@ use PHPUnit\Framework\TestCase;
 final class EntityManagerProviderTest extends TestCase
 {
     /**
-     * @var DoctrineConfig|MockObject
+     * @var DoctrineConfig&MockObject
      */
     private $config;
 
     /**
-     * @var ContainerInterface|MockObject
+     * @var ContainerInterface&MockObject
      */
     private $container;
 
@@ -45,6 +45,8 @@ final class EntityManagerProviderTest extends TestCase
 
     /**
      * Assert the class is an instance of the EntityManagerProviderInterface
+     *
+     * @throws EntityManagerProviderException
      */
     public function testImplementsEntityManagerProviderInterface(): void
     {
@@ -61,6 +63,8 @@ final class EntityManagerProviderTest extends TestCase
      * @param bool $hasConfig
      *
      * @dataProvider getHasData
+     *
+     * @throws EntityManagerProviderException
      */
     public function testHas(bool $expected, bool $hasContainer, bool $hasConfig): void
     {
@@ -85,7 +89,7 @@ final class EntityManagerProviderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getHasData(): array
     {
@@ -132,7 +136,7 @@ final class EntityManagerProviderTest extends TestCase
     {
         $provider = new EntityManagerProvider($this->config, $this->container);
 
-        /** @var EntityManagerInterface|MockObject $entityManager */
+        /** @var EntityManagerInterface&MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $name = 'FooEntityManager';
 
@@ -157,10 +161,12 @@ final class EntityManagerProviderTest extends TestCase
 
     /**
      * Assert that a multiple entity manager can be set and then returned by their names
+     *
+     * @throws EntityManagerProviderException
      */
     public function testSetAndGetEntityManagers(): void
     {
-        /** @var EntityManagerInterface[]|MockObject[]|array[] $configs */
+        /** @var array<EntityManagerInterface&MockObject>|array[] $configs */
         $configs = [
             'foo' => $this->createMock(EntityManagerInterface::class),
             'bar' => $this->createMock(EntityManagerInterface::class),
@@ -202,7 +208,7 @@ final class EntityManagerProviderTest extends TestCase
     {
         $provider = new EntityManagerProvider($this->config, $this->container);
 
-        /** @var EntityManagerInterface|MockObject $entityManager */
+        /** @var EntityManagerInterface&MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $name = 'FooEntityManager';
         $config = [
@@ -369,10 +375,10 @@ final class EntityManagerProviderTest extends TestCase
 
         $name = 'FooEntityManager';
 
-        /** @var EntityManagerInterface|MockObject $entityManager */
+        /** @var EntityManagerInterface&MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
-        /** @var EntityManagerInterface|MockObject $newInstance */
+        /** @var EntityManagerInterface&MockObject $newInstance */
         $newInstance = $this->createMock(EntityManagerInterface::class);
 
         $config = [

@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 final class ConnectionFactoryTest extends TestCase
 {
     /**
-     * @var ConfigurationManagerInterface|MockObject
+     * @var ConfigurationManagerInterface&MockObject
      */
     private $configurationManager;
 
@@ -56,7 +56,7 @@ final class ConnectionFactoryTest extends TestCase
     {
         $factory = new ConnectionFactory($this->configurationManager);
 
-        /** @var EventManager|MockObject $eventManager */
+        /** @var EventManager&MockObject $eventManager */
         $eventManager = $this->createMock(EventManager::class);
         $config = [
             'foo' => 'bar',
@@ -83,10 +83,10 @@ final class ConnectionFactoryTest extends TestCase
     /**
      * Assert that the create() method will return a configuration instance
      *
-     * @param array                                $defaultConfig
-     * @param array                                $config
-     * @param Configuration|MockObject|string|null $configuration
-     * @param EventManager|MockObject|null         $eventManager
+     * @param array<mixed>  $defaultConfig
+     * @param array<mixed>  $config
+     * @param mixed         $configuration
+     * @param ?EventManager $eventManager
      *
      * @throws ConnectionFactoryException
      * @dataProvider getCreateWillReturnConfigurationData
@@ -102,7 +102,7 @@ final class ConnectionFactoryTest extends TestCase
         if (is_string($configuration)) {
             $configurationString = $configuration;
 
-            /** @var Configuration|MockObject $configuration */
+            /** @var Configuration&MockObject $configuration */
             $configuration = $this->createMock(Configuration::class);
             $this->configurationManager->expects($this->once())
                 ->method('getConfiguration')
@@ -110,13 +110,19 @@ final class ConnectionFactoryTest extends TestCase
                 ->willReturn($configuration);
         }
 
-        /** @var Connection|MockObject $connection */
+        /** @var Connection&MockObject $connection */
         $connection = $this->createMock(Connection::class);
         $doCreate = static function (
             array $params,
             ?Configuration $configurationArg,
             ?EventManager $eventManagerArg
-        ) use ($connection, $defaultConfig, $config, $configuration, $eventManager): Connection {
+        ) use (
+            $connection,
+            $defaultConfig,
+            $config,
+            $configuration,
+            $eventManager
+        ): Connection {
             Assert::assertSame($configurationArg, $configuration);
             Assert::assertSame($eventManagerArg, $eventManager);
             Assert::assertSame(
@@ -135,14 +141,14 @@ final class ConnectionFactoryTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getCreateWillReturnConfigurationData(): array
     {
-        /** @var EventManager|MockObject $eventManager */
+        /** @var EventManager&MockObject $eventManager */
         $eventManager = $this->createMock(EventManager::class);
 
-        /** @var Configuration|MockObject $configuration */
+        /** @var Configuration&MockObject $configuration */
         $configuration = $this->createMock(Configuration::class);
 
         return [
@@ -161,7 +167,7 @@ final class ConnectionFactoryTest extends TestCase
                     'password' => '',
                     'dbname'   => 'database',
                 ],
-                $configuration
+                $configuration,
             ],
 
             // Sting configuration
@@ -174,9 +180,9 @@ final class ConnectionFactoryTest extends TestCase
             // Config & Configuration
             [
                 [
-                    'host'     => 'localhost',
-                    'port'     => 3306,
-                    'user'     => 'default_username'
+                    'host' => 'localhost',
+                    'port' => 3306,
+                    'user' => 'default_username',
                 ],
                 [
                     'host'     => 'new_replaced_hostname',
@@ -184,7 +190,7 @@ final class ConnectionFactoryTest extends TestCase
                     'password' => '234_^&%$sdfg&*(',
                     'dbname'   => 'database',
                 ],
-                $configuration
+                $configuration,
             ],
 
             // Config, Configuration, EventManager
@@ -193,13 +199,13 @@ final class ConnectionFactoryTest extends TestCase
                     'port' => 999,
                 ],
                 [
-                    'bar'    => 'foo',
+                    'bar'      => 'foo',
                     'database' => 'hello',
-                    'port' => 1234,
-                    'user' => 'fred',
+                    'port'     => 1234,
+                    'user'     => 'fred',
                 ],
                 $configuration,
-                $eventManager
+                $eventManager,
             ],
 
         ];

@@ -18,9 +18,9 @@ use Psr\Container\ContainerInterface;
 final class CascadeSaveListenerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array<mixed>|null  $options
      *
      * @return CascadeSaveListener
      *

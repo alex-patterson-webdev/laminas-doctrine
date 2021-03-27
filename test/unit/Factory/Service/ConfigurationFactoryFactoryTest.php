@@ -33,7 +33,7 @@ final class ConfigurationFactoryFactoryTest extends TestCase
     {
         $factory = new ConfigurationFactoryFactory();
 
-        /** @var ServiceLocatorInterface|MockObject $container */
+        /** @var ServiceLocatorInterface&MockObject $container */
         $container = $this->createMock(ServiceLocatorInterface::class);
 
         /** @noinspection UnnecessaryAssertionInspection */
