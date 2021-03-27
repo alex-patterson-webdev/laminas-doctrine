@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/doctrine-entity-repository.git",
-                "reference": "aeac37efdc544ede9e00972b592b1d73d65eec6b"
+                "reference": "4f8beec67707b495a6cd961dd44b9725f922b716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/aeac37efdc544ede9e00972b592b1d73d65eec6b",
-                "reference": "aeac37efdc544ede9e00972b592b1d73d65eec6b",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/4f8beec67707b495a6cd961dd44b9725f922b716",
+                "reference": "4f8beec67707b495a6cd961dd44b9725f922b716",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/issues",
                 "source": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/tree/feature/0.2.0"
             },
-            "time": "2021-03-27T11:13:34+00:00"
+            "time": "2021-03-27T12:30:54+00:00"
         },
         {
             "name": "alex-patterson-webdev/entity",

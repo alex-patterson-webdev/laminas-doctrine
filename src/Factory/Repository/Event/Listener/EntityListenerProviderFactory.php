@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 
 use Arp\DoctrineEntityRepository\Constant\EntityEventName;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeDeleteListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeSaveListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ClearListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DeleteCollectionListener;
@@ -39,6 +41,7 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
     protected array $defaultListenerConfig = [
         EntityEventName::CREATE => [
             1 => [
+                CascadeSaveListener::class,
                 PersistListener::class,
                 FlushListener::class,
                 ClearListener::class,
@@ -46,12 +49,14 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
         ],
         EntityEventName::UPDATE => [
             1 => [
+                CascadeSaveListener::class,
                 FlushListener::class,
                 ClearListener::class,
             ],
         ],
         EntityEventName::DELETE => [
             1 => [
+                CascadeDeleteListener::class,
                 SoftDeleteListener::class,
                 HardDeleteListener::class,
                 FlushListener::class,
