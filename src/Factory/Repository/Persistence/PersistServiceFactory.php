@@ -11,6 +11,7 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 
@@ -23,9 +24,9 @@ final class PersistServiceFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ServiceLocatorInterface $container
-     * @param string                  $requestedName
-     * @param array<mixed>|null       $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<mixed>|null                          $options
      *
      * @return PersistServiceInterface
      *
@@ -33,11 +34,11 @@ final class PersistServiceFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      */
     public function __invoke(
-        ServiceLocatorInterface $container,
+        ContainerInterface $container,
         string $requestedName,
         array $options = null
     ): PersistServiceInterface {
-        $options = $options ?? $this->getServiceOptions($container, $requestedName);
+        $options = array_replace_recursive($this->getServiceOptions($container, $requestedName), $options ?? []);
 
         $entityName = $options['entity_name'] ?? null;
         if (empty($entityName)) {

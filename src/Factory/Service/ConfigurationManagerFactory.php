@@ -9,9 +9,9 @@ use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactoryInterface;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,9 +20,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class ConfigurationManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array<mixed>|null  $options
      *
      * @return ConfigurationManager
      *

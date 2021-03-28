@@ -7,6 +7,7 @@ namespace Arp\LaminasDoctrine\Factory\Service;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -15,14 +16,14 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 final class ConfigurationFactoryFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface   $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<string, mixed>|null                  $options
      *
      * @return ConfigurationFactory
      */
     public function __invoke(
-        ServiceLocatorInterface $container,
+        ContainerInterface $container,
         string $requestedName,
         array $options = null
     ): ConfigurationFactory {

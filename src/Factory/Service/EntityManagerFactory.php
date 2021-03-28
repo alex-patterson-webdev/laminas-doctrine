@@ -25,8 +25,6 @@ use Psr\Container\ContainerInterface;
 final class EntityManagerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface        $container
      * @param string                    $requestedName
      * @param array<string, mixed>|null $options
@@ -36,7 +34,7 @@ final class EntityManagerFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityManager
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): EntityManager
     {
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);

@@ -53,6 +53,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
      * @return iterable|EntityInterface[]
      *
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function hydrate($value, ?array $data): iterable
     {

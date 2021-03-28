@@ -8,6 +8,7 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -16,19 +17,17 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 final class MappingDriverChainFactory extends AbstractDriverFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ServiceLocatorInterface   $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<mixed>|null                          $options
      *
      * @return MappingDriverChain
      *
      * @throws ServiceNotCreatedException
      */
     public function __invoke(
-        ServiceLocatorInterface $container,
-        $requestedName,
+        ContainerInterface $container,
+        string $requestedName,
         array $options = null
     ): MappingDriverChain {
         $options = $options ?? $this->getOptions($container, $requestedName, $options);

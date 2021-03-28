@@ -14,8 +14,8 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -24,9 +24,9 @@ use Psr\Log\NullLogger;
 final class RepositoryFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface   $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<string, mixed>|null                  $options
      *
      * @return EntityRepositoryInterface
      *
@@ -34,11 +34,14 @@ final class RepositoryFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      */
     public function __invoke(
-        ServiceLocatorInterface $container,
+        ContainerInterface $container,
         string $requestedName,
         array $options = null
     ): EntityRepositoryInterface {
-        $options = $options ?? $this->getServiceOptions($container, $requestedName, 'repositories');
+        $options = array_replace_recursive(
+            $this->getServiceOptions($container, $requestedName, 'repositories'),
+            $options ?? []
+        );
 
         $entityName = $options['entity_name'] ?? $requestedName;
         if (empty($entityName)) {
@@ -64,7 +67,7 @@ final class RepositoryFactory extends AbstractFactory
             $requestedName
         );
 
-        $logger = $options['logger'] ?? NullLogger::class;
+        $logger = $options['logger'] ?? 'EntityLogger';
         if (is_string($logger)) {
             /** @var LoggerInterface|string $logger */
             $logger = $this->getService($container, $logger, $requestedName);

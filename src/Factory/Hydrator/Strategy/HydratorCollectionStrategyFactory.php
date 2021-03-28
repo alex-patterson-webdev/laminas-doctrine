@@ -19,8 +19,6 @@ use Psr\Container\ContainerInterface;
 final class HydratorCollectionStrategyFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface        $container
      * @param string                    $requestedName
      * @param array<string, mixed>|null $options
@@ -32,7 +30,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): HydratorCollectionStrategy {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
@@ -51,7 +49,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
         if (empty($entityName)) {
             throw new ServiceNotCreatedException(
                 sprintf(
-                    'The required \'entity_name\' configuration option is missing for service \'%s\'',
+                    'The required \'field_name\' configuration option is missing for service \'%s\'',
                     $requestedName
                 )
             );
