@@ -13,6 +13,7 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
@@ -64,7 +65,7 @@ final class PersistServiceFactory extends AbstractFactory
             $entityName,
             $this->getEntityManager($container, $entityManager, $requestedName),
             $this->getEventDispatcher($container, $options['event_dispatcher'] ?? [], $requestedName),
-            new NullLogger()
+            $this->getLogger($container, $options['logger'] ?? null, $requestedName)
         );
     }
 
@@ -103,5 +104,39 @@ final class PersistServiceFactory extends AbstractFactory
         }
 
         return $eventDispatcher;
+    }
+
+    /**
+     * @param ContainerInterface          $container
+     * @param LoggerInterface|string|null $logger
+     * @param string                      $serviceName
+     *
+     * @return LoggerInterface
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     */
+    private function getLogger(ContainerInterface $container, $logger, string $serviceName): LoggerInterface
+    {
+        if (null === $logger) {
+            return new NullLogger();
+        }
+
+        if (is_string($logger)) {
+            $logger = $this->getService($container, $logger, $serviceName);
+        }
+
+        if (!$logger instanceof LoggerInterface) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The logger must be of type \'%s\'; \'%s\' provided for service \'%s\'',
+                    LoggerInterface::class,
+                    is_object($logger) ? get_class($logger) : gettype($logger),
+                    $serviceName
+                )
+            );
+        }
+
+        return $logger;
     }
 }
