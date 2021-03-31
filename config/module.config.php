@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
+use Arp\DoctrineEntityRepository\Persistence\CascadeDeleteService;
+use Arp\DoctrineEntityRepository\Persistence\CascadeSaveService;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeSaveListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ClearListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateCreatedListener;
@@ -21,7 +24,6 @@ use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\EventDispatcher\Factory\EventDispatcherFactory;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
@@ -34,12 +36,15 @@ use Arp\LaminasDoctrine\Factory\DataFixture\OrmPurgerFactory;
 use Arp\LaminasDoctrine\Factory\Hydrator\EntityHydratorFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\AnnotationDriverFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\MappingDriverChainFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\CascadeDeleteListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\CascadeSaveListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateCreatedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateDeletedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateTimeListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateUpdatedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\EntityListenerProviderFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeDeleteServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeSaveServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Persistence\PersistServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryFactoryFactory;
@@ -63,6 +68,7 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasEvent\Factory\EventDispatcherFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
@@ -107,6 +113,9 @@ return [
     ],
 
     'service_manager' => [
+        'shared' => [
+            'EntityEventDispatcher' => false,
+        ],
         'aliases'   => [
             MappingDriver::class => MappingDriverChain::class,
             Cache::class         => ArrayCache::class,
@@ -132,6 +141,8 @@ return [
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
             QueryService::class               => QueryServiceFactory::class,
             PersistService::class             => PersistServiceFactory::class,
+            CascadeSaveService::class         => CascadeSaveServiceFactory::class,
+            CascadeDeleteService::class       => CascadeDeleteServiceFactory::class,
 
             // Drivers
             MappingDriverChain::class         => MappingDriverChainFactory::class,
@@ -159,6 +170,7 @@ return [
             DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
             DateDeletedListener::class      => DateDeletedListenerFactory::class,
             CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
+            CascadeDeleteListener::class    => CascadeDeleteListenerFactory::class,
             PersistListener::class          => InvokableFactory::class,
             FlushListener::class            => InvokableFactory::class,
             ClearListener::class            => InvokableFactory::class,
@@ -166,7 +178,6 @@ return [
             HardDeleteListener::class       => InvokableFactory::class,
             SaveCollectionListener::class   => InvokableFactory::class,
             DeleteCollectionListener::class => InvokableFactory::class,
-
         ],
     ],
 

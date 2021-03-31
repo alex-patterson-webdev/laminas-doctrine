@@ -36,7 +36,7 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
     ];
 
     /**
-     * @var array<int, string>[][]
+     * @var array<mixed>[][]
      */
     protected array $defaultListenerConfig = [
         EntityEventName::CREATE => [

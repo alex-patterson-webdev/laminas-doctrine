@@ -35,9 +35,9 @@ final class ConfigurationFactory extends AbstractFactory
     ];
 
     /**
-     * @param ServiceLocatorInterface   $container
-     * @param string                    $serviceName
-     * @param array<string, mixed>|null $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $serviceName
+     * @param array<mixed>|null                          $options
      *
      * @return Configuration
      *
@@ -45,7 +45,7 @@ final class ConfigurationFactory extends AbstractFactory
      * @throws ServiceNotFoundException
      */
     public function __invoke(
-        ServiceLocatorInterface $container,
+        ContainerInterface $container,
         string $serviceName,
         array $options = null
     ): Configuration {
