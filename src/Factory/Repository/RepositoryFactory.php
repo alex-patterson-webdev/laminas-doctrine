@@ -16,6 +16,7 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -23,6 +24,11 @@ use Psr\Log\LoggerInterface;
  */
 final class RepositoryFactory extends AbstractFactory
 {
+    /**
+     * @var array<mixed>
+     */
+    private array $defaultOptions = [];
+
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
      * @param string                                     $requestedName
@@ -39,6 +45,7 @@ final class RepositoryFactory extends AbstractFactory
         array $options = null
     ): EntityRepositoryInterface {
         $options = array_replace_recursive(
+            $this->defaultOptions,
             $this->getServiceOptions($container, $requestedName, 'repositories'),
             $options ?? []
         );
@@ -53,29 +60,57 @@ final class RepositoryFactory extends AbstractFactory
             );
         }
 
+        $logger = $options['logger'] ?? 'EntityEventLog';
+        if (is_string($logger)) {
+            $logger = $this->getLogger($container, $logger, $requestedName);
+        }
+
+        $queryServiceOptions = $options['query_service'] ?? [];
+        if (empty($queryServiceOptions['logger'])) {
+            $queryServiceOptions['logger'] = $logger;
+        }
+
         $queryService = $this->getQueryService(
             $container,
             $entityName,
-            $options['query_service'] ?? [],
+            $queryServiceOptions,
             $requestedName
         );
+
+        $persistServiceOptions = $options['persist_service'] ?? [];
+        if (empty($persistServiceOptions['logger'])) {
+            $persistServiceOptions['logger'] = $logger;
+        }
 
         $persistService = $this->getPersistService(
             $container,
             $entityName,
-            $options['persist_service'] ?? [],
+            $persistServiceOptions,
             $requestedName
         );
-
-        $logger = $options['logger'] ?? 'EntityLogger';
-        if (is_string($logger)) {
-            /** @var LoggerInterface|string $logger */
-            $logger = $this->getService($container, $logger, $requestedName);
-        }
 
         $className = $this->resolveClassName($entityName, $options);
 
         return new $className($entityName, $queryService, $persistService, $logger);
+    }
+
+    /**
+     * @param ContainerInterface     $container
+     * @param LoggerInterface|string $logger
+     * @param string                 $serviceName
+     *
+     * @return LoggerInterface
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     */
+    private function getLogger(ContainerInterface $container, $logger, string $serviceName): LoggerInterface
+    {
+        $logger = is_string($logger)
+            ? $this->getService($container, $logger, $serviceName)
+            : $logger;
+
+        return ($logger instanceof LoggerInterface) ? $logger : new NullLogger();
     }
 
     /**
