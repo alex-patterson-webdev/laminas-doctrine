@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/doctrine-entity-repository.git",
-                "reference": "4f8beec67707b495a6cd961dd44b9725f922b716"
+                "reference": "d0795bd10fa0ae15ace4a8a78b063c1c9780de27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/4f8beec67707b495a6cd961dd44b9725f922b716",
-                "reference": "4f8beec67707b495a6cd961dd44b9725f922b716",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/d0795bd10fa0ae15ace4a8a78b063c1c9780de27",
+                "reference": "d0795bd10fa0ae15ace4a8a78b063c1c9780de27",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/issues",
                 "source": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/tree/feature/0.2.0"
             },
-            "time": "2021-03-27T12:30:54+00:00"
+            "time": "2021-03-31T22:56:09+00:00"
         },
         {
             "name": "alex-patterson-webdev/entity",
@@ -244,12 +244,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-date-time.git",
-                "reference": "dcd5d2677ea77813c1579e8b68df969d70dbbbf0"
+                "reference": "6d4a880953658ee74afd3ce9e36e1cd1925987e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/dcd5d2677ea77813c1579e8b68df969d70dbbbf0",
-                "reference": "dcd5d2677ea77813c1579e8b68df969d70dbbbf0",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-date-time/zipball/6d4a880953658ee74afd3ce9e36e1cd1925987e6",
+                "reference": "6d4a880953658ee74afd3ce9e36e1cd1925987e6",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +290,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-date-time/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-date-time/tree/feature/0.2.0"
             },
-            "time": "2021-03-06T22:35:23+00:00"
+            "time": "2021-03-28T16:36:51+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-factory",
@@ -298,12 +298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-factory.git",
-                "reference": "11369cdf106032da7cd281f7325a7c8f2867a240"
+                "reference": "3b268f15baf977bc48195020ffa6e4ff0f673975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/11369cdf106032da7cd281f7325a7c8f2867a240",
-                "reference": "11369cdf106032da7cd281f7325a7c8f2867a240",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-factory/zipball/3b268f15baf977bc48195020ffa6e4ff0f673975",
+                "reference": "3b268f15baf977bc48195020ffa6e4ff0f673975",
                 "shasum": ""
             },
             "require": {
@@ -311,7 +311,10 @@
                 "php": ">=7.4 || >=8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5"
+                "friendsofphp/php-cs-fixer": "^2.18",
+                "phpstan/phpstan": ">=0.12",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "autoload": {
@@ -320,17 +323,21 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Alex Patterson",
                     "email": "alex.patterson.webdev@gmail.com"
                 }
             ],
+            "description": "Factory components used to create services in Laminas Framework applications",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/laminas-factory/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-factory/tree/feature/3.0.0"
             },
-            "time": "2021-03-11T22:37:39+00:00"
+            "time": "2021-03-29T19:41:04+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-symfony-console",
@@ -338,12 +345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/laminas-symfony-console.git",
-                "reference": "eded11778c1feee93c34da6d07d91bba353e4d2e"
+                "reference": "6fd7f900045fe03c76b9bfba9bc98302a696154a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-symfony-console/zipball/eded11778c1feee93c34da6d07d91bba353e4d2e",
-                "reference": "eded11778c1feee93c34da6d07d91bba353e4d2e",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/laminas-symfony-console/zipball/6fd7f900045fe03c76b9bfba9bc98302a696154a",
+                "reference": "6fd7f900045fe03c76b9bfba9bc98302a696154a",
                 "shasum": ""
             },
             "require": {
@@ -376,7 +383,7 @@
                 "issues": "https://github.com/alex-patterson-webdev/laminas-symfony-console/issues",
                 "source": "https://github.com/alex-patterson-webdev/laminas-symfony-console/tree/feature/0.1.0"
             },
-            "time": "2021-02-07T14:47:26+00:00"
+            "time": "2021-03-28T19:40:03+00:00"
         },
         {
             "name": "alex-patterson-webdev/log",
@@ -980,32 +987,32 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.12.1",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086"
+                "reference": "67d56d3203b33db29834e6b2fcdbfdc50535d796"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/adce7a954a1c2f14f85e94aed90c8489af204086",
-                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/67d56d3203b33db29834e6b2fcdbfdc50535d796",
+                "reference": "67d56d3203b33db29834e6b2fcdbfdc50535d796",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
+                "doctrine/deprecations": "^0.5.3",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.3 || ^8"
+                "php": "^7.1 || ^8"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^8.1",
-                "jetbrains/phpstorm-stubs": "^2019.1",
-                "phpstan/phpstan": "^0.12.40",
-                "phpunit/phpunit": "^9.4",
-                "psalm/plugin-phpunit": "^0.10.0",
+                "doctrine/coding-standard": "8.2.0",
+                "jetbrains/phpstorm-stubs": "2020.2",
+                "phpstan/phpstan": "0.12.81",
+                "phpunit/phpunit": "^7.5.20|^8.5|9.5.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
-                "vimeo/psalm": "^3.17.2"
+                "vimeo/psalm": "4.6.4"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -1014,11 +1021,6 @@
                 "bin/doctrine-dbal"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
@@ -1071,7 +1073,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.12.1"
+                "source": "https://github.com/doctrine/dbal/tree/2.13.0"
             },
             "funding": [
                 {
@@ -1087,7 +1089,50 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-14T20:26:58+00:00"
+            "time": "2021-03-28T18:10:53+00:00"
+        },
+        {
+            "name": "doctrine/deprecations",
+            "version": "v0.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/deprecations.git",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/9504165960a1f83cc1480e2be1dd0a0478561314",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Deprecations\\": "lib/Doctrine/Deprecations"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A small layer on top of trigger_error(E_USER_DEPRECATED) or PSR-3 logging with options to disable all deprecations or selectively for packages.",
+            "homepage": "https://www.doctrine-project.org/",
+            "support": {
+                "issues": "https://github.com/doctrine/deprecations/issues",
+                "source": "https://github.com/doctrine/deprecations/tree/v0.5.3"
+            },
+            "time": "2021-03-21T12:59:47+00:00"
         },
         {
             "name": "doctrine/doctrine-laminas-hydrator",
@@ -3114,16 +3159,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.2.5",
+            "version": "v5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "938ebbadae1b0a9c9d1ec313f87f9708609f1b79"
+                "reference": "35f039df40a3b335ebf310f244cb242b3a83ac8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/938ebbadae1b0a9c9d1ec313f87f9708609f1b79",
-                "reference": "938ebbadae1b0a9c9d1ec313f87f9708609f1b79",
+                "url": "https://api.github.com/repos/symfony/console/zipball/35f039df40a3b335ebf310f244cb242b3a83ac8d",
+                "reference": "35f039df40a3b335ebf310f244cb242b3a83ac8d",
                 "shasum": ""
             },
             "require": {
@@ -3191,7 +3236,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.2.5"
+                "source": "https://github.com/symfony/console/tree/v5.2.6"
             },
             "funding": [
                 {
@@ -3207,7 +3252,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-06T13:42:15+00:00"
+            "time": "2021-03-28T09:42:18+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3776,16 +3821,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.2.4",
+            "version": "v5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "4e78d7d47061fa183639927ec40d607973699609"
+                "reference": "ad0bd91bce2054103f5eaa18ebeba8d3bc2a0572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/4e78d7d47061fa183639927ec40d607973699609",
-                "reference": "4e78d7d47061fa183639927ec40d607973699609",
+                "url": "https://api.github.com/repos/symfony/string/zipball/ad0bd91bce2054103f5eaa18ebeba8d3bc2a0572",
+                "reference": "ad0bd91bce2054103f5eaa18ebeba8d3bc2a0572",
                 "shasum": ""
             },
             "require": {
@@ -3839,7 +3884,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.2.4"
+                "source": "https://github.com/symfony/string/tree/v5.2.6"
             },
             "funding": [
                 {
@@ -3855,7 +3900,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-16T10:20:28+00:00"
+            "time": "2021-03-17T17:12:15+00:00"
         },
         {
             "name": "webimpress/safe-writer",
@@ -4678,16 +4723,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.5",
+            "version": "9.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "f3e026641cc91909d421802dd3ac7827ebfd97e1"
+                "reference": "f6293e1b30a2354e8428e004689671b83871edde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f3e026641cc91909d421802dd3ac7827ebfd97e1",
-                "reference": "f3e026641cc91909d421802dd3ac7827ebfd97e1",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f6293e1b30a2354e8428e004689671b83871edde",
+                "reference": "f6293e1b30a2354e8428e004689671b83871edde",
                 "shasum": ""
             },
             "require": {
@@ -4743,7 +4788,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.6"
             },
             "funding": [
                 {
@@ -4751,7 +4796,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-28T06:44:49+00:00"
+            "time": "2021-03-28T07:26:59+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -6350,16 +6395,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.2.4",
+            "version": "v5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "710d364200997a5afde34d9fe57bd52f3cc1e108"
+                "reference": "8c86a82f51658188119e62cff0a050a12d09836f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/710d364200997a5afde34d9fe57bd52f3cc1e108",
-                "reference": "710d364200997a5afde34d9fe57bd52f3cc1e108",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/8c86a82f51658188119e62cff0a050a12d09836f",
+                "reference": "8c86a82f51658188119e62cff0a050a12d09836f",
                 "shasum": ""
             },
             "require": {
@@ -6392,7 +6437,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.2.4"
+                "source": "https://github.com/symfony/filesystem/tree/v5.2.6"
             },
             "funding": [
                 {
@@ -6408,7 +6453,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-12T10:38:38+00:00"
+            "time": "2021-03-28T14:30:26+00:00"
         },
         {
             "name": "symfony/finder",
