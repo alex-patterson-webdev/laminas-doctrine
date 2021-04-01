@@ -37,8 +37,6 @@ class ListenerProviderFactory extends AbstractFactory
     protected array $defaultAggregateListenerConfig = [];
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface $container
      * @param string             $requestedName
      * @param array<mixed>|null  $options
@@ -50,7 +48,7 @@ class ListenerProviderFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): ListenerProviderInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
@@ -75,29 +73,31 @@ class ListenerProviderFactory extends AbstractFactory
         /** @var ListenerProviderInterface $listenerProvider */
         $listenerProvider = new $className($eventNameResolver);
 
-        if ($listenerProvider instanceof AddListenerAwareInterface) {
-            try {
-                $listenerConfig = array_replace_recursive($this->defaultListenerConfig, $options['listeners'] ?? []);
+        if (!$listenerProvider instanceof AddListenerAwareInterface) {
+            return $listenerProvider;
+        }
 
-                if (!empty($listenerConfig)) {
-                    $this->registerCallableListeners($container, $listenerProvider, $listenerConfig, $requestedName);
-                }
+        try {
+            $listenerConfig = array_replace_recursive($this->defaultListenerConfig, $options['listeners'] ?? []);
 
-                $listenerConfig = array_replace_recursive(
-                    $this->defaultAggregateListenerConfig,
-                    $options['aggregate_listeners'] ?? []
-                );
-
-                if (!empty($listenerConfig)) {
-                    $this->registerAggregateListeners($container, $listenerProvider, $listenerConfig, $requestedName);
-                }
-            } catch (EventListenerException $e) {
-                throw new ServiceNotCreatedException(
-                    sprintf('Failed to register event listeners: %s', $e->getMessage()),
-                    $e->getCode(),
-                    $e
-                );
+            if (!empty($listenerConfig)) {
+                $this->registerCallableListeners($container, $listenerProvider, $listenerConfig, $requestedName);
             }
+
+            $listenerConfig = array_replace_recursive(
+                $this->defaultAggregateListenerConfig,
+                $options['aggregate_listeners'] ?? []
+            );
+
+            if (!empty($listenerConfig)) {
+                $this->registerAggregateListeners($container, $listenerProvider, $listenerConfig, $requestedName);
+            }
+        } catch (EventListenerException $e) {
+            throw new ServiceNotCreatedException(
+                sprintf('Failed to register event listeners: %s', $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
         }
 
         return $listenerProvider;
