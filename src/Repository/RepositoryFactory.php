@@ -41,8 +41,6 @@ final class RepositoryFactory implements RepositoryFactoryInterface
     }
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      *

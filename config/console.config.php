@@ -52,7 +52,6 @@ return [
 
                     // Fixtures
                     ImportCommand::class,
-
                 ],
                 'helpers' => [
                     'em' => Helper\EntityManagerHelper::class,

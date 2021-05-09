@@ -29,8 +29,6 @@ final class EntityHydrator extends DoctrineObject
     private ?\ReflectionClass $reflectionClass = null;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param object             $object
      * @param mixed              $collectionName
      * @param string             $target
@@ -106,8 +104,6 @@ final class EntityHydrator extends DoctrineObject
     /**
      * Copied from parent to check for isInitialisedFieldName()
      *
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param object $object
      *
      * @return array<string, mixed>
@@ -142,7 +138,7 @@ final class EntityHydrator extends DoctrineObject
             } elseif (
                 0 === strpos($fieldName, 'is')
                 && in_array($fieldName, $methods, true)
-                && ctype_upper(substr($fieldName, 2, 1))
+                && ctype_upper($fieldName[2])
             ) {
                 $data[$dataFieldName] = $this->extractValue($fieldName, $object->$fieldName(), $object);
             }
