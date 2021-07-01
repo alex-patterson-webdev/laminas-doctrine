@@ -8,13 +8,12 @@ use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
+use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -23,6 +22,7 @@ use Psr\Log\NullLogger;
 final class PersistServiceFactory extends AbstractFactory
 {
     use EntityManagerFactoryProviderTrait;
+    use FactoryLoggerProviderTrait;
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
@@ -104,39 +104,5 @@ final class PersistServiceFactory extends AbstractFactory
         }
 
         return $eventDispatcher;
-    }
-
-    /**
-     * @param ContainerInterface          $container
-     * @param LoggerInterface|string|null $logger
-     * @param string                      $serviceName
-     *
-     * @return LoggerInterface
-     *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
-     */
-    private function getLogger(ContainerInterface $container, $logger, string $serviceName): LoggerInterface
-    {
-        if (null === $logger) {
-            return new NullLogger();
-        }
-
-        if (is_string($logger)) {
-            $logger = $this->getService($container, $logger, $serviceName);
-        }
-
-        if (!$logger instanceof LoggerInterface) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The logger must be of type \'%s\'; \'%s\' provided for service \'%s\'',
-                    LoggerInterface::class,
-                    is_object($logger) ? get_class($logger) : gettype($logger),
-                    $serviceName
-                )
-            );
-        }
-
-        return $logger;
     }
 }

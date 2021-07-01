@@ -6,11 +6,11 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Persistence;
 
 use Arp\DoctrineEntityRepository\Persistence\CascadeDeleteService;
 use Arp\LaminasFactory\AbstractFactory;
+use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -18,10 +18,12 @@ use Psr\Log\NullLogger;
  */
 final class CascadeDeleteServiceFactory extends AbstractFactory
 {
+    use FactoryLoggerProviderTrait;
+
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<mixed>|null                          $options
      *
      * @return CascadeDeleteService
      *
@@ -40,39 +42,5 @@ final class CascadeDeleteServiceFactory extends AbstractFactory
             $options['options'] ?? [],
             $options['collection_options'] ?? []
         );
-    }
-
-    /**
-     * @param ContainerInterface          $container
-     * @param LoggerInterface|string|null $logger
-     * @param string                      $serviceName
-     *
-     * @return LoggerInterface
-     *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
-     */
-    private function getLogger(ContainerInterface $container, $logger, string $serviceName): LoggerInterface
-    {
-        if (null === $logger) {
-            return new NullLogger();
-        }
-
-        if (is_string($logger)) {
-            $logger = $this->getService($container, $logger, $serviceName);
-        }
-
-        if (!$logger instanceof LoggerInterface) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The logger must be of type \'%s\'; \'%s\' provided for service \'%s\'',
-                    LoggerInterface::class,
-                    is_object($logger) ? get_class($logger) : gettype($logger),
-                    $serviceName
-                )
-            );
-        }
-
-        return $logger;
     }
 }

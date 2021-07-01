@@ -10,13 +10,13 @@ use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
 use Arp\LaminasFactory\AbstractFactory;
+use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -24,10 +24,27 @@ use Psr\Log\NullLogger;
  */
 final class RepositoryFactory extends AbstractFactory
 {
+    use FactoryLoggerProviderTrait;
+
     /**
+     * The default configuration for all entity repositories
+     *
      * @var array<mixed>
      */
-    private array $defaultOptions = [];
+    private array $defaultOptions = [
+        'logger' => 'EntityRepositoryLogger',
+        'query_service' => [
+            'service_name' => QueryService::class,
+            'logger' => 'EntityQueryLogger',
+        ],
+        'persist_service' => [
+            'service_name' => PersistService::class,
+            'logger' => 'EntityPersistLogger',
+            'event_dispatcher' => [
+                'listener_provider' => EntityListenerProvider::class,
+            ],
+        ],
+    ];
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
@@ -60,57 +77,28 @@ final class RepositoryFactory extends AbstractFactory
             );
         }
 
-        $logger = $options['logger'] ?? 'EntityEventLog';
-        if (is_string($logger)) {
-            $logger = $this->getLogger($container, $logger, $requestedName);
-        }
-
-        $queryServiceOptions = $options['query_service'] ?? [];
-        if (empty($queryServiceOptions['logger'])) {
-            $queryServiceOptions['logger'] = $logger;
-        }
-
         $queryService = $this->getQueryService(
             $container,
             $entityName,
-            $queryServiceOptions,
+            $options['query_service'] ?? [],
             $requestedName
         );
-
-        $persistServiceOptions = $options['persist_service'] ?? [];
-        if (empty($persistServiceOptions['logger'])) {
-            $persistServiceOptions['logger'] = $logger;
-        }
 
         $persistService = $this->getPersistService(
             $container,
             $entityName,
-            $persistServiceOptions,
+            $options['persist_service'] ?? [],
             $requestedName
         );
 
         $className = $this->resolveClassName($entityName, $options);
 
-        return new $className($entityName, $queryService, $persistService, $logger);
-    }
-
-    /**
-     * @param ContainerInterface     $container
-     * @param LoggerInterface|string $logger
-     * @param string                 $serviceName
-     *
-     * @return LoggerInterface
-     *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
-     */
-    private function getLogger(ContainerInterface $container, $logger, string $serviceName): LoggerInterface
-    {
-        $logger = is_string($logger)
-            ? $this->getService($container, $logger, $serviceName)
-            : $logger;
-
-        return ($logger instanceof LoggerInterface) ? $logger : new NullLogger();
+        return new $className(
+            $entityName,
+            $queryService,
+            $persistService,
+            $this->getLogger($container, $options['logger'] ?? null, $requestedName)
+        );
     }
 
     /**
@@ -195,5 +183,13 @@ final class RepositoryFactory extends AbstractFactory
             $options,
             $serviceName
         );
+    }
+
+    /**
+     * @param array<mixed> $defaultOptions
+     */
+    public function setDefaultOptions(array $defaultOptions): void
+    {
+        $this->defaultOptions = $defaultOptions;
     }
 }
