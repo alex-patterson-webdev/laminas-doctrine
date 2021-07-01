@@ -6,10 +6,10 @@ namespace Arp\LaminasDoctrine\Factory\Data;
 
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Interop\Container\ContainerInterface;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * Factory class that will construct a class that extends AbstractHydratorFixture based on configuration options.
@@ -20,19 +20,20 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class HydratorFixtureFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return FixtureInterface
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): FixtureInterface
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): FixtureInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'data_fixtures');
 
         $className = $options['class_name'] ?? null;

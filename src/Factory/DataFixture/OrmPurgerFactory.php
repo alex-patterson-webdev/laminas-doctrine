@@ -8,8 +8,9 @@ use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -21,17 +22,16 @@ final class OrmPurgerFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ORMPurger
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ORMPurger
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ORMPurger
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 

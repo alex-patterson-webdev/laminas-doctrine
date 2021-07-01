@@ -6,6 +6,7 @@ namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
 use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\Entity\EntityInterface;
+use Arp\LaminasDoctrine\Hydrator\Strategy\Exception\RuntimeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Laminas\Hydrator\HydratorInterface;
@@ -46,12 +47,13 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param mixed      $value
-     * @param array|null $data
+     * @param mixed                     $value
+     * @param array<string, mixed>|null $data
      *
      * @return iterable|EntityInterface[]
      *
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function hydrate($value, ?array $data): iterable
     {
@@ -107,11 +109,11 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     /**
      * @param object $object
      *
-     * @return iterable|EntityInterface[]
+     * @return EntityInterface[]
      *
      * @throws InvalidArgumentException
      */
-    private function resolveEntityCollection(object $object): iterable
+    private function resolveEntityCollection(object $object): array
     {
         $methodName = 'get' . ucfirst($this->name);
         if (!is_callable([$object, $methodName])) {
@@ -174,9 +176,10 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
      * @param string $entityName
      * @param mixed  $value
      *
-     * @return array
+     * @return array<EntityInterface>
      *
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     private function prepareCollectionValues(string $entityName, $value): array
     {
@@ -186,6 +189,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
                 $collection[] = $collection;
                 continue;
             }
+
             if (empty($item)) {
                 $collection[] = null;
                 continue;
@@ -194,32 +198,91 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
             // Attempt to resolve the identity of the item
             $id = $this->resolveId($item);
 
-            try {
-                if (empty($id)) {
-                    // We were provided entity data without an id
-                    $entity = (new \ReflectionClass($entityName))->newInstanceWithoutConstructor();
-                } else {
-                    // We can us the entity id to lookup the entity
-                    $entity = $this->repository->find($id);
-                }
+            $entity = empty($id)
+                ? $this->createInstance($entityName)
+                : $this->getById($entityName, $id);
 
-                $collection[] = is_array($item) ? $this->hydrator->hydrate($item, $entity) : $entity;
-            } catch (\Throwable $e) {
-                throw new InvalidArgumentException(
-                    sprintf('A \'%s\' collection item could not be hydrated: %s', $entityName, $e->getMessage()),
-                    $e->getCode(),
-                    $e
-                );
-            }
+            $collection[] = is_array($item)
+                ? $this->hydrator->hydrate($item, $entity)
+                : $entity;
         }
 
         return array_filter($collection, static fn ($item) => null !== $item);
     }
 
     /**
+     * @param string $entityName
+     *
+     * @return object
+     *
+     * @throws RuntimeException
+     */
+    private function createInstance(string $entityName): object
+    {
+        if (!class_exists($entityName, true)) {
+            throw new RuntimeException(
+                sprintf(
+                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
+                    'The class could not be found',
+                    $entityName,
+                )
+            );
+        }
+
+        try {
+            return (new \ReflectionClass($entityName))->newInstanceWithoutConstructor();
+        } catch (\ReflectionException $e) {
+            throw new RuntimeException(
+                sprintf('The reflection class \'%s\' could not be created: %s', $entityName, $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        }
+    }
+
+    /**
+     * @param string $entityName
+     * @param mixed  $id
+     *
+     * @return object
+     *
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    private function getById(string $entityName, $id): object
+    {
+        try {
+            $entity = $this->repository->find($id);
+        } catch (\Exception $e) {
+            throw new RuntimeException(
+                sprintf(
+                    'Collection item of type \'%s\', with id \'%d\' could not be found: %s',
+                    $entityName,
+                    $id,
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        if (null === $entity) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Collection item of type \'%s\' with id \'%d\' could not be found',
+                    $entityName,
+                    $id
+                )
+            );
+        }
+
+        return $entity;
+    }
+
+    /**
      * @param EntityInterface[] $items
      *
-     * @return ArrayCollection
+     * @return ArrayCollection<int, EntityInterface>
      */
     private function createArrayCollection(array $items): ArrayCollection
     {
@@ -243,7 +306,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
      * @param mixed       $value
      * @param object|null $object
      *
-     * @return iterable
+     * @return iterable<EntityInterface>
      */
     public function extract($value, ?object $object = null): iterable
     {

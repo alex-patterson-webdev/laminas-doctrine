@@ -10,5 +10,4 @@ namespace Arp\LaminasDoctrine\Data\Exception;
  */
 final class DataFixtureException extends \Exception
 {
-
 }

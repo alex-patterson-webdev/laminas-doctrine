@@ -10,5 +10,4 @@ namespace Arp\LaminasDoctrine\Config\Exception;
  */
 class DoctrineConfigException extends \Exception
 {
-
 }

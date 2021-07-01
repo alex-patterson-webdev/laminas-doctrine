@@ -6,9 +6,9 @@ namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -17,16 +17,19 @@ use Laminas\ServiceManager\ServiceManager;
 final class MappingDriverChainFactory extends AbstractDriverFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<mixed>|null                          $options
      *
      * @return MappingDriverChain
+     *
+     * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): MappingDriverChain
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): MappingDriverChain {
         $options = $options ?? $this->getOptions($container, $requestedName, $options);
 
         $driverChain = new MappingDriverChain();
@@ -44,15 +47,15 @@ final class MappingDriverChainFactory extends AbstractDriverFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param MappingDriver|string|array        $driver
+     * @param ServiceLocatorInterface           $container
+     * @param MappingDriver|string|array<mixed> $driver
      * @param string                            $serviceName
      *
      * @return MappingDriver
      *
      * @throws ServiceNotCreatedException
      */
-    private function createDriver(ContainerInterface $container, $driver, string $serviceName): MappingDriver
+    private function createDriver(ServiceLocatorInterface $container, $driver, string $serviceName): MappingDriver
     {
         if (is_string($driver)) {
             $driver = $this->getOptions($container, $driver);

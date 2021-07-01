@@ -1,5 +1,6 @@
 vendor/
 .idea/
+test/coverage/
 composer.phar
 .phpunit.result.cache
 coverage.xml

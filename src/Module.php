@@ -13,7 +13,7 @@ final class Module
     /**
      * Return the module configuration array.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getConfig(): array
     {

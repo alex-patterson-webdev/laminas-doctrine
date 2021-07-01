@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\ConfigurationFactory;
-use Arp\LaminasDoctrine\Service\ConfigurationFactoryInterface;
-use Arp\LaminasDoctrine\Service\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactoryInterface;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,19 +20,20 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class ConfigurationManagerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface $container
      * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
      * @return ConfigurationManager
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConfigurationManager
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConfigurationManager {
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 

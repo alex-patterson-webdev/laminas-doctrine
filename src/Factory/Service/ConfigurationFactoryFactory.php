@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Service;
 
-use Arp\LaminasDoctrine\Service\ConfigurationFactory;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -16,16 +16,17 @@ use Laminas\ServiceManager\ServiceManager;
 final class ConfigurationFactoryFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param string                            $requestedName
-     * @param array|null                        $options
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<string, mixed>|null                  $options
      *
      * @return ConfigurationFactory
-     *
-     * @noinspection PhpMissingParamTypeInspection
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConfigurationFactory
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConfigurationFactory {
         return new ConfigurationFactory($container);
     }
 }

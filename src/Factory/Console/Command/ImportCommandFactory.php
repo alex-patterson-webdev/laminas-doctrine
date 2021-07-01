@@ -9,9 +9,9 @@ use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,22 +20,20 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class ImportCommandFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ImportCommand
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ImportCommand
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ImportCommand
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
-        /** @var Loader|string $loader */
+        /** @var Loader $loader */
         $loader = $this->getService($container, $options['loader'] ?? Loader::class, $requestedName);
 
         try {

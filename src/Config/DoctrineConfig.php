@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Config;
 
 /**
- * @author Alex Patterson <alex.patterson.webdev@gmail.com>
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Config
  */
 class DoctrineConfig
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private array $config = [];
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
     public function __construct(array $config)
     {
@@ -36,7 +36,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getConnectionConfig(string $name): array
     {
@@ -44,7 +44,7 @@ class DoctrineConfig
     }
 
     /**
-     * @param array $connectionConfigs
+     * @param array<string, array> $connectionConfigs
      */
     public function setConnectionConfigs(array $connectionConfigs): void
     {
@@ -54,8 +54,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $connectionConfig
+     * @param string               $name
+     * @param array<string, mixed> $connectionConfig
      */
     public function setConnectionConfig(string $name, array $connectionConfig): void
     {
@@ -75,7 +75,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getEntityManagerConfig(string $name): array
     {
@@ -83,8 +83,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setEntityManagerConfig(string $name, array $config): void
     {
@@ -104,7 +104,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getConfigurationConfig(string $name): array
     {
@@ -112,8 +112,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setConfigurationConfig(string $name, array $config): void
     {
@@ -133,7 +133,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDriverConfig(string $name): array
     {
@@ -141,8 +141,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setDriverConfig(string $name, array $config): void
     {
@@ -152,7 +152,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getEntityResolverConfig(string $name): array
     {
@@ -160,8 +160,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setEntityResolverConfig(string $name, array $config): void
     {
@@ -181,7 +181,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getCacheConfig(string $name): array
     {
@@ -189,8 +189,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setCacheConfig(string $name, array $config): void
     {
@@ -198,7 +198,7 @@ class DoctrineConfig
     }
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
     public function configure(array $config): void
     {

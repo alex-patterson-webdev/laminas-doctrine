@@ -9,9 +9,9 @@ use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateDeletedListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateUpdatedListener;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,31 +20,29 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class DateTimeListenerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return DateTimeListener
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): DateTimeListener
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): DateTimeListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         $dateCreatedListener = $options['create_listener'] ?? DateCreatedListener::class;
         $dateUpdatedListener = $options['update_listener'] ?? DateUpdatedListener::class;
         $dateDeletedListener = $options['delete_listener'] ?? DateDeletedListener::class;
 
-        $a = $this->getService($container, $dateCreatedListener, $requestedName);
-        $b = $this->getService($container, $dateUpdatedListener, $requestedName);
-
         return new DateTimeListener(
-            $a,
-            $b,
+            $this->getService($container, $dateCreatedListener, $requestedName),
+            $this->getService($container, $dateUpdatedListener, $requestedName),
             $this->getService($container, $dateDeletedListener, $requestedName)
         );
     }

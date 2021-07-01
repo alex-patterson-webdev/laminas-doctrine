@@ -7,11 +7,9 @@ namespace Arp\LaminasDoctrine\Factory\Repository\Event\Listener;
 use Arp\DoctrineEntityRepository\Persistence\CascadeSaveService;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeSaveListener;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -20,19 +18,20 @@ use Psr\Log\NullLogger;
 final class CascadeSaveListenerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface $container
      * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
      * @return CascadeSaveListener
      *
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): CascadeSaveListener
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): CascadeSaveListener {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         /** @var CascadeSaveService|string $cascadeSaveService */
@@ -41,12 +40,6 @@ final class CascadeSaveListenerFactory extends AbstractFactory
             $cascadeSaveService = $this->getService($container, $cascadeSaveService, $requestedName);
         }
 
-        /** @var LoggerInterface|string $logger */
-        $logger = $options['logger'] ?? NullLogger::class;
-        if (is_string($logger)) {
-            $logger = $this->getService($container, $logger, $requestedName);
-        }
-
-        return new CascadeSaveListener($cascadeSaveService, $logger);
+        return new CascadeSaveListener($cascadeSaveService);
     }
 }

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Service;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrine\Service\ConnectionFactory;
-use Arp\LaminasDoctrine\Service\ConnectionManager;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
-use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -18,24 +20,40 @@ use Interop\Container\ContainerInterface;
 final class ConnectionManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ConnectionManager
      *
-     * @noinspection PhpMissingParamTypeInspection
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ConnectionManager
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): ConnectionManager {
+        $options = $options ?? $this->getServiceOptions($container, $requestedName);
+
         /** @var DoctrineConfig $doctrineConfig */
         $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
-        /** @var ConnectionFactory $connectionFactory */
-        $connectionFactory = $this->getService($container, ConnectionFactory::class, $requestedName);
+        /** @var ConnectionFactoryInterface $connectionFactory */
+        $connectionFactory = $this->getService(
+            $container,
+            $options['factory'] ?? ConnectionFactoryInterface::class,
+            $requestedName
+        );
 
-        /** @var Connection[] $connections */
         $connections = [];
+        if (!empty($options['connections'])) {
+            foreach ($options['connections'] as $name => $connection) {
+                if ($connection instanceof Connection) {
+                    $connections[$name] = $connection;
+                }
+            }
+        }
 
         return new ConnectionManager($doctrineConfig, $connectionFactory, $connections);
     }

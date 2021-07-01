@@ -4,6 +4,24 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
+use Arp\DoctrineEntityRepository\Persistence\CascadeDeleteService;
+use Arp\DoctrineEntityRepository\Persistence\CascadeSaveService;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeDeleteListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\CascadeSaveListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ClearListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateCreatedListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateDeletedListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateTimeListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DateUpdatedListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\DeleteCollectionListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\EntityValidationListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\ExceptionListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\FlushListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\HardDeleteListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\PersistListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SaveCollectionListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
+use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
@@ -18,29 +36,39 @@ use Arp\LaminasDoctrine\Factory\DataFixture\OrmPurgerFactory;
 use Arp\LaminasDoctrine\Factory\Hydrator\EntityHydratorFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\AnnotationDriverFactory;
 use Arp\LaminasDoctrine\Factory\Mapping\Driver\MappingDriverChainFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\CascadeDeleteListenerFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\CascadeSaveListenerFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateCreatedListenerFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateDeletedListenerFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateTimeListenerFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\DateUpdatedListenerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Event\Listener\EntityListenerProviderFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeDeleteServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeSaveServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Persistence\PersistServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConfigurationFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConfigurationManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConnectionFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConnectionManagerFactory;
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerManagerFactory;
+use Arp\LaminasDoctrine\Factory\Service\EntityManagerContainerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerProviderFactory;
-use Arp\LaminasDoctrine\Factory\Service\PersistServiceFactory;
-use Arp\LaminasDoctrine\Factory\Service\QueryServiceFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
 use Arp\LaminasDoctrine\Repository\RepositoryFactory;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
-use Arp\LaminasDoctrine\Service\ConfigurationFactory as ConfigurationFactoryService;
-use Arp\LaminasDoctrine\Service\ConfigurationManager;
-use Arp\LaminasDoctrine\Service\ConfigurationManagerInterface;
-use Arp\LaminasDoctrine\Service\ConnectionFactory;
-use Arp\LaminasDoctrine\Service\ConnectionManager;
-use Arp\LaminasDoctrine\Service\ConnectionManagerInterface;
-use Arp\LaminasDoctrine\Service\EntityManagerManager;
-use Arp\LaminasDoctrine\Service\EntityManagerProvider;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory as ConfigurationFactoryService;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager;
+use Arp\LaminasDoctrine\Service\Configuration\ConfigurationManagerInterface;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactory;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionFactoryInterface;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
+use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
+use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasEvent\Factory\EventDispatcherFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
@@ -56,9 +84,10 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 return [
     'arp' => [
         'services'      => [
-            QueryService::class   => [
+            QueryService::class => [
                 'entity_manager' => 'orm_default',
             ],
+
             PersistService::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -68,8 +97,12 @@ return [
 
                 ],
             ],
+
+            ConnectionManagerInterface::class => [
+                'connection_factory' => ConnectionFactoryInterface::class,
+            ],
         ],
-        'hydrators' => [
+        'hydrators'     => [
             EntityHydrator::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -80,12 +113,16 @@ return [
     ],
 
     'service_manager' => [
+        'shared' => [
+            'EntityEventDispatcher' => false,
+        ],
         'aliases'   => [
             MappingDriver::class => MappingDriverChain::class,
             Cache::class         => ArrayCache::class,
 
             ConfigurationManager::class => ConfigurationManagerInterface::class,
             ConnectionManager::class    => ConnectionManagerInterface::class,
+            ConnectionFactory::class    => ConnectionFactoryInterface::class,
         ],
         'factories' => [
             // Config
@@ -97,13 +134,15 @@ return [
             Configuration::class                 => ConfigurationFactory::class,
 
             ConnectionManagerInterface::class => ConnectionManagerFactory::class,
-            ConnectionFactory::class          => ConnectionFactoryFactory::class,
+            ConnectionFactoryInterface::class => ConnectionFactoryFactory::class,
             EntityManagerProvider::class      => EntityManagerProviderFactory::class,
-            EntityManagerManager::class       => EntityManagerManagerFactory::class,
+            EntityManagerContainer::class     => EntityManagerContainerFactory::class,
             RepositoryManager::class          => RepositoryManagerFactory::class,
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
             QueryService::class               => QueryServiceFactory::class,
             PersistService::class             => PersistServiceFactory::class,
+            CascadeSaveService::class         => CascadeSaveServiceFactory::class,
+            CascadeDeleteService::class       => CascadeDeleteServiceFactory::class,
 
             // Drivers
             MappingDriverChain::class         => MappingDriverChainFactory::class,
@@ -120,7 +159,25 @@ return [
             ORMPurger::class                  => OrmPurgerFactory::class,
 
             // Repository Event Listeners
+            'EntityEventDispatcher'           => EventDispatcherFactory::class,
             EntityListenerProvider::class     => EntityListenerProviderFactory::class,
+
+            EntityValidationListener::class => InvokableFactory::class,
+            TransactionListener::class      => InvokableFactory::class,
+            ExceptionListener::class        => InvokableFactory::class,
+            DateTimeListener::class         => DateTimeListenerFactory::class,
+            DateCreatedListener::class      => DateCreatedListenerFactory::class,
+            DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
+            DateDeletedListener::class      => DateDeletedListenerFactory::class,
+            CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
+            CascadeDeleteListener::class    => CascadeDeleteListenerFactory::class,
+            PersistListener::class          => InvokableFactory::class,
+            FlushListener::class            => InvokableFactory::class,
+            ClearListener::class            => InvokableFactory::class,
+            SoftDeleteListener::class       => InvokableFactory::class,
+            HardDeleteListener::class       => InvokableFactory::class,
+            SaveCollectionListener::class   => InvokableFactory::class,
+            DeleteCollectionListener::class => InvokableFactory::class,
         ],
     ],
 
@@ -130,12 +187,13 @@ return [
         ],
     ],
 
-    'repository_manager'     => [
+    'repository_manager' => [
         'factories' => [
 
         ],
     ],
-    'entity_manager_manager' => [
+
+    'entity_manager_container' => [
         'factories' => [
 
         ],

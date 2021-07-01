@@ -12,5 +12,4 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class ObjectManagerOption extends InputOption
 {
-
 }

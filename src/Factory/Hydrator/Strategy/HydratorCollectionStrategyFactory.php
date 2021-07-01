@@ -7,10 +7,10 @@ namespace Arp\LaminasDoctrine\Factory\Hydrator\Strategy;
 use Arp\LaminasDoctrine\Hydrator\Strategy\HydratorCollectionStrategy;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\Hydrator\HydratorPluginManager;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -19,11 +19,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class HydratorCollectionStrategyFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return HydratorCollectionStrategy
      *
@@ -32,7 +30,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): HydratorCollectionStrategy {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
@@ -51,7 +49,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
         if (empty($entityName)) {
             throw new ServiceNotCreatedException(
                 sprintf(
-                    'The required \'entity_name\' configuration option is missing for service \'%s\'',
+                    'The required \'field_name\' configuration option is missing for service \'%s\'',
                     $requestedName
                 )
             );

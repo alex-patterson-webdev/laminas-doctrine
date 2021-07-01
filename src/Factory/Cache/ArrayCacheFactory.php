@@ -6,7 +6,7 @@ namespace Arp\LaminasDoctrine\Factory\Cache;
 
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\Cache\ArrayCache;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -15,15 +15,13 @@ use Interop\Container\ContainerInterface;
 final class ArrayCacheFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ArrayCache
-     *
-     * @noinspection PhpMissingParamTypeInspection
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ArrayCache
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ArrayCache
     {
         return new ArrayCache();
     }

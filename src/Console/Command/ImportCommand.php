@@ -63,15 +63,12 @@ final class ImportCommand extends AbstractCommand
     {
         $output->writeln('Executing data fixtures...');
 
-        $purger = $this->executor->getPurger();
-        if (null === $purger) {
-            $purger = $this->purger;
-        }
+        $purger = $this->purger ?? $this->executor->getPurger();
 
-        if (null !== $purger && $input->getOption('purge-with-truncate')) {
+        // 1. Remove existing data with delete SQL (default)
+        // 2. Remove existing data with truncate SQL
+        if ($purger instanceof ORMPurger && $input->getOption('purge-with-truncate')) {
             $output->writeln('Import has been configured to purge existing data');
-            // 1. Remove existing data with delete SQL (default)
-            // 2. Remove existing data with truncate SQL
             $purger->setPurgeMode(2);
             $this->executor->setPurger($purger);
         }

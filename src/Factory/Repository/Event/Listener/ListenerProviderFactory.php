@@ -10,9 +10,9 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
@@ -27,21 +27,19 @@ class ListenerProviderFactory extends AbstractFactory
     private string $defaultClassName = ListenerProvider::class;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected array $defaultListenerConfig = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected array $defaultAggregateListenerConfig = [];
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param ContainerInterface $container
      * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
      * @return ListenerProviderInterface
      *
@@ -50,7 +48,7 @@ class ListenerProviderFactory extends AbstractFactory
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): ListenerProviderInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
@@ -75,39 +73,41 @@ class ListenerProviderFactory extends AbstractFactory
         /** @var ListenerProviderInterface $listenerProvider */
         $listenerProvider = new $className($eventNameResolver);
 
-        if ($listenerProvider instanceof AddListenerAwareInterface) {
-            try {
-                $listenerConfig = array_replace_recursive($this->defaultListenerConfig, $options['listeners'] ?? []);
+        if (!$listenerProvider instanceof AddListenerAwareInterface) {
+            return $listenerProvider;
+        }
 
-                if (!empty($listenerConfig)) {
-                    $this->registerCallableListeners($container, $listenerProvider, $listenerConfig, $requestedName);
-                }
+        try {
+            $listenerConfig = array_replace_recursive($this->defaultListenerConfig, $options['listeners'] ?? []);
 
-                $listenerConfig = array_replace_recursive(
-                    $this->defaultAggregateListenerConfig,
-                    $options['aggregate_listeners'] ?? []
-                );
-
-                if (!empty($listenerConfig)) {
-                    $this->registerAggregateListeners($container, $listenerProvider, $listenerConfig, $requestedName);
-                }
-            } catch (EventListenerException $e) {
-                throw new ServiceNotCreatedException(
-                    sprintf('Failed to register event listeners: %s', $e->getMessage()),
-                    $e->getCode(),
-                    $e
-                );
+            if (!empty($listenerConfig)) {
+                $this->registerCallableListeners($container, $listenerProvider, $listenerConfig, $requestedName);
             }
+
+            $listenerConfig = array_replace_recursive(
+                $this->defaultAggregateListenerConfig,
+                $options['aggregate_listeners'] ?? []
+            );
+
+            if (!empty($listenerConfig)) {
+                $this->registerAggregateListeners($container, $listenerProvider, $listenerConfig, $requestedName);
+            }
+        } catch (EventListenerException $e) {
+            throw new ServiceNotCreatedException(
+                sprintf('Failed to register event listeners: %s', $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
         }
 
         return $listenerProvider;
     }
 
     /**
-     * @param ContainerInterface        $container
-     * @param AddListenerAwareInterface $listenerProvider
-     * @param callable[][]              $listenerConfig
-     * @param string                    $requestedName
+     * @param ContainerInterface                $container
+     * @param AddListenerAwareInterface         $listenerProvider
+     * @param array<string,callable|string>[][] $listenerConfig
+     * @param string                            $requestedName
      *
      * @throws EventListenerException
      * @throws ServiceNotCreatedException
@@ -145,10 +145,10 @@ class ListenerProviderFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface        $container
-     * @param AddListenerAwareInterface $listenerProvider
-     * @param array                     $listenerConfig
-     * @param string                    $requestedName
+     * @param ContainerInterface                             $container
+     * @param AddListenerAwareInterface                      $listenerProvider
+     * @param array<string|AggregateListenerInterface|mixed> $listenerConfig
+     * @param string                                         $requestedName
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

@@ -11,9 +11,9 @@ use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -25,18 +25,16 @@ final class OrmExecutorFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return ORMExecutor
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ORMExecutor
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ORMExecutor
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
@@ -86,7 +84,7 @@ final class OrmExecutorFactory extends AbstractFactory
             $purger = $this->getService($container, $purger, $serviceName);
         }
 
-        if (!$purger instanceof PurgerInterface) {
+        if (!$purger instanceof ORMPurger) {
             throw new ServiceNotCreatedException(
                 sprintf(
                     'The \'purger\' must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',

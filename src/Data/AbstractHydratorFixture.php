@@ -29,19 +29,17 @@ abstract class AbstractHydratorFixture extends AbstractFixture
     /**
      * An array of configuration data
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $data;
 
     /**
      * @param HydratorInterface $hydrator
-     * @param array             $data
+     * @param array<mixed>      $data
      */
     public function __construct(HydratorInterface $hydrator, array $data)
     {
         $this->hydrator = $hydrator;
         $this->data = $data;
     }
-
-
 }
