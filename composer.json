@@ -17,6 +17,7 @@
     "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
     "alex-patterson-webdev/laminas-symfony-console": "dev-feature/0.1.0",
     "alex-patterson-webdev/laminas-monolog": "dev-feature/0.1.0",
+    "doctrine/cache":"^2.0",
     "doctrine/doctrine-laminas-hydrator" : "^2",
     "doctrine/data-fixtures": "^1.4",
     "doctrine/orm": "^2.7"
