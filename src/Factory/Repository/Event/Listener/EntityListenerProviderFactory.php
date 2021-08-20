@@ -66,11 +66,13 @@ class EntityListenerProviderFactory extends ListenerProviderFactory
         EntityEventName::SAVE_COLLECTION => [
             1 => [
                 SaveCollectionListener::class,
+                FlushListener::class,
             ]
         ],
         EntityEventName::DELETE_COLLECTION => [
             1 => [
                 DeleteCollectionListener::class,
+                FlushListener::class,
             ]
         ],
     ];
