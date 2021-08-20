@@ -47,7 +47,7 @@ final class ConnectionFactoryFactory extends AbstractFactory
             /** @var DoctrineConfig $doctrineConfig */
             $doctrineConfig = $this->getService($container, DoctrineConfig::class, $requestedName);
 
-            $options = $doctrineConfig->hasConfigurationConfig($requestedName)
+            $options = $doctrineConfig->hasConnectionConfig($requestedName)
                 ? $doctrineConfig->getConnectionConfig($requestedName)
                 : [];
         }
