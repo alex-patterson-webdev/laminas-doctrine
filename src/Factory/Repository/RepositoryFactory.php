@@ -111,12 +111,17 @@ final class RepositoryFactory extends AbstractFactory
     {
         $className = $options['class_name'] ?? EntityRepository::class;
         if (empty($options['class_name'])) {
-            $generatedClassName = str_replace('Entity', 'Repository', $entityName) . 'Repository';
-            if (
-                class_exists($generatedClassName, true)
-                && is_subclass_of($generatedClassName, EntityRepositoryInterface::class, true)
-            ) {
-                $className = $generatedClassName;
+            $generatedClassNames = [
+                str_replace('Entity', 'Repository', $entityName) . 'Repository',
+                str_replace('Entity', 'Entity\\Repository', $entityName) . 'Repository',
+            ];
+            foreach ($generatedClassNames as $generatedClassName) {
+                if (
+                    class_exists($generatedClassName, true)
+                    && is_subclass_of($generatedClassName, EntityRepositoryInterface::class, true)
+                ) {
+                    return $generatedClassName;
+                }
             }
         }
 
