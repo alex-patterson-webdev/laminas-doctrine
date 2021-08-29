@@ -13,6 +13,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 
 /**
+ * @deprecated
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Service\Connection
  */

@@ -11,6 +11,7 @@ use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -19,6 +20,8 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
 
 /**
+ * @deprecated
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Factory\Repository
  */
@@ -176,18 +179,26 @@ final class RepositoryFactory extends AbstractFactory
         array $options,
         string $serviceName
     ): QueryServiceInterface {
-        $options = array_replace_recursive(
-            $this->getServiceOptions($container, QueryService::class),
-            $options
-        );
+        /** @var QueryServiceManager $queryServiceManager */
+        $queryServiceManager = $this->getService($container, QueryServiceManager::class, $serviceName);
+
+        if ($queryServiceManager->has($entityName)) {
+            return $queryServiceManager->get($entityName);
+        }
+
+        $options = array_replace_recursive($this->getServiceOptions($container, QueryService::class), $options);
         $options['entity_name'] ??= $entityName;
 
-        return $this->buildService(
+        $queryService = $this->buildService(
             $container,
             $options['service_name'] ?? QueryService::class,
             $options,
             $serviceName
         );
+
+        $queryServiceManager->setService($entityName, $queryService);
+
+        return $queryService;
     }
 
     /**

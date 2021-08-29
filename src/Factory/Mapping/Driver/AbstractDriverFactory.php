@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
-use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;
@@ -32,8 +32,8 @@ abstract class AbstractDriverFactory extends AbstractFactory
     protected function getOptions(ContainerInterface $container, string $driverName, ?array $options = null): array
     {
         if (null === $options) {
-            /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $container->get(DoctrineConfig::class);
+            /** @var DoctrineConfigInterface $doctrineConfig */
+            $doctrineConfig = $container->get(DoctrineConfigInterface::class);
 
             if (!$doctrineConfig->hasDriverConfig($driverName)) {
                 throw new ServiceNotCreatedException(

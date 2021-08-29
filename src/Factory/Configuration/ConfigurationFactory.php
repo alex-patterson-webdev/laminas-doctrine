@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Configuration;
 
-use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\ORM\Configuration;
@@ -121,8 +121,8 @@ final class ConfigurationFactory extends AbstractFactory
     private function getMappingDriver(ServiceLocatorInterface $container, $driver, string $serviceName): MappingDriver
     {
         if (is_string($driver)) {
-            /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $this->getService($container, DoctrineConfig::class, $serviceName);
+            /** @var DoctrineConfigInterface $doctrineConfig */
+            $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $serviceName);
 
             if (!$doctrineConfig->hasDriverConfig($driver)) {
                 throw new ServiceNotCreatedException(
@@ -163,10 +163,10 @@ final class ConfigurationFactory extends AbstractFactory
     private function getCache(ServiceLocatorInterface $container, $cache, string $serviceName): Cache
     {
         if (is_string($cache)) {
-            /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $this->getService($container, DoctrineConfig::class, $serviceName);
+            /** @var DoctrineConfigInterface $doctrineConfig */
+            $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $serviceName);
 
-            if (!$doctrineConfig instanceof DoctrineConfig || !$doctrineConfig->hasCacheConfig($cache)) {
+            if (!$doctrineConfig instanceof DoctrineConfigInterface || !$doctrineConfig->hasCacheConfig($cache)) {
                 throw new ServiceNotCreatedException(
                     sprintf(
                         'The cache configuration \'%s\' could not be found for service \'%s\'',
@@ -243,10 +243,13 @@ final class ConfigurationFactory extends AbstractFactory
     private function getOptions(ContainerInterface $container, string $serviceName, ?array $options): array
     {
         if (null === $options) {
-            /** @var DoctrineConfig $doctrineConfig */
-            $doctrineConfig = $this->getService($container, DoctrineConfig::class, $serviceName);
+            /** @var DoctrineConfigInterface $doctrineConfig */
+            $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $serviceName);
 
-            if (!$doctrineConfig instanceof DoctrineConfig || !$doctrineConfig->hasConfigurationConfig($serviceName)) {
+            if (
+                !$doctrineConfig instanceof DoctrineConfigInterface
+                || !$doctrineConfig->hasConfigurationConfig($serviceName)
+            ) {
                 throw new ServiceNotCreatedException(
                     sprintf('Unable to find configuration for \'%s\'', $serviceName)
                 );

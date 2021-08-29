@@ -8,6 +8,7 @@ use Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderExc
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
+ * @deprecated
  * Service that managers a collection of entity managers
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>

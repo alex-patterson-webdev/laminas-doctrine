@@ -12,6 +12,8 @@ use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;
 
 /**
+ * @deprecated
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Factory\Service
  */

@@ -8,6 +8,7 @@ use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\PluginManagerInterface;
 
 /**
+ * @deprecated
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Service\EntityManager
  */

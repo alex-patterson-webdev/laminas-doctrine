@@ -8,7 +8,7 @@ namespace Arp\LaminasDoctrine\Config;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Config
  */
-class DoctrineConfig
+class DoctrineConfig implements DoctrineConfigInterface
 {
     /**
      * @var array<string, mixed>

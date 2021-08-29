@@ -25,6 +25,7 @@ use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
 use Arp\LaminasDoctrine\Factory\Config\DoctrineConfigFactory;
@@ -47,6 +48,7 @@ use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeDeleteServiceFacto
 use Arp\LaminasDoctrine\Factory\Repository\Persistence\CascadeSaveServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Persistence\PersistServiceFactory;
 use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceFactory;
+use Arp\LaminasDoctrine\Factory\Repository\Query\QueryServiceManagerFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Repository\RepositoryManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\ConfigurationFactoryFactory;
@@ -57,6 +59,7 @@ use Arp\LaminasDoctrine\Factory\Service\EntityManagerContainerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManagerProviderFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasDoctrine\Repository\Event\Listener\EntityListenerProvider;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasDoctrine\Repository\RepositoryFactory;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasDoctrine\Service\Configuration\ConfigurationFactory as ConfigurationFactoryService;
@@ -83,7 +86,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'arp' => [
-        'services'      => [
+        'services' => [
             QueryService::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -117,6 +120,8 @@ return [
             'EntityEventDispatcher' => false,
         ],
         'aliases'   => [
+            DoctrineConfigInterface::class => DoctrineConfig::class,
+
             MappingDriver::class => MappingDriverChain::class,
             Cache::class         => ArrayCache::class,
 
@@ -126,7 +131,7 @@ return [
         ],
         'factories' => [
             // Config
-            DoctrineConfig::class                => DoctrineConfigFactory::class,
+            DoctrineConfig::class => DoctrineConfigFactory::class,
 
             // Services
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
@@ -139,6 +144,8 @@ return [
             EntityManagerContainer::class     => EntityManagerContainerFactory::class,
             RepositoryManager::class          => RepositoryManagerFactory::class,
             RepositoryFactory::class          => RepositoryFactoryFactory::class,
+
+            QueryServiceManager::class        => QueryServiceManagerFactory::class,
             QueryService::class               => QueryServiceFactory::class,
             PersistService::class             => PersistServiceFactory::class,
             CascadeSaveService::class         => CascadeSaveServiceFactory::class,
@@ -188,6 +195,12 @@ return [
     ],
 
     'repository_manager' => [
+        'factories' => [
+
+        ],
+    ],
+
+    'query_service_manager' => [
         'factories' => [
 
         ],

@@ -8,6 +8,7 @@ use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationFactoryExce
 use Doctrine\ORM\Configuration;
 
 /**
+ * @deprecated
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Service\Configuration
  */

@@ -7,6 +7,8 @@ namespace Arp\LaminasDoctrine\Repository\Event\Listener;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 
 /**
+ * @deprecated
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Repository\Event\Listener
  */

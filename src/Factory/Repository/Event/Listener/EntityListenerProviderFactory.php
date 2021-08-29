@@ -20,6 +20,8 @@ use Arp\DoctrineEntityRepository\Persistence\Event\Listener\SoftDeleteListener;
 use Arp\DoctrineEntityRepository\Persistence\Event\Listener\TransactionListener;
 
 /**
+ * @deprecated
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Factory\Repository\Event\Listener
  */

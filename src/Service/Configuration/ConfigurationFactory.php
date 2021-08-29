@@ -10,6 +10,7 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 
 /**
+ * @deprecated
  * Factory class for the Doctrine Configuration via the Laminas ServiceManager. This is not ideal as we treat the
  * manager as a ServiceLocator, however this class is already an abstraction that is used as an implementation detail
  * of ConfigurationManager.

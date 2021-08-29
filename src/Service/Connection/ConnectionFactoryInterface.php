@@ -10,6 +10,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 
 /**
+ * @deprecated
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Service\Connection
  */

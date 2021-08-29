@@ -11,6 +11,8 @@ use Doctrine\ORM\Repository\RepositoryFactory as RepositoryFactoryInterface;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
+ * @deprecated
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Repository
  */
