@@ -87,14 +87,6 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 return [
     'arp' => [
         'services' => [
-            QueryService::class => [
-                'entity_manager' => 'orm_default',
-            ],
-
-            PersistService::class => [
-                'entity_manager' => 'orm_default',
-            ],
-
             Loader::class => [
                 'fixtures' => [
 
@@ -125,31 +117,30 @@ return [
             MappingDriver::class => MappingDriverChain::class,
             Cache::class         => ArrayCache::class,
 
-            ConfigurationManager::class => ConfigurationManagerInterface::class,
-            ConnectionManager::class    => ConnectionManagerInterface::class,
-            ConnectionFactory::class    => ConnectionFactoryInterface::class,
+//            ConfigurationManager::class => ConfigurationManagerInterface::class,
+//            ConnectionManager::class    => ConnectionManagerInterface::class,
+//            ConnectionFactory::class    => ConnectionFactoryInterface::class,
         ],
         'factories' => [
             // Config
             DoctrineConfig::class => DoctrineConfigFactory::class,
 
             // Services
-            ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
-            ConfigurationFactoryService::class   => ConfigurationFactoryFactory::class,
+//            ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
+//            ConfigurationFactoryService::class   => ConfigurationFactoryFactory::class,
             Configuration::class                 => ConfigurationFactory::class,
 
-            ConnectionManagerInterface::class => ConnectionManagerFactory::class,
-            ConnectionFactoryInterface::class => ConnectionFactoryFactory::class,
-            EntityManagerProvider::class      => EntityManagerProviderFactory::class,
-            EntityManagerContainer::class     => EntityManagerContainerFactory::class,
-            RepositoryManager::class          => RepositoryManagerFactory::class,
-            RepositoryFactory::class          => RepositoryFactoryFactory::class,
-
-            QueryServiceManager::class        => QueryServiceManagerFactory::class,
-            QueryService::class               => QueryServiceFactory::class,
-            PersistService::class             => PersistServiceFactory::class,
-            CascadeSaveService::class         => CascadeSaveServiceFactory::class,
-            CascadeDeleteService::class       => CascadeDeleteServiceFactory::class,
+//            ConnectionManagerInterface::class => ConnectionManagerFactory::class,
+//            ConnectionFactoryInterface::class => ConnectionFactoryFactory::class,
+//            EntityManagerProvider::class      => EntityManagerProviderFactory::class,
+//            EntityManagerContainer::class     => EntityManagerContainerFactory::class,
+//            RepositoryManager::class          => RepositoryManagerFactory::class,
+//            RepositoryFactory::class          => RepositoryFactoryFactory::class,
+//            QueryServiceManager::class        => QueryServiceManagerFactory::class,
+//            QueryService::class               => QueryServiceFactory::class,
+//            PersistService::class             => PersistServiceFactory::class,
+//            CascadeSaveService::class         => CascadeSaveServiceFactory::class,
+//            CascadeDeleteService::class       => CascadeDeleteServiceFactory::class,
 
             // Drivers
             MappingDriverChain::class         => MappingDriverChainFactory::class,
@@ -166,25 +157,25 @@ return [
             ORMPurger::class                  => OrmPurgerFactory::class,
 
             // Repository Event Listeners
-            'EntityEventDispatcher'           => EventDispatcherFactory::class,
-            EntityListenerProvider::class     => EntityListenerProviderFactory::class,
-
-            EntityValidationListener::class => InvokableFactory::class,
-            TransactionListener::class      => InvokableFactory::class,
-            ExceptionListener::class        => InvokableFactory::class,
-            DateTimeListener::class         => DateTimeListenerFactory::class,
-            DateCreatedListener::class      => DateCreatedListenerFactory::class,
-            DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
-            DateDeletedListener::class      => DateDeletedListenerFactory::class,
-            CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
-            CascadeDeleteListener::class    => CascadeDeleteListenerFactory::class,
-            PersistListener::class          => InvokableFactory::class,
-            FlushListener::class            => InvokableFactory::class,
-            ClearListener::class            => InvokableFactory::class,
-            SoftDeleteListener::class       => InvokableFactory::class,
-            HardDeleteListener::class       => InvokableFactory::class,
-            SaveCollectionListener::class   => InvokableFactory::class,
-            DeleteCollectionListener::class => InvokableFactory::class,
+//            'EntityEventDispatcher'           => EventDispatcherFactory::class,
+//            EntityListenerProvider::class     => EntityListenerProviderFactory::class,
+//
+//            EntityValidationListener::class => InvokableFactory::class,
+//            TransactionListener::class      => InvokableFactory::class,
+//            ExceptionListener::class        => InvokableFactory::class,
+//            DateTimeListener::class         => DateTimeListenerFactory::class,
+//            DateCreatedListener::class      => DateCreatedListenerFactory::class,
+//            DateUpdatedListener::class      => DateUpdatedListenerFactory::class,
+//            DateDeletedListener::class      => DateDeletedListenerFactory::class,
+//            CascadeSaveListener::class      => CascadeSaveListenerFactory::class,
+//            CascadeDeleteListener::class    => CascadeDeleteListenerFactory::class,
+//            PersistListener::class          => InvokableFactory::class,
+//            FlushListener::class            => InvokableFactory::class,
+//            ClearListener::class            => InvokableFactory::class,
+//            SoftDeleteListener::class       => InvokableFactory::class,
+//            HardDeleteListener::class       => InvokableFactory::class,
+//            SaveCollectionListener::class   => InvokableFactory::class,
+//            DeleteCollectionListener::class => InvokableFactory::class,
         ],
     ],
 

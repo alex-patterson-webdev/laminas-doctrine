@@ -6,22 +6,12 @@ namespace Arp\LaminasDoctrine;
 
 use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\LaminasDoctrine\Repository\RepositoryFactory;
+use Arp\LaminasDoctrineEntityRepository\Repository\RepositoryFactory;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 
 return [
-    'arp' => [
-        'services' => [
-            QueryService::class => [
-                'entity_manager' => 'development',
-            ],
-            PersistService::class => [
-                'entity_manager' => 'development',
-            ],
-        ],
-    ],
     'doctrine' => [
         'connection' => [
             // Add connection parameters in local config

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Hydrator;
 
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrineEntityManager\Factory\Service\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\Hydrator\NamingStrategy\NamingStrategyEnabledInterface;

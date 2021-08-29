@@ -4,12 +4,31 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Config;
 
+use Arp\LaminasDoctrineConfiguration\Config\ConfigurationConfigs;
+use Arp\LaminasDoctrineConnection\Config\ConnectionConfigs;
+use Arp\LaminasDoctrineEntityManager\Config\EntityManagerConfigs;
+
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Config
  */
 class DoctrineConfig implements DoctrineConfigInterface
 {
+    /**
+     * @var EntityManagerConfigs
+     */
+    private EntityManagerConfigs $entityManagerConfigs;
+
+    /**
+     * @var ConnectionConfigs
+     */
+    private ConnectionConfigs $connectionConfigs;
+
+    /**
+     * @var ConfigurationConfigs
+     */
+    private ConfigurationConfigs $configurationConfigs;
+
     /**
      * @var array<string, mixed>
      */
@@ -18,8 +37,16 @@ class DoctrineConfig implements DoctrineConfigInterface
     /**
      * @param array<string, mixed> $config
      */
-    public function __construct(array $config)
-    {
+    public function __construct(
+        EntityManagerConfigs $entityManagerConfigs,
+        ConnectionConfigs $connectionConfigs,
+        ConfigurationConfigs $configurationConfigs,
+        array $config
+    ) {
+        $this->entityManagerConfigs = $entityManagerConfigs;
+        $this->connectionConfigs = $connectionConfigs;
+        $this->configurationConfigs = $configurationConfigs;
+
         $this->configure($config);
     }
 
@@ -30,7 +57,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function hasConnectionConfig(string $name): bool
     {
-        return isset($this->config['connection'][$name]);
+        return $this->connectionConfigs->hasConnectionConfig($name);
     }
 
     /**
@@ -40,7 +67,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function getConnectionConfig(string $name): array
     {
-        return $this->config['connection'][$name] ?? [];
+        return $this->connectionConfigs->getConnectionConfig($name);
     }
 
     /**
@@ -59,7 +86,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function setConnectionConfig(string $name, array $connectionConfig): void
     {
-        $this->config['connection'][$name] = $connectionConfig;
+        $this->connectionConfigs->setConnectionConfig($name, $connectionConfig);
     }
 
     /**
@@ -69,7 +96,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function hasEntityManagerConfig(string $name): bool
     {
-        return isset($this->config['entitymanager'][$name]);
+        return $this->entityManagerConfigs->hasEntityManagerConfig($name);
     }
 
     /**
@@ -79,7 +106,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function getEntityManagerConfig(string $name): array
     {
-        return $this->config['entitymanager'][$name] ?? [];
+        return $this->entityManagerConfigs->getEntityManagerConfig($name);
     }
 
     /**
@@ -88,7 +115,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function setEntityManagerConfig(string $name, array $config): void
     {
-        $this->config['entitymanager'][$name] = $config;
+        $this->entityManagerConfigs->setEntityManagerConfig($name, $config);
     }
 
     /**
@@ -98,7 +125,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function hasConfigurationConfig(string $name): bool
     {
-        return isset($this->config['configuration'][$name]);
+        return $this->configurationConfigs->hasConfigurationConfig($name);
     }
 
     /**
@@ -108,7 +135,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function getConfigurationConfig(string $name): array
     {
-        return $this->config['configuration'][$name] ?? [];
+        return $this->configurationConfigs->getConfigurationConfig($name);
     }
 
     /**
@@ -117,7 +144,7 @@ class DoctrineConfig implements DoctrineConfigInterface
      */
     public function setConfigurationConfig(string $name, array $config): void
     {
-        $this->config['configuration'][$name] = $config;
+        $this->configurationConfigs->setConfigurationConfig($name, $config);
     }
 
     /**

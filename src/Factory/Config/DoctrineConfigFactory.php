@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Config;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrineConfiguration\Config\ConfigurationConfigs;
+use Arp\LaminasDoctrineConnection\Config\ConnectionConfigs;
+use Arp\LaminasDoctrineEntityManager\Config\EntityManagerConfigs;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
@@ -33,32 +36,14 @@ final class DoctrineConfigFactory extends AbstractFactory
     ): DoctrineConfig {
         $options = $options ?? $this->getApplicationOptions($container, 'doctrine');
 
-        if (empty($options['connection'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'connection\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var EntityManagerConfigs $entityManagerConfigs */
+        $entityManagerConfigs = $this->getService($container, EntityManagerConfigs::class, $requestedName);
 
-        if (empty($options['configuration'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'configuration\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var ConnectionConfigs $connectionConfigs */
+        $connectionConfigs = $this->getService($container, ConnectionConfigs::class, $requestedName);
 
-        if (empty($options['entitymanager'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'entitymanager\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var ConfigurationConfigs $configurationConfigs */
+        $configurationConfigs = $this->getService($container, ConfigurationConfigs::class, $requestedName);
 
         if (empty($options['driver'])) {
             throw new ServiceNotCreatedException(
@@ -69,6 +54,11 @@ final class DoctrineConfigFactory extends AbstractFactory
             );
         }
 
-        return new DoctrineConfig($options);
+        return new DoctrineConfig(
+            $entityManagerConfigs,
+            $connectionConfigs,
+            $configurationConfigs,
+            $options
+        );
     }
 }
