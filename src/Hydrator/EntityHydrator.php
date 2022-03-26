@@ -29,10 +29,10 @@ final class EntityHydrator extends DoctrineObject
     private ?\ReflectionClass $reflectionClass = null;
 
     /**
-     * @param object             $object
-     * @param mixed              $collectionName
-     * @param string             $target
-     * @param array<mixed>|null  $values
+     * @param object               $object
+     * @param mixed                $collectionName
+     * @param class-string<object> $target
+     * @param array<mixed>|null    $values
      *
      * @return void
      *
@@ -47,7 +47,7 @@ final class EntityHydrator extends DoctrineObject
             $values = (array)$values;
         }
 
-        $metadata = $this->objectManager->getClassMetadata(ltrim($target, '\\'));
+        $metadata = $this->objectManager->getClassMetadata($target);
         $identifier = $metadata->getIdentifier();
         $collection = [];
 
@@ -109,6 +109,7 @@ final class EntityHydrator extends DoctrineObject
      * @return array<string, mixed>
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     public function extractByValue($object): array
     {
@@ -156,6 +157,7 @@ final class EntityHydrator extends DoctrineObject
      * @return bool
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     protected function isInitialisedFieldName(object $object, string $fieldName): bool
     {
@@ -182,6 +184,7 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionProperty
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function getReflectionProperty(object $object, string $fieldName): \ReflectionProperty
     {
@@ -222,6 +225,7 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionClass<object>
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function getReflectionClass(string $className): \ReflectionClass
     {
@@ -273,6 +277,7 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionClass<object>
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function createReflectionClass(string $className): \ReflectionClass
     {
@@ -286,18 +291,6 @@ final class EntityHydrator extends DoctrineObject
             );
         }
 
-        try {
-            return new \ReflectionClass($className);
-        } catch (\Throwable $e) {
-            throw new RuntimeException(
-                sprintf(
-                    'The hydrator was unable to create a reflection instance for class \'%s\': %s',
-                    $className,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        return new \ReflectionClass($className);
     }
 }

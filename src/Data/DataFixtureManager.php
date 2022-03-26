@@ -14,7 +14,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 final class DataFixtureManager extends AbstractPluginManager
 {
     /**
-     * @var string
+     * @var class-string<FixtureInterface>
      */
     protected $instanceOf = FixtureInterface::class;
 }

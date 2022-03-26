@@ -10,6 +10,7 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\Hydrator\HydratorPluginManager;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -27,6 +28,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
@@ -46,7 +48,7 @@ final class HydratorCollectionStrategyFactory extends AbstractFactory
         }
 
         $fieldName = $options['field_name'] ?? null;
-        if (empty($entityName)) {
+        if (empty($fieldName)) {
             throw new ServiceNotCreatedException(
                 sprintf(
                     'The required \'field_name\' configuration option is missing for service \'%s\'',

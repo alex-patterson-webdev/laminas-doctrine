@@ -15,7 +15,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 final class EntityManagerContainer extends AbstractPluginManager implements ContainerInterface
 {
     /**
-     * @var string
+     * @var class-string<EntityManagerInterface>
      */
     protected $instanceOf = EntityManagerInterface::class;
 }

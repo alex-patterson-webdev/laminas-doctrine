@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Config;
 
-use Arp\LaminasDoctrine\Config\ConfigurationConfigs;
-use Arp\LaminasDoctrine\Config\ConnectionConfigs;
-use Arp\LaminasDoctrine\Config\EntityManagerConfigs;
-
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Config
@@ -71,7 +67,7 @@ class DoctrineConfig implements DoctrineConfigInterface
     }
 
     /**
-     * @param array<string, array> $connectionConfigs
+     * @param array<string, array<mixed>> $connectionConfigs
      */
     public function setConnectionConfigs(array $connectionConfigs): void
     {

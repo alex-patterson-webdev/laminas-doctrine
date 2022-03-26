@@ -14,7 +14,7 @@ use Symfony\Component\Console\Command\Command;
 class CommandManager extends AbstractPluginManager
 {
     /**
-     * @var string
+     * @var class-string<Command>
      */
     protected $instanceOf = Command::class;
 }

@@ -16,7 +16,7 @@ class ConfigurationConfigs
     private array $configs;
 
     /**
-     * @var array<mixed> $configs
+     * @param array<mixed> $configs
      */
     public function __construct(array $configs)
     {

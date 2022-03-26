@@ -30,7 +30,7 @@ interface ConnectionManagerInterface
     public function getConnection(string $name): Connection;
 
     /**
-     * @param Connection[]|array[] $connections
+     * @param Connection[]|array<mixed> $connections
      */
     public function setConnections(array $connections): void;
 

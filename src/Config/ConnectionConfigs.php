@@ -11,12 +11,12 @@ namespace Arp\LaminasDoctrine\Config;
 class ConnectionConfigs
 {
     /**
-     * @var array<string, array>
+     * @var array<string, mixed>
      */
     private array $configs;
 
     /**
-     * @param array $configs
+     * @param array<mixed> $configs
      */
     public function __construct(array $configs)
     {
@@ -44,7 +44,7 @@ class ConnectionConfigs
     }
 
     /**
-     * @param array<string, array> $connectionConfigs
+     * @param array<string, mixed> $connectionConfigs
      */
     public function setConnectionConfigs(array $connectionConfigs): void
     {

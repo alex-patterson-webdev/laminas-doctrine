@@ -14,7 +14,7 @@ use Symfony\Component\Console\Helper\HelperInterface;
 final class HelperManager extends AbstractPluginManager
 {
     /**
-     * @var string
+     * @var class-string<HelperInterface>
      */
     protected $instanceOf = HelperInterface::class;
 }

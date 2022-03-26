@@ -29,9 +29,9 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     private ContainerInterface $container;
 
     /**
-     * @param EntityManagerConfigs                        $configs
-     * @param ContainerInterface                          $container
-     * @param array<string, EntityManagerInterface|array> $entityManagers
+     * @param EntityManagerConfigs                               $configs
+     * @param ContainerInterface                                 $container
+     * @param array<string, EntityManagerInterface|array<mixed>> $entityManagers
      *
      * @throws EntityManagerProviderException
      */
@@ -51,7 +51,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      *
      * @return EntityManagerInterface
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     public function getEntityManager(string $name): EntityManagerInterface
     {
@@ -86,7 +86,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      *
      * @return EntityManagerInterface
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     public function refresh(string $name): EntityManagerInterface
     {
@@ -140,7 +140,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      * @param string                 $name
      * @param EntityManagerInterface $entityManager
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     public function setEntityManager(string $name, EntityManagerInterface $entityManager): void
     {
@@ -156,9 +156,9 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
-     * @param array<string, EntityManagerInterface|array> $entityManagers
+     * @param array<string, EntityManagerInterface|array<mixed>> $entityManagers
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     public function setEntityManagers(array $entityManagers): void
     {
@@ -178,7 +178,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      *
      * @return EntityManagerInterface
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     private function create(string $name, array $config, ?string $factoryClassName = null): EntityManagerInterface
     {
@@ -205,7 +205,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
      * @param string $name
      * @param string $factoryClassName
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     private function registerServiceFactory(string $name, string $factoryClassName): void
     {

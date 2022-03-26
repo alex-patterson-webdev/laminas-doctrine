@@ -11,12 +11,12 @@ namespace Arp\LaminasDoctrine\Config;
 class EntityManagerConfigs
 {
     /**
-     * @var array<string, array>
+     * @var array<string, array<mixed>>
      */
     private array $configs;
 
     /**
-     * @param array $configs
+     * @param array<mixed> $configs
      */
     public function __construct(array $configs)
     {

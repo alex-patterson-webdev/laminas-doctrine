@@ -25,7 +25,7 @@ interface DoctrineConfigInterface
     public function getConnectionConfig(string $name): array;
 
     /**
-     * @param array<string, array> $connectionConfigs
+     * @param array<string, array<mixed>> $connectionConfigs
      */
     public function setConnectionConfigs(array $connectionConfigs): void;
 

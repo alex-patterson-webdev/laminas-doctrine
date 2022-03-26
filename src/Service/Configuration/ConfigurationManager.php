@@ -55,7 +55,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
      *
      * @return Configuration
      *
-     * @throws \Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException
+     * @throws ConfigurationManagerException
      */
     public function getConfiguration(string $name): Configuration
     {
@@ -73,7 +73,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param iterable<string, Configuration|array> $configurations
+     * @param iterable<string, Configuration|array<mixed>> $configurations
      */
     public function setConfigurations(iterable $configurations): void
     {
@@ -112,7 +112,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
      *
      * @return Configuration
      *
-     * @throws \Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException
+     * @throws ConfigurationManagerException
      */
     private function create(string $name, array $config): Configuration
     {

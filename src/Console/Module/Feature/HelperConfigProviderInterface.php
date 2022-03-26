@@ -11,7 +11,7 @@ namespace Arp\LaminasDoctrine\Console\Module\Feature;
 interface HelperConfigProviderInterface
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getConsoleHelperManagerConfig(): array;
 }

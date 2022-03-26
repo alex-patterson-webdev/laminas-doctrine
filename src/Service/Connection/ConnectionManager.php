@@ -100,7 +100,7 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param array<Connection|array> $connections
+     * @param array<Connection|array<mixed>> $connections
      */
     public function setConnections(array $connections): void
     {

@@ -12,7 +12,9 @@ use Laminas\Hydrator\Strategy\StrategyEnabledInterface;
 use Laminas\Hydrator\Strategy\StrategyInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -28,9 +30,11 @@ final class EntityHydratorFactory extends AbstractFactory
      * @param array<string, mixed>|null $options
      *
      * @return EntityHydrator|object
-     * @throws ServiceNotCreatedException
      *
+     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
@@ -52,7 +56,7 @@ final class EntityHydratorFactory extends AbstractFactory
 
         $hydrator = new EntityHydrator(
             $this->getEntityManager($container, $entityManager, $requestedName),
-            isset($options['by_value']) ? (bool)$options['by_value'] : true,
+            !isset($options['by_value']) || $options['by_value'],
             $inflector
         );
 

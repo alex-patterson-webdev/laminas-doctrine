@@ -11,7 +11,7 @@ namespace Arp\LaminasDoctrine\Console\Module\Feature;
 interface CommandConfigProviderInterface
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getConsoleCommandManagerConfig(): array;
 }
