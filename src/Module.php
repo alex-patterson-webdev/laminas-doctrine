@@ -4,16 +4,47 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
+use Arp\LaminasDoctrine\Console\Module\CommandManager;
+use Arp\LaminasDoctrine\Console\Module\Feature\CommandConfigProviderInterface;
+use Arp\LaminasDoctrine\Console\Module\Feature\HelperConfigProviderInterface;
+use Arp\LaminasDoctrine\Console\Module\HelperManager;
+use Laminas\ModuleManager\Listener\ServiceListenerInterface;
+use Laminas\ModuleManager\ModuleManager;
+use Psr\Container\ContainerInterface;
+
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine
  */
 final class Module
 {
+    public function init(ModuleManager $moduleManager): void
+    {
+        /** @var ContainerInterface $serviceManager */
+        $serviceManager = $moduleManager->getEvent()->getParam('ServiceManager');
+
+        /** @var ServiceListenerInterface $serviceListener */
+        $serviceListener = $serviceManager->get('ServiceListener');
+
+        $serviceListener->addServiceManager(
+            CommandManager::class,
+            'arp_console_command_manager',
+            CommandConfigProviderInterface::class,
+            'getConsoleCommandManagerConfig'
+        );
+
+        $serviceListener->addServiceManager(
+            HelperManager::class,
+            'arp_console_helper_manager',
+            HelperConfigProviderInterface::class,
+            'getConsoleHelperManagerConfig'
+        );
+    }
+
     /**
      * Return the module configuration array.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getConfig(): array
     {

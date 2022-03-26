@@ -8,9 +8,10 @@ use Arp\LaminasDoctrine\Repository\RepositoryFactory as RepositoryFactoryService
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -19,20 +20,19 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class RepositoryFactoryFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return RepositoryFactoryService
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): RepositoryFactoryService {
         /** @var RepositoryManager $repositoryManager */

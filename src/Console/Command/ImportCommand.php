@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Console\Command;
 
-use Arp\LaminasSymfonyConsole\Command\AbstractCommand;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Console\Command
  */
-final class ImportCommand extends AbstractCommand
+final class ImportCommand extends Command
 {
     /**
      * @var FixtureInterface[]
@@ -63,22 +63,19 @@ final class ImportCommand extends AbstractCommand
     {
         $output->writeln('Executing data fixtures...');
 
-        $purger = $this->executor->getPurger();
-        if (null === $purger) {
-            $purger = $this->purger;
-        }
+        $purger = $this->purger ?? $this->executor->getPurger();
 
-        if (null !== $purger && $input->getOption('purge-with-truncate')) {
+        // 1. Remove existing data with delete SQL (default)
+        // 2. Remove existing data with truncate SQL
+        if ($purger instanceof ORMPurger && $input->getOption('purge-with-truncate')) {
             $output->writeln('Import has been configured to purge existing data');
-            // 1. Remove existing data with delete SQL (default)
-            // 2. Remove existing data with truncate SQL
             $purger->setPurgeMode(2);
             $this->executor->setPurger($purger);
         }
 
         $this->executor->execute(
             $this->fixtures,
-            $input->getOption('append') ? true : false
+            (bool)$input->getOption('append')
         );
 
         $output->writeln(sprintf('Completed execution of \'%d\' fixtures', count($this->fixtures)));

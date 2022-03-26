@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Console\Helper;
 
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
-use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -21,18 +22,20 @@ final class EntityManagerHelperFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return EntityManagerHelper
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): EntityManagerHelper
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): EntityManagerHelper {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
         // Attempt to fetch the name of the entity manager from command line arguments

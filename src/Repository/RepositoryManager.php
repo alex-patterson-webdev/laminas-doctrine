@@ -17,16 +17,16 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class RepositoryManager extends AbstractPluginManager implements EntityRepositoryProviderInterface
 {
     /**
-     * Whether or not to auto-add a FQCN as an invokable if it exists.
+     * Whether to auto-add a FQCN as an invokable if it exists.
      *
      * @var bool
      */
-    protected bool $autoAddInvokableClass = false;
+    protected $autoAddInvokableClass = false;
 
     /**
-     * @var string
+     * @var class-string<EntityRepositoryInterface>
      */
-    protected string $instanceOf = EntityRepositoryInterface::class;
+    protected $instanceOf = EntityRepositoryInterface::class;
 
     /**
      * @param string $entityName
@@ -39,8 +39,8 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
     }
 
     /**
-     * @param string $entityName
-     * @param array  $options
+     * @param string               $entityName
+     * @param array<string, mixed> $options
      *
      * @return EntityRepositoryInterface
      *

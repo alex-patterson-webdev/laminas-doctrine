@@ -10,11 +10,17 @@ use Arp\DoctrineEntityRepository\Persistence\PersistService;
 use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
+use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
+use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\ServiceManager;
-use Psr\Log\NullLogger;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -22,23 +28,47 @@ use Psr\Log\NullLogger;
  */
 final class RepositoryFactory extends AbstractFactory
 {
+    use FactoryLoggerProviderTrait;
+
     /**
-     * @noinspection PhpMissingParamTypeInspection
+     * The default configuration for all entity repositories
      *
-     * @param ContainerInterface|ServiceManager $container
-     * @param string                            $requestedName
-     * @param array|null                        $options
+     * @var array<mixed>
+     */
+    private array $defaultOptions = [
+        'logger' => 'EntityRepositoryLogger',
+        'query_service' => [
+            'service_name' => QueryService::class,
+            'logger' => 'EntityQueryLogger',
+        ],
+        'persist_service' => [
+            'service_name' => PersistService::class,
+            'logger' => 'EntityPersistLogger',
+        ],
+    ];
+
+    /**
+     * @param ContainerInterface&ServiceLocatorInterface $container
+     * @param string                                     $requestedName
+     * @param array<string, mixed>|null                  $options
      *
      * @return EntityRepositoryInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): EntityRepositoryInterface {
-        $options = $options ?? $this->getServiceOptions($container, $requestedName, 'repositories');
+        $options = array_replace_recursive(
+            $this->defaultOptions,
+            $this->getServiceOptions($container, $requestedName, 'repositories'),
+            $options ?? []
+        );
 
         $entityName = $options['entity_name'] ?? $requestedName;
         if (empty($entityName)) {
@@ -66,12 +96,21 @@ final class RepositoryFactory extends AbstractFactory
 
         $className = $this->resolveClassName($entityName, $options);
 
-        return new $className($entityName, $queryService, $persistService, new NullLogger());
+        /** @var EntityRepositoryInterface $repository */
+        /** @noinspection PhpUnnecessaryLocalVariableInspection */
+        $repository = new $className(
+            $entityName,
+            $queryService,
+            $persistService,
+            $this->getLogger($container, $options['logger'] ?? null, $requestedName)
+        );
+
+        return $repository;
     }
 
     /**
-     * @param string $entityName
-     * @param array  $options
+     * @param string               $entityName
+     * @param array<string, mixed> $options
      *
      * @return string
      */
@@ -79,12 +118,17 @@ final class RepositoryFactory extends AbstractFactory
     {
         $className = $options['class_name'] ?? EntityRepository::class;
         if (empty($options['class_name'])) {
-            $generatedClassName = str_replace('Entity', 'Repository', $entityName) . 'Repository';
-            if (
-                class_exists($generatedClassName, true)
-                && is_subclass_of($generatedClassName, EntityRepositoryInterface::class, true)
-            ) {
-                $className = $generatedClassName;
+            $generatedClassNames = [
+                str_replace('Entity', 'Repository', $entityName) . 'Repository',
+                str_replace('Entity', 'Entity\\Repository', $entityName) . 'Repository',
+            ];
+            foreach ($generatedClassNames as $generatedClassName) {
+                if (
+                    class_exists($generatedClassName, true)
+                    && is_subclass_of($generatedClassName, EntityRepositoryInterface::class, true)
+                ) {
+                    return $generatedClassName;
+                }
             }
         }
 
@@ -92,17 +136,19 @@ final class RepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceManager $container
-     * @param string         $entityName
-     * @param array          $options
-     * @param string         $serviceName
+     * @param ServiceLocatorInterface $container
+     * @param string                  $entityName
+     * @param array<string, mixed>    $options
+     * @param string                  $serviceName
      *
      * @return PersistServiceInterface
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function getPersistService(
-        ServiceManager $container,
+        ServiceLocatorInterface $container,
         string $entityName,
         array $options,
         string $serviceName
@@ -113,35 +159,61 @@ final class RepositoryFactory extends AbstractFactory
         );
         $options['entity_name'] ??= $entityName;
 
-        /** @var PersistServiceInterface $persistService */
-        $persistService = $this->buildService($container, PersistService::class, $options, $serviceName);
-        return $persistService;
+        return $this->buildService(
+            $container,
+            $options['service_name'] ?? PersistService::class,
+            $options,
+            $serviceName
+        );
     }
 
     /**
-     * @param ServiceManager $container
-     * @param string         $entityName
-     * @param array          $options
-     * @param string         $serviceName
+     * @param ServiceLocatorInterface $container
+     * @param string                  $entityName
+     * @param array<string, mixed>    $options
+     * @param string                  $serviceName
      *
      * @return QueryServiceInterface
      *
+     * @throws ContainerExceptionInterface
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws ContainerModificationsNotAllowedException
+     * @throws InvalidServiceException
      */
     private function getQueryService(
-        ServiceManager $container,
+        ServiceLocatorInterface $container,
         string $entityName,
         array $options,
         string $serviceName
     ): QueryServiceInterface {
-        $options = array_replace_recursive(
-            $this->getServiceOptions($container, QueryService::class),
-            $options
-        );
+        /** @var QueryServiceManager $queryServiceManager */
+        $queryServiceManager = $this->getService($container, QueryServiceManager::class, $serviceName);
+
+        if ($queryServiceManager->has($entityName)) {
+            return $queryServiceManager->get($entityName);
+        }
+
+        $options = array_replace_recursive($this->getServiceOptions($container, QueryService::class), $options);
         $options['entity_name'] ??= $entityName;
 
-        /** @var QueryServiceInterface $queryService */
-        $queryService = $this->buildService($container, QueryService::class, $options, $serviceName);
+        $queryService = $this->buildService(
+            $container,
+            $options['service_name'] ?? QueryService::class,
+            $options,
+            $serviceName
+        );
+
+        $queryServiceManager->setService($entityName, $queryService);
+
         return $queryService;
+    }
+
+    /**
+     * @param array<mixed> $defaultOptions
+     */
+    public function setDefaultOptions(array $defaultOptions): void
+    {
+        $this->defaultOptions = $defaultOptions;
     }
 }

@@ -6,9 +6,9 @@ namespace Arp\LaminasDoctrine\Factory\DataFixture;
 
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -17,19 +17,20 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class DataFixtureManagerFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return DataFixtureManager
      *
      * @throws InvalidArgumentException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): DataFixtureManager
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): DataFixtureManager {
         $options = $options ?? $this->getApplicationOptions($container, 'data_fixture_manager');
 
         return new DataFixtureManager($container, $options);

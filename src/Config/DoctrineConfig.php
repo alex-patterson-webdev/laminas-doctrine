@@ -5,21 +5,44 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Config;
 
 /**
- * @author Alex Patterson <alex.patterson.webdev@gmail.com>
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Config
  */
-class DoctrineConfig
+class DoctrineConfig implements DoctrineConfigInterface
 {
     /**
-     * @var array
+     * @var EntityManagerConfigs
+     */
+    private EntityManagerConfigs $entityManagerConfigs;
+
+    /**
+     * @var ConnectionConfigs
+     */
+    private ConnectionConfigs $connectionConfigs;
+
+    /**
+     * @var ConfigurationConfigs
+     */
+    private ConfigurationConfigs $configurationConfigs;
+
+    /**
+     * @var array<string, mixed>
      */
     private array $config = [];
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
-    public function __construct(array $config)
-    {
+    public function __construct(
+        EntityManagerConfigs $entityManagerConfigs,
+        ConnectionConfigs $connectionConfigs,
+        ConfigurationConfigs $configurationConfigs,
+        array $config
+    ) {
+        $this->entityManagerConfigs = $entityManagerConfigs;
+        $this->connectionConfigs = $connectionConfigs;
+        $this->configurationConfigs = $configurationConfigs;
+
         $this->configure($config);
     }
 
@@ -30,21 +53,21 @@ class DoctrineConfig
      */
     public function hasConnectionConfig(string $name): bool
     {
-        return isset($this->config['connection'][$name]);
+        return $this->connectionConfigs->hasConnectionConfig($name);
     }
 
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getConnectionConfig(string $name): array
     {
-        return $this->config['connection'][$name] ?? [];
+        return $this->connectionConfigs->getConnectionConfig($name);
     }
 
     /**
-     * @param array $connectionConfigs
+     * @param array<string, array<mixed>> $connectionConfigs
      */
     public function setConnectionConfigs(array $connectionConfigs): void
     {
@@ -54,12 +77,12 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $connectionConfig
+     * @param string               $name
+     * @param array<string, mixed> $connectionConfig
      */
     public function setConnectionConfig(string $name, array $connectionConfig): void
     {
-        $this->config['connection'][$name] = $connectionConfig;
+        $this->connectionConfigs->setConnectionConfig($name, $connectionConfig);
     }
 
     /**
@@ -69,26 +92,26 @@ class DoctrineConfig
      */
     public function hasEntityManagerConfig(string $name): bool
     {
-        return isset($this->config['entitymanager'][$name]);
+        return $this->entityManagerConfigs->hasEntityManagerConfig($name);
     }
 
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getEntityManagerConfig(string $name): array
     {
-        return $this->config['entitymanager'][$name] ?? [];
+        return $this->entityManagerConfigs->getEntityManagerConfig($name);
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setEntityManagerConfig(string $name, array $config): void
     {
-        $this->config['entitymanager'][$name] = $config;
+        $this->entityManagerConfigs->setEntityManagerConfig($name, $config);
     }
 
     /**
@@ -98,26 +121,26 @@ class DoctrineConfig
      */
     public function hasConfigurationConfig(string $name): bool
     {
-        return isset($this->config['configuration'][$name]);
+        return $this->configurationConfigs->hasConfigurationConfig($name);
     }
 
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getConfigurationConfig(string $name): array
     {
-        return $this->config['configuration'][$name] ?? [];
+        return $this->configurationConfigs->getConfigurationConfig($name);
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setConfigurationConfig(string $name, array $config): void
     {
-        $this->config['configuration'][$name] = $config;
+        $this->configurationConfigs->setConfigurationConfig($name, $config);
     }
 
     /**
@@ -133,7 +156,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDriverConfig(string $name): array
     {
@@ -141,8 +164,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setDriverConfig(string $name, array $config): void
     {
@@ -152,7 +175,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getEntityResolverConfig(string $name): array
     {
@@ -160,8 +183,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setEntityResolverConfig(string $name, array $config): void
     {
@@ -181,7 +204,7 @@ class DoctrineConfig
     /**
      * @param string $name
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getCacheConfig(string $name): array
     {
@@ -189,8 +212,8 @@ class DoctrineConfig
     }
 
     /**
-     * @param string $name
-     * @param array  $config
+     * @param string               $name
+     * @param array<string, mixed> $config
      */
     public function setCacheConfig(string $name, array $config): void
     {
@@ -198,7 +221,7 @@ class DoctrineConfig
     }
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
     public function configure(array $config): void
     {

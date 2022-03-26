@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Hydrator;
 
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\Hydrator\NamingStrategy\NamingStrategyEnabledInterface;
 use Laminas\Hydrator\Strategy\StrategyEnabledInterface;
 use Laminas\Hydrator\Strategy\StrategyInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -23,18 +25,18 @@ final class EntityHydratorFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return EntityHydrator|object
-     * @throws ServiceNotCreatedException
      *
+     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'hydrators');
 
@@ -54,7 +56,7 @@ final class EntityHydratorFactory extends AbstractFactory
 
         $hydrator = new EntityHydrator(
             $this->getEntityManager($container, $entityManager, $requestedName),
-            isset($options['by_value']) ? (bool)$options['by_value'] : true,
+            !isset($options['by_value']) || $options['by_value'],
             $inflector
         );
 

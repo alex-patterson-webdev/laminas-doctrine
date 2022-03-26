@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Console;
 
-use Arp\LaminasSymfonyConsole\Service\Application;
+use Symfony\Component\Console\Application;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -12,5 +12,4 @@ use Arp\LaminasSymfonyConsole\Service\Application;
  */
 final class DoctrineApplication extends Application
 {
-
 }

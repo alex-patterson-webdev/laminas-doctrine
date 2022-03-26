@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Config;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
+use Arp\LaminasDoctrine\Config\ConfigurationConfigs;
+use Arp\LaminasDoctrine\Config\ConnectionConfigs;
+use Arp\LaminasDoctrine\Config\EntityManagerConfigs;
 use Arp\LaminasFactory\AbstractFactory;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -17,47 +20,30 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 final class DoctrineConfigFactory extends AbstractFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param ContainerInterface        $container
+     * @param string                    $requestedName
+     * @param array<string, mixed>|null $options
      *
      * @return DoctrineConfig
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array $options = null
+    ): DoctrineConfig {
         $options = $options ?? $this->getApplicationOptions($container, 'doctrine');
 
-        if (empty($options['connection'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'connection\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var EntityManagerConfigs $entityManagerConfigs */
+        $entityManagerConfigs = $this->getService($container, EntityManagerConfigs::class, $requestedName);
 
-        if (empty($options['configuration'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'configuration\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var ConnectionConfigs $connectionConfigs */
+        $connectionConfigs = $this->getService($container, ConnectionConfigs::class, $requestedName);
 
-        if (empty($options['entitymanager'])) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'entitymanager\' configuration key is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
+        /** @var ConfigurationConfigs $configurationConfigs */
+        $configurationConfigs = $this->getService($container, ConfigurationConfigs::class, $requestedName);
 
         if (empty($options['driver'])) {
             throw new ServiceNotCreatedException(
@@ -68,6 +54,11 @@ final class DoctrineConfigFactory extends AbstractFactory
             );
         }
 
-        return new DoctrineConfig($options);
+        return new DoctrineConfig(
+            $entityManagerConfigs,
+            $connectionConfigs,
+            $configurationConfigs,
+            $options
+        );
     }
 }

@@ -24,32 +24,31 @@ use Laminas\Hydrator\Filter\FilterProviderInterface;
 final class EntityHydrator extends DoctrineObject
 {
     /**
-     * @var \ReflectionClass|null
+     * @var \ReflectionClass<object>|null
      */
     private ?\ReflectionClass $reflectionClass = null;
 
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
+     * @param object               $object
+     * @param mixed                $collectionName
+     * @param class-string<object> $target
+     * @param array<mixed>|null    $values
      *
-     * @param object $object
-     * @param mixed  $collectionName
-     * @param string $target
-     * @param mixed  $values
+     * @return void
      *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
-    protected function toMany($object, $collectionName, $target, $values)
+    protected function toMany($object, $collectionName, $target, $values): void
     {
-        $metadata = $this->objectManager->getClassMetadata(ltrim($target, '\\'));
-        $identifier = $metadata->getIdentifier();
-
-        if (!is_array($values) && !$values instanceof \Traversable) {
+        if (!is_iterable($values)) {
             $values = (array)$values;
         }
 
+        $metadata = $this->objectManager->getClassMetadata($target);
+        $identifier = $metadata->getIdentifier();
         $collection = [];
 
         // If the collection contains identifiers, fetch the objects from database
@@ -66,7 +65,7 @@ final class EntityHydrator extends DoctrineObject
                 continue;
             }
 
-            $find = is_array($identifier) ? $this->getFindCriteria($identifier, $value) : [];
+            $find = $this->getFindCriteria($identifier, $value);
 
             if (!empty($find) && $found = $this->find($find, $target)) {
                 $collection[] = is_array($value) ? $this->hydrate($value, $found) : $found;
@@ -79,7 +78,7 @@ final class EntityHydrator extends DoctrineObject
 
         $collection = array_filter(
             $collection,
-            static fn($item) => null !== $item
+            static fn ($item) => null !== $item
         );
 
         /** @var AbstractCollectionStrategy $collectionStrategy */
@@ -95,6 +94,7 @@ final class EntityHydrator extends DoctrineObject
      * @return object
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function createTargetEntity(string $className): object
     {
@@ -104,13 +104,12 @@ final class EntityHydrator extends DoctrineObject
     /**
      * Copied from parent to check for isInitialisedFieldName()
      *
-     * @noinspection PhpMissingParamTypeInspection
-     *
      * @param object $object
      *
-     * @return array
+     * @return array<string, mixed>
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     public function extractByValue($object): array
     {
@@ -140,7 +139,7 @@ final class EntityHydrator extends DoctrineObject
             } elseif (
                 0 === strpos($fieldName, 'is')
                 && in_array($fieldName, $methods, true)
-                && ctype_upper(substr($fieldName, 2, 1))
+                && ctype_upper($fieldName[2])
             ) {
                 $data[$dataFieldName] = $this->extractValue($fieldName, $object->$fieldName(), $object);
             }
@@ -158,6 +157,7 @@ final class EntityHydrator extends DoctrineObject
      * @return bool
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     protected function isInitialisedFieldName(object $object, string $fieldName): bool
     {
@@ -184,6 +184,7 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionProperty
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function getReflectionProperty(object $object, string $fieldName): \ReflectionProperty
     {
@@ -221,9 +222,10 @@ final class EntityHydrator extends DoctrineObject
     /**
      * @param string $className
      *
-     * @return \ReflectionClass
+     * @return \ReflectionClass<object>
      *
      * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function getReflectionClass(string $className): \ReflectionClass
     {
@@ -235,10 +237,10 @@ final class EntityHydrator extends DoctrineObject
     }
 
     /**
-     * @param array $identifier
-     * @param mixed $value
+     * @param array<string|object|array|mixed> $identifier
+     * @param mixed                            $value
      *
-     * @return array
+     * @return array<string|int, mixed>
      */
     protected function getFindCriteria(array $identifier, $value): array
     {
@@ -272,22 +274,23 @@ final class EntityHydrator extends DoctrineObject
     /**
      * @param string $className
      *
-     * @return \ReflectionClass
+     * @return \ReflectionClass<object>
+     *
+     * @throws RuntimeException
+     * @throws \ReflectionException
      */
     private function createReflectionClass(string $className): \ReflectionClass
     {
-        try {
-            return new \ReflectionClass($className);
-        } catch (\Throwable $e) {
+        if (!class_exists($className, true)) {
             throw new RuntimeException(
                 sprintf(
                     'The hydrator was unable to create a reflection instance for class \'%s\': %s',
+                    'The class could not be found',
                     $className,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
+                )
             );
         }
+
+        return new \ReflectionClass($className);
     }
 }
