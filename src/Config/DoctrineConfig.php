@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Config;
 
-use Arp\LaminasDoctrineConfiguration\Config\ConfigurationConfigs;
-use Arp\LaminasDoctrineConnection\Config\ConnectionConfigs;
-use Arp\LaminasDoctrineEntityManager\Config\EntityManagerConfigs;
+use Arp\LaminasDoctrine\Config\ConfigurationConfigs;
+use Arp\LaminasDoctrine\Config\ConnectionConfigs;
+use Arp\LaminasDoctrine\Config\EntityManagerConfigs;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>

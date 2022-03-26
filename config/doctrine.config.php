@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
-use Arp\DoctrineEntityRepository\Persistence\PersistService;
-use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\LaminasDoctrineEntityRepository\Repository\RepositoryFactory;
+use Arp\LaminasDoctrine\Repository\RepositoryFactory;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;

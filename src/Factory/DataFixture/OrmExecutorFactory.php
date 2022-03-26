@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\DataFixture;
 
 use Arp\LaminasDoctrine\Data\Repository\ReferenceRepository;
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
-use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;

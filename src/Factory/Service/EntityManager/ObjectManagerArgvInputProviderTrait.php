@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasDoctrine\Factory\Service;
+namespace Arp\LaminasDoctrine\Factory\Service\EntityManager;
 
 use Symfony\Component\Console\Input\ArgvInput;
 

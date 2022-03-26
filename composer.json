@@ -10,22 +10,12 @@
       "email": "alex.patterson.webdev@gmail.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "http://dev.satis.local/"
-    }
-  ],
   "require": {
     "php": ">=7.4 || >=8.0",
-    "alex-patterson-webdev/laminas-date-time": "dev-feature/0.2.0",
-    "alex-patterson-webdev/laminas-doctrine-configuration": "dev-feature/0.1.0",
-    "alex-patterson-webdev/laminas-doctrine-connection": "dev-feature/0.1.0",
-    "alex-patterson-webdev/laminas-doctrine-entity-repository": "dev-feature/0.1.0",
-    "alex-patterson-webdev/laminas-doctrine-entity-manager": "dev-feature/0.1.0",
-    "alex-patterson-webdev/laminas-factory": "dev-feature/3.0.0",
-    "alex-patterson-webdev/laminas-symfony-console": "dev-feature/0.1.0",
-    "alex-patterson-webdev/laminas-monolog": "dev-feature/0.1.0",
+    "alex-patterson-webdev/laminas-date-time": "^0.2.0",
+    "alex-patterson-webdev/doctrine-entity-repository": "^0.2.0",
+    "alex-patterson-webdev/laminas-factory": "^3.0.0",
+    "alex-patterson-webdev/laminas-monolog": "^0.1.0",
     "doctrine/cache": "^1.11",
     "doctrine/doctrine-laminas-hydrator": "^2",
     "doctrine/data-fixtures": "^1.4",
@@ -73,7 +63,6 @@
     ]
   },
   "config": {
-    "secure-http": false,
     "optimize-autoloader": true,
     "sort-packages": true
   }

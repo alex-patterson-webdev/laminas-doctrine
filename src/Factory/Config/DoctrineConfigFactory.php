@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Config;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
-use Arp\LaminasDoctrineConfiguration\Config\ConfigurationConfigs;
-use Arp\LaminasDoctrineConnection\Config\ConnectionConfigs;
-use Arp\LaminasDoctrineEntityManager\Config\EntityManagerConfigs;
+use Arp\LaminasDoctrine\Config\ConfigurationConfigs;
+use Arp\LaminasDoctrine\Config\ConnectionConfigs;
+use Arp\LaminasDoctrine\Config\EntityManagerConfigs;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;

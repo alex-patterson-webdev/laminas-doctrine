@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Console\Helper;
 
 use Arp\LaminasDoctrine\Console\Helper\ConnectionHelper;
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
-use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;

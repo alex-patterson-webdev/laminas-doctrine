@@ -10,10 +10,14 @@ use Arp\LaminasDoctrine\Console\DoctrineApplication;
 use Arp\LaminasDoctrine\Console\Helper;
 use Arp\LaminasDoctrine\Console\Option\ObjectManagerOption;
 use Arp\LaminasDoctrine\Factory\Console\Command\ImportCommandFactory;
+use Arp\LaminasDoctrine\Factory\Console\DoctrineApplicationFactory;
 use Arp\LaminasDoctrine\Factory\Console\Helper\ConnectionHelperFactory;
 use Arp\LaminasDoctrine\Factory\Console\Helper\EntityManagerHelperFactory;
 use Arp\LaminasDoctrine\Factory\Console\Option\ObjectManagerOptionFactory;
-use Arp\LaminasSymfonyConsole\Factory\Service\ApplicationFactory;
+use Arp\LaminasDoctrine\Factory\Console\Module\CommandManagerFactory;
+use Arp\LaminasDoctrine\Factory\Console\Module\HelperManagerFactory;
+use Arp\LaminasDoctrine\Console\Module\CommandManager;
+use Arp\LaminasDoctrine\Console\Module\HelperManager;
 use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\ORM\Tools\Console\Command;
@@ -67,10 +71,14 @@ return [
     'service_manager' => [
         'factories' => [
             // Application
-            DoctrineApplication::class => ApplicationFactory::class,
+            DoctrineApplication::class => DoctrineApplicationFactory::class,
 
             // Options
             ObjectManagerOption::class => ObjectManagerOptionFactory::class,
+
+            // Managers
+            CommandManager::class => CommandManagerFactory::class,
+            HelperManager::class => HelperManagerFactory::class,
         ],
     ],
 

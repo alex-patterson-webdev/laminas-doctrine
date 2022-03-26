@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Console\Helper;
 
-use Arp\LaminasDoctrine\Factory\Service\EntityManagerFactoryProviderTrait;
-use Arp\LaminasDoctrine\Factory\Service\ObjectManagerArgvInputProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Factory\Service\EntityManager\ObjectManagerArgvInputProviderTrait;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
