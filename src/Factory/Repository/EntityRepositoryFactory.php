@@ -21,6 +21,7 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -39,11 +40,11 @@ final class EntityRepositoryFactory extends AbstractFactory
         'logger' => 'EntityRepositoryLogger',
         'query_service' => [
             'service_name' => QueryService::class,
-            'logger' => 'EntityQueryLogger',
+            'logger' => null,
         ],
         'persist_service' => [
             'service_name' => PersistService::class,
-            'logger' => 'EntityPersistLogger',
+            'logger' => null,
         ],
     ];
 
