@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adf16a80c1b3377ca278acf437b6e8a9",
+    "content-hash": "8143aeb2b0f3272e864107df8d19592a",
     "packages": [
         {
             "name": "alex-patterson-webdev/date-time",
@@ -52,6 +52,53 @@
                 "source": "https://github.com/alex-patterson-webdev/date-time/tree/0.5.0"
             },
             "time": "2022-03-06T23:18:44+00:00"
+        },
+        {
+            "name": "alex-patterson-webdev/entity",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alex-patterson-webdev/entity.git",
+                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/entity/zipball/84cfb3d93c8857028cc95e035a261c86a2afa9da",
+                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4 || >=8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6.0",
+                "phpspec/prophecy": "^1.15.0",
+                "phpstan/phpstan": "^1.4.8",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Arp\\Entity\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Patterson",
+                    "email": "alex.patterson.webdev@gmail.com"
+                }
+            ],
+            "description": "Shared library of domain objects, traits and interfaces",
+            "support": {
+                "issues": "https://github.com/alex-patterson-webdev/entity/issues",
+                "source": "https://github.com/alex-patterson-webdev/entity/tree/2.0.0"
+            },
+            "time": "2022-03-20T21:43:28+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-date-time",

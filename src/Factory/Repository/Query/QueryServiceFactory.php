@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository\Query;
 
-use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
+use Arp\LaminasDoctrine\Repository\Query\QueryService;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;

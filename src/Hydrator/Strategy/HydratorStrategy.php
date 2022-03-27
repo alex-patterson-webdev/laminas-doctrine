@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 use Laminas\Hydrator\Strategy\HydratorStrategy as LaminasHydratorStrategy;
 

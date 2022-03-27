@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Hydrator\Strategy;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\LaminasDoctrine\Hydrator\Strategy\HydratorStrategy;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\Hydrator\HydratorPluginManager;
@@ -13,6 +13,7 @@ use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 use Laminas\Hydrator\Strategy\HydratorStrategy as LaminasHydratorStrategy;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -33,6 +34,7 @@ final class HydratorStrategyFactory extends AbstractFactory
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,

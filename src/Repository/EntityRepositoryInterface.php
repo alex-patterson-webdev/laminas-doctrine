@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
-use Arp\LaminasDoctrine\Exception\EntityRepositoryException;
 use Arp\Entity\EntityInterface;
+use Arp\LaminasDoctrine\Repository\Exception\EntityRepositoryException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @extends ObjectRepository<EntityInterface>
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine
+ * @package Arp\LaminasDoctrine\Repository
  */
 interface EntityRepositoryInterface extends ObjectRepository
 {
     /**
-     * Save a single entity instance.
-     *
      * @param EntityInterface $entity
      * @param array<mixed>    $options
      *
@@ -29,7 +27,7 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function save(EntityInterface $entity, array $options = []): EntityInterface;
 
     /**
-     * Save a collection of entities in a single transaction.
+     * Save a collection of entities in a single transaction
      *
      * @param iterable<EntityInterface> $collection The collection of entities that should be saved.
      * @param array<mixed>              $options    the optional save options.
@@ -41,7 +39,7 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function saveCollection(iterable $collection, array $options = []): iterable;
 
     /**
-     * Delete an entity.
+     * Delete an entity
      *
      * @param EntityInterface|int|string $entity
      * @param array<mixed>               $options
@@ -53,7 +51,7 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function delete($entity, array $options = []): bool;
 
     /**
-     * Perform a deletion of a collection of entities.
+     * Perform a deletion of a collection of entities
      *
      * @param iterable<EntityInterface> $collection
      * @param array<mixed>              $options

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository;
 
-use Arp\DoctrineEntityRepository\EntityRepository;
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
-use Arp\DoctrineEntityRepository\Persistence\PersistService;
-use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
-use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\LaminasDoctrine\Repository\EntityRepository;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
+use Arp\LaminasDoctrine\Repository\Query\QueryService;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceInterface;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Hydrator\Strategy\Exception\RuntimeException;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Laminas\Hydrator\HydratorInterface;
@@ -290,8 +290,6 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @noinspection PhpUnusedPrivateMethodInspection It is used as a user defined callback in array_udiff()
-     *
      * @param EntityInterface $a
      * @param EntityInterface $b
      *
