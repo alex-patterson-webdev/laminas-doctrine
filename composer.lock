@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "722cd811ff8dd23f9ba21ac4e1db89cf",
+    "content-hash": "adf16a80c1b3377ca278acf437b6e8a9",
     "packages": [
         {
             "name": "alex-patterson-webdev/date-time",
@@ -52,156 +52,6 @@
                 "source": "https://github.com/alex-patterson-webdev/date-time/tree/0.5.0"
             },
             "time": "2022-03-06T23:18:44+00:00"
-        },
-        {
-            "name": "alex-patterson-webdev/doctrine-entity-repository",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alex-patterson-webdev/doctrine-entity-repository.git",
-                "reference": "c2c7ac03481aa4e1fbf1d411cbe2eb4a9828880a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/doctrine-entity-repository/zipball/c2c7ac03481aa4e1fbf1d411cbe2eb4a9828880a",
-                "reference": "c2c7ac03481aa4e1fbf1d411cbe2eb4a9828880a",
-                "shasum": ""
-            },
-            "require": {
-                "alex-patterson-webdev/date-time": "^0.5.0",
-                "alex-patterson-webdev/entity": "^2.0.0",
-                "alex-patterson-webdev/event-dispatcher": "^2.0.0",
-                "doctrine/orm": "^2.7",
-                "php": ">=7.4 || >=8.0",
-                "psr/log": "^1.1"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.6.0",
-                "phpspec/prophecy": "^1.15.0",
-                "phpstan/phpstan": "^1.4.8",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Arp\\DoctrineEntityRepository\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Patterson",
-                    "email": "alex.patterson.webdev@gmail.com"
-                }
-            ],
-            "description": "An event based implementation of the Doctrine ORM Entity Repository",
-            "support": {
-                "issues": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/issues",
-                "source": "https://github.com/alex-patterson-webdev/doctrine-entity-repository/tree/0.2.0"
-            },
-            "time": "2022-03-20T22:39:01+00:00"
-        },
-        {
-            "name": "alex-patterson-webdev/entity",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alex-patterson-webdev/entity.git",
-                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/entity/zipball/84cfb3d93c8857028cc95e035a261c86a2afa9da",
-                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4 || >=8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.6.0",
-                "phpspec/prophecy": "^1.15.0",
-                "phpstan/phpstan": "^1.4.8",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Arp\\Entity\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Patterson",
-                    "email": "alex.patterson.webdev@gmail.com"
-                }
-            ],
-            "description": "Shared library of domain objects, traits and interfaces",
-            "support": {
-                "issues": "https://github.com/alex-patterson-webdev/entity/issues",
-                "source": "https://github.com/alex-patterson-webdev/entity/tree/2.0.0"
-            },
-            "time": "2022-03-20T21:43:28+00:00"
-        },
-        {
-            "name": "alex-patterson-webdev/event-dispatcher",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alex-patterson-webdev/event-dispatcher.git",
-                "reference": "a71bd7c10e7b9a7685ac31b94e15bb72765ea337"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/event-dispatcher/zipball/a71bd7c10e7b9a7685ac31b94e15bb72765ea337",
-                "reference": "a71bd7c10e7b9a7685ac31b94e15bb72765ea337",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4 || >=8.0",
-                "psr/event-dispatcher": "^1"
-            },
-            "provide": {
-                "psr/event-dispatcher-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.6.0",
-                "phpspec/prophecy": "^1.15.0",
-                "phpstan/phpstan": "^1.4.8",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Arp\\EventDispatcher\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Patterson",
-                    "email": "alex.patterson.webdev@gmail.com"
-                }
-            ],
-            "description": "Simple implementation of the PSR-14 event dispatcher",
-            "support": {
-                "issues": "https://github.com/alex-patterson-webdev/event-dispatcher/issues",
-                "source": "https://github.com/alex-patterson-webdev/event-dispatcher/tree/2.0.0"
-            },
-            "time": "2022-03-18T19:51:04+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-date-time",
@@ -1432,16 +1282,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "e7c8edcf98e819638af00e7b3cbbbd7734b9b2fb"
+                "reference": "092a52b71410ac1795287bb5135704ef07d18dd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/e7c8edcf98e819638af00e7b3cbbbd7734b9b2fb",
-                "reference": "e7c8edcf98e819638af00e7b3cbbbd7734b9b2fb",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/092a52b71410ac1795287bb5135704ef07d18dd0",
+                "reference": "092a52b71410ac1795287bb5135704ef07d18dd0",
                 "shasum": ""
             },
             "require": {
@@ -1514,9 +1364,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/2.4.0"
+                "source": "https://github.com/doctrine/persistence/tree/2.4.1"
             },
-            "time": "2022-03-13T16:11:46+00:00"
+            "time": "2022-03-22T06:44:40+00:00"
         },
         {
             "name": "laminas/laminas-config",
@@ -2195,56 +2045,6 @@
                 "source": "https://github.com/php-fig/container/tree/1.1.2"
             },
             "time": "2021-11-05T16:50:12+00:00"
-        },
-        {
-            "name": "psr/event-dispatcher",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/event-dispatcher.git",
-                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
-                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\EventDispatcher\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Standard interfaces for event handling.",
-            "keywords": [
-                "events",
-                "psr",
-                "psr-14"
-            ],
-            "support": {
-                "issues": "https://github.com/php-fig/event-dispatcher/issues",
-                "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
-            },
-            "time": "2019-01-08T18:20:26+00:00"
         },
         {
             "name": "psr/log",
@@ -4625,6 +4425,56 @@
                 }
             ],
             "time": "2022-03-15T09:57:31+00:00"
+        },
+        {
+            "name": "psr/event-dispatcher",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher.git",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\EventDispatcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Standard interfaces for event handling.",
+            "keywords": [
+                "events",
+                "psr",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/event-dispatcher/issues",
+                "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
+            },
+            "time": "2019-01-08T18:20:26+00:00"
         },
         {
             "name": "sebastian/cli-parser",

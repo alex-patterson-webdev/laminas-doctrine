@@ -44,6 +44,7 @@ class QueryServiceFactory extends AbstractFactory
     ): QueryServiceInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'query_services');
 
+        /** @var class-string<QueryServiceInterface> $className */
         $className = $options['class_name'] ?? QueryService::class;
         $entityName = $options['entity_name'] ?? $requestedName;
 
@@ -68,14 +69,10 @@ class QueryServiceFactory extends AbstractFactory
 
         $entityManager = $this->getEntityManager($container, $entityManager, $requestedName);
 
-        /** @var QueryServiceInterface $queryService */
-        /** @noinspection PhpUnnecessaryLocalVariableInspection */
-        $queryService = new $className(
+        return new $className(
             $entityName,
             $entityManager,
             $this->getLogger($container, $options['logger'] ?? null, $requestedName)
         );
-
-        return $queryService;
     }
 }

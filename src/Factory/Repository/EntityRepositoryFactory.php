@@ -26,7 +26,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Factory\Repository
  */
-final class RepositoryFactory extends AbstractFactory
+final class EntityRepositoryFactory extends AbstractFactory
 {
     use FactoryLoggerProviderTrait;
 
@@ -96,23 +96,19 @@ final class RepositoryFactory extends AbstractFactory
 
         $className = $this->resolveClassName($entityName, $options);
 
-        /** @var EntityRepositoryInterface $repository */
-        /** @noinspection PhpUnnecessaryLocalVariableInspection */
-        $repository = new $className(
+        return new $className(
             $entityName,
             $queryService,
             $persistService,
             $this->getLogger($container, $options['logger'] ?? null, $requestedName)
         );
-
-        return $repository;
     }
 
     /**
      * @param string               $entityName
      * @param array<string, mixed> $options
      *
-     * @return string
+     * @return class-string<EntityRepositoryInterface>
      */
     private function resolveClassName(string $entityName, array $options = []): string
     {

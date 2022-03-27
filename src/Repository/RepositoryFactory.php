@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
-use Arp\DoctrineEntityRepository\EntityRepositoryProviderInterface;
+use Arp\LaminasDoctrine\EntityRepositoryInterface;
+use Arp\LaminasDoctrine\EntityRepositoryProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Repository\RepositoryFactory as RepositoryFactoryInterface;
 use Doctrine\Persistence\ObjectRepository;

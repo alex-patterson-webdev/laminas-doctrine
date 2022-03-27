@@ -31,7 +31,7 @@ interface EntityManagerProviderInterface
      *
      * @return EntityManagerInterface
      *
-     * @throws \Arp\LaminasDoctrine\Service\EntityManager\Exception\EntityManagerProviderException
+     * @throws EntityManagerProviderException
      */
     public function getEntityManager(string $name): EntityManagerInterface;
 

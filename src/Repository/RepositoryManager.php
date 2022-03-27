@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
-use Arp\DoctrineEntityRepository\EntityRepositoryProviderInterface;
+use Arp\LaminasDoctrine\EntityRepositoryInterface;
+use Arp\LaminasDoctrine\EntityRepositoryProviderInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;

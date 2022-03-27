@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Query;
 
-use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 
 /**

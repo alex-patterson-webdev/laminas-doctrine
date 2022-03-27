@@ -13,7 +13,6 @@
   "require": {
     "php": ">=7.4 || >=8.0",
     "alex-patterson-webdev/laminas-date-time": "^0.2.0",
-    "alex-patterson-webdev/doctrine-entity-repository": "^0.2.0",
     "alex-patterson-webdev/laminas-factory": "^3.0.0",
     "alex-patterson-webdev/laminas-monolog": "^0.1.0",
     "doctrine/cache": "^1.11",

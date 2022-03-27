@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Persistence;
 
-use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 
 /**
