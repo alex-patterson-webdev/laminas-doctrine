@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine;
 
-use Arp\DoctrineEntityRepository\Persistence\PersistService;
-use Arp\DoctrineEntityRepository\Query\QueryService;
 use Arp\LaminasDoctrine\Config\ConfigurationConfigs;
 use Arp\LaminasDoctrine\Config\ConnectionConfigs;
 use Arp\LaminasDoctrine\Config\DoctrineConfig;
@@ -38,7 +36,9 @@ use Arp\LaminasDoctrine\Factory\Service\Connection\ConnectionManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerContainerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerProviderFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceManager;
+use Arp\LaminasDoctrine\Repository\Query\QueryService;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasDoctrine\Repository\RepositoryFactory;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
