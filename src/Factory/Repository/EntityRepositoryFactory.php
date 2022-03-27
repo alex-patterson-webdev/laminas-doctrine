@@ -37,7 +37,7 @@ final class EntityRepositoryFactory extends AbstractFactory
      * @var array<mixed>
      */
     private array $defaultOptions = [
-        'logger' => 'EntityRepositoryLogger',
+        'logger' => null,
         'query_service' => [
             'service_name' => QueryService::class,
             'logger' => null,
