@@ -33,8 +33,8 @@ return [
                     RebuildCommand::class,
 
                     // DBAL Commands
-                    ReservedWordsCommand::class,
-                    RunSqlCommand::class,
+                    //ReservedWordsCommand::class,
+                    //RunSqlCommand::class,
 
                     // ORM Commands
                     Command\ClearCache\CollectionRegionCommand::class,

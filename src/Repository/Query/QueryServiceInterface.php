@@ -9,13 +9,15 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 
 /**
+ * @template TEntity as EntityInterface
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasDoctrine\Repository\Query
  */
 interface QueryServiceInterface
 {
     /**
-     * @return string
+     * @return class-string<TEntity>
      */
     public function getEntityName(): string;
 
@@ -25,7 +27,7 @@ interface QueryServiceInterface
      * @param int|string           $id      The identity of the entity to match.
      * @param array<string, mixed> $options The optional query options.
      *
-     * @return EntityInterface|null
+     * @return TEntity|null
      *
      * @throws Exception\QueryServiceException
      */
@@ -37,7 +39,7 @@ interface QueryServiceInterface
      * @param array<string, mixed> $criteria The search criteria that should be matched on.
      * @param array<string, mixed> $options  The optional query options.
      *
-     * @return EntityInterface|null
+     * @return TEntity|null
      *
      * @throws Exception\QueryServiceException
      */
@@ -49,7 +51,7 @@ interface QueryServiceInterface
      * @param array<string, mixed> $criteria The search criteria that should be matched on.
      * @param array<string, mixed> $options  The optional query options.
      *
-     * @return EntityInterface[]|iterable
+     * @return TEntity[]|iterable
      *
      * @throws Exception\QueryServiceException
      */
@@ -59,7 +61,7 @@ interface QueryServiceInterface
      * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
      * @param array<string, mixed>              $options
      *
-     * @return EntityInterface|array<mixed>|null
+     * @return TEntity|array<mixed>|null
      *
      * @throws Exception\QueryServiceException
      */
@@ -69,7 +71,7 @@ interface QueryServiceInterface
      * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
      * @param array<string, mixed>              $options
      *
-     * @return int|mixed|string
+     * @return int|float|bool|string|null
      *
      * @throws Exception\QueryServiceException
      */

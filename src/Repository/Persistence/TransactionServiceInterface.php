@@ -10,18 +10,9 @@ namespace Arp\LaminasDoctrine\Repository\Persistence;
  */
 interface TransactionServiceInterface
 {
-    /**
-     * @return void
-     */
     public function beginTransaction(): void;
 
-    /**
-     * @return void
-     */
     public function commitTransaction(): void;
 
-    /**
-     * @return void
-     */
     public function rollbackTransaction(): void;
 }

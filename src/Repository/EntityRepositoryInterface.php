@@ -9,6 +9,7 @@ use Arp\LaminasDoctrine\Repository\Exception\EntityRepositoryException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
+ * @template TEntity as EntityInterface
  * @extends ObjectRepository<EntityInterface>
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -16,6 +17,15 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface EntityRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @param string|int $id
+     *
+     * @return EntityInterface|null
+     *
+     * @throws EntityRepositoryException
+     */
+    public function findOneById($id): ?EntityInterface;
+
     /**
      * @param EntityInterface $entity
      * @param array<mixed>    $options
