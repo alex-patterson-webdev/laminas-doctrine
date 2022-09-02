@@ -19,10 +19,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @template TEntity as EntityInterface
- * @extends EntityRepositoryInterface<EntityInterface>
- *
- * @author   Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package  Arp\LaminasDoctrine\Repository
+ * @implements EntityRepositoryInterface<EntityInterface>
  */
 abstract class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface
 {
@@ -31,6 +28,9 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      */
     protected string $entityName;
 
+    /**
+     * @var QueryServiceInterface<EntityInterface>
+     */
     protected QueryServiceInterface $queryService;
 
     protected PersistServiceInterface $persistService;
@@ -38,10 +38,10 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     protected LoggerInterface $logger;
 
     /**
-     * @param class-string<EntityInterface> $entityName
-     * @param QueryServiceInterface         $queryService
-     * @param PersistServiceInterface       $persistService
-     * @param LoggerInterface               $logger
+     * @param class-string<EntityInterface>          $entityName
+     * @param QueryServiceInterface<EntityInterface> $queryService
+     * @param PersistServiceInterface                $persistService
+     * @param LoggerInterface                        $logger
      */
     public function __construct(
         string $entityName,
@@ -58,7 +58,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     /**
      * Return the fully qualified class name of the mapped entity instance.
      *
-     * @return class-string<TEntity>
+     * @return class-string<EntityInterface>
      */
     public function getClassName(): string
     {
@@ -70,7 +70,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      *
      * @param string|int $id
      *
-     * @return TEntity|null
+     * @return EntityInterface|null
      *
      * @throws EntityRepositoryException
      */
@@ -88,7 +88,9 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     }
 
     /**
-     * @return TEntity|null
+     * @param string|int $id
+     *
+     * @return EntityInterface|null
      *
      * @throws EntityRepositoryException
      */
@@ -102,7 +104,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      *
      * @param array<mixed> $criteria The entity filter criteria.
      *
-     * @return TEntity|null
+     * @return EntityInterface|null
      *
      * @throws EntityRepositoryException
      */
@@ -122,7 +124,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     /**
      * Return all the entities within the collection.
      *
-     * @return TEntity[]|iterable<int, TEntity>
+     * @return iterable<int, EntityInterface>
      *
      * @throws EntityRepositoryException
      */
@@ -139,7 +141,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      * @param int|null          $limit
      * @param int|null          $offset
      *
-     * @return TEntity[]|iterable
+     * @return EntityInterface[]|iterable
      *
      * @throws EntityRepositoryException
      */
@@ -179,7 +181,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      * @param TEntity      $entity
      * @param array<mixed> $options
      *
-     * @return TEntity
+     * @return EntityInterface
      *
      * @throws EntityRepositoryException
      */
@@ -199,10 +201,10 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     /**
      * Save a collection of entities in a single transaction
      *
-     * @param iterable<TEntity> $collection The collection of entities that should be saved.
-     * @param array<mixed>      $options    the optional save options.
+     * @param iterable<EntityInterface> $collection The collection of entities that should be saved.
+     * @param array<mixed>              $options    the optional save options.
      *
-     * @return iterable<TEntity>
+     * @return iterable<EntityInterface>
      *
      * @throws EntityRepositoryException If the save cannot be completed
      */
@@ -377,7 +379,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      * @param object|QueryBuilder|AbstractQuery $query
      * @param array<mixed>                      $options
      *
-     * @return TEntity[]|iterable<int, TEntity|array>
+     * @return iterable<int, TEntity|array>|mixed
      *
      * @throws EntityRepositoryException
      */
@@ -402,7 +404,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      * @param object|AbstractQuery|QueryBuilder $query
      * @param array<string, mixed>              $options
      *
-     * @return array<mixed>|TEntity|null
+     * @return array<mixed>|EntityInterface|null
      *
      * @throws EntityRepositoryException
      */
