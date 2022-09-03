@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
  * @template TEntity as EntityInterface
  * @implements EntityRepositoryInterface<EntityInterface>
  */
-abstract class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface
+class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface
 {
     /**
      * @var class-string<EntityInterface>
@@ -178,8 +178,8 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     /**
      * Save a single entity instance
      *
-     * @param TEntity      $entity
-     * @param array<mixed> $options
+     * @param EntityInterface $entity
+     * @param array<mixed>    $options
      *
      * @return EntityInterface
      *
@@ -222,8 +222,8 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     }
 
     /**
-     * @param TEntity|string|int|mixed $entity
-     * @param array<mixed>             $options
+     * @param EntityInterface|string|int|mixed $entity
+     * @param array<mixed>                     $options
      *
      * @return bool
      *
@@ -279,8 +279,8 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     /**
      * Perform a deletion of a collection of entities
      *
-     * @param iterable<TEntity> $collection
-     * @param array<mixed>      $options
+     * @param iterable<int, EntityInterface> $collection
+     * @param array<mixed>                   $options
      *
      * @return int
      *
@@ -316,7 +316,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
     }
 
     /**
-     * @param TEntity $entity
+     * @param EntityInterface $entity
      *
      * @throws EntityRepositoryException
      */
@@ -379,7 +379,7 @@ abstract class EntityRepository implements EntityRepositoryInterface, Transactio
      * @param object|QueryBuilder|AbstractQuery $query
      * @param array<mixed>                      $options
      *
-     * @return iterable<int, TEntity|array>|mixed
+     * @return iterable<int, EntityInterface|array>|mixed
      *
      * @throws EntityRepositoryException
      */
