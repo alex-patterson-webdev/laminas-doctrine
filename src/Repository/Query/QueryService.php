@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Query;
 
-use Arp\LaminasDoctrine\Repository\Query\Exception\QueryServiceException;
 use Arp\Entity\EntityInterface;
+use Arp\LaminasDoctrine\Repository\Query\Exception\QueryServiceException;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -14,30 +14,23 @@ use Doctrine\ORM\TransactionRequiredException;
 use Psr\Log\LoggerInterface;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Query
+ * @implements QueryServiceInterface<EntityInterface>
  */
 class QueryService implements QueryServiceInterface
 {
     /**
-     * @var class-string
+     * @var class-string<EntityInterface>
      */
     protected string $entityName;
 
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var LoggerInterface
-     */
     protected LoggerInterface $logger;
 
     /**
-     * @param class-string           $entityName
-     * @param EntityManagerInterface $entityManager
-     * @param LoggerInterface        $logger
+     * @param class-string<EntityInterface> $entityName
+     * @param EntityManagerInterface        $entityManager
+     * @param LoggerInterface               $logger
      */
     public function __construct(string $entityName, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
@@ -47,7 +40,7 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * @return string
+     * @return class-string<EntityInterface>
      */
     public function getEntityName(): string
     {
@@ -213,17 +206,28 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Return the result set count.
+     * Return the result set count
      *
      * @param array<string, mixed> $criteria
      *
      * @return int
+     *
+     * @throws QueryServiceException
      */
     public function count(array $criteria): int
     {
         $unitOfWork = $this->entityManager->getUnitOfWork();
 
-        return $unitOfWork->getEntityPersister($this->entityName)->count($criteria);
+        try {
+            return $unitOfWork->getEntityPersister($this->entityName)->count($criteria);
+        } catch (\Exception $e) {
+            $errorMessage = sprintf('Failed to execute \'count\' query for entity \'%s\'', $this->entityName);
+
+            $this->logger->error($errorMessage, ['exception' => $e, 'criteria' => $criteria]);
+
+
+            throw new QueryServiceException($errorMessage, $e->getCode(), $e);
+        }
     }
 
     /**
@@ -325,7 +329,7 @@ class QueryService implements QueryServiceInterface
      * Resolve the ORM Query instance for a QueryBuilder and set the optional $options
      *
      * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<mixed>               $options
+     * @param array<mixed>                      $options
      *
      * @return AbstractQuery
      *

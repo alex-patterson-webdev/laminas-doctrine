@@ -7,10 +7,6 @@ namespace Arp\LaminasDoctrine\Repository\Persistence;
 use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Persistence
- */
 interface PersistServiceInterface extends TransactionServiceInterface
 {
     /**

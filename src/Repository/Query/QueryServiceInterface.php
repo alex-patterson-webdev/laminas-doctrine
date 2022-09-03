@@ -10,9 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * @template TEntity as EntityInterface
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Query
  */
 interface QueryServiceInterface
 {

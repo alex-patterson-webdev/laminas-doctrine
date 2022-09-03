@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Query;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Query
- */
 final class QueryServiceOption
 {
     public const ORDER_BY = 'order_by';

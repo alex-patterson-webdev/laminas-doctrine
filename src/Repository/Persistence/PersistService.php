@@ -9,10 +9,6 @@ use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Persistence
- */
 class PersistService implements PersistServiceInterface
 {
     /**
