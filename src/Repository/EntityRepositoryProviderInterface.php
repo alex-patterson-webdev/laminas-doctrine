@@ -4,26 +4,19 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine
- */
+use Arp\Entity\EntityInterface;
+
 interface EntityRepositoryProviderInterface
 {
-    /**
-     * @param string $entityName
-     *
-     * @return bool
-     */
     public function hasRepository(string $entityName): bool;
 
     /**
      * @param string               $entityName
      * @param array<string, mixed> $options
      *
-     * @return EntityRepositoryInterface
+     * @return EntityRepositoryInterface<EntityInterface>
      *
-     * @throws \Throwable
+     * @throws \Exception
      */
     public function getRepository(string $entityName, array $options = []): EntityRepositoryInterface;
 }

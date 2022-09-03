@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Hydrator\Strategy;
 
+use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Hydrator\Strategy\HydratorStrategy;
 use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Arp\LaminasDoctrine\Repository\RepositoryManager;
@@ -16,12 +17,6 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * Create a hydrator strategy instance based on configuration options
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Hydrator\Strategy
- */
 final class HydratorStrategyFactory extends AbstractFactory
 {
     /**
@@ -74,7 +69,7 @@ final class HydratorStrategyFactory extends AbstractFactory
         /** @var RepositoryManager $repositoryManager */
         $repositoryManager = $this->getService($container, RepositoryManager::class, $requestedName);
 
-        /** @var EntityRepositoryInterface $repository */
+        /** @var EntityRepositoryInterface<EntityInterface> $repository */
         $repository = $this->getService($repositoryManager, $entityName, $requestedName);
 
         return new HydratorStrategy($repository, $laminasHydrator);

@@ -27,7 +27,7 @@ final class EntityRepositoryTest extends TestCase
     private string $entityName;
 
     /**
-     * @var QueryServiceInterface&MockObject
+     * @var QueryServiceInterface<EntityInterface>&MockObject
      */
     private QueryServiceInterface $queryService;
 

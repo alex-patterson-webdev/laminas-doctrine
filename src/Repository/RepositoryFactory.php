@@ -4,32 +4,17 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
+use Arp\Entity\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Repository\RepositoryFactory as RepositoryFactoryInterface;
 use Doctrine\Persistence\ObjectRepository;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository
- */
 final class RepositoryFactory implements RepositoryFactoryInterface
 {
-    /**
-     * @var EntityRepositoryProviderInterface
-     */
     private EntityRepositoryProviderInterface $repositoryProvider;
 
-    /**
-     * The default (fallback) repository factory.
-     *
-     * @var RepositoryFactoryInterface
-     */
     private RepositoryFactoryInterface $repositoryFactory;
 
-    /**
-     * @param EntityRepositoryProviderInterface $repositoryProvider
-     * @param RepositoryFactoryInterface        $repositoryFactory
-     */
     public function __construct(
         EntityRepositoryProviderInterface $repositoryProvider,
         RepositoryFactoryInterface $repositoryFactory
@@ -42,7 +27,7 @@ final class RepositoryFactory implements RepositoryFactoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      *
-     * @return EntityRepositoryInterface|ObjectRepository<object>
+     * @return EntityRepositoryInterface<EntityInterface>|ObjectRepository<object>
      *
      * @throws \Throwable
      */

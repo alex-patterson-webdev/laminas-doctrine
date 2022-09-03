@@ -4,24 +4,18 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
+use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 use Laminas\Hydrator\Strategy\HydratorStrategy as LaminasHydratorStrategy;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Hydrator\Strategy
- */
 final class HydratorStrategy extends AbstractHydratorStrategy
 {
-    /**
-     * @var LaminasHydratorStrategy
-     */
     private LaminasHydratorStrategy $hydratorStrategy;
 
     /**
-     * @param EntityRepositoryInterface $repository
-     * @param LaminasHydratorStrategy   $hydratorStrategy
+     * @param EntityRepositoryInterface<EntityInterface> $repository
+     * @param LaminasHydratorStrategy                    $hydratorStrategy
      */
     public function __construct(EntityRepositoryInterface $repository, LaminasHydratorStrategy $hydratorStrategy)
     {
@@ -54,7 +48,7 @@ final class HydratorStrategy extends AbstractHydratorStrategy
      * @param mixed             $value
      * @param array<mixed>|null $data
      *
-     * @return mixed|object|string|null
+     * @return object|string|null
      *
      * @throws InvalidArgumentException
      */

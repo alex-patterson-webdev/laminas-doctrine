@@ -12,20 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Hydrator\Strategy
- */
 class HydratorCollectionStrategy extends AbstractHydratorStrategy implements HydrationObjectAwareInterface
 {
-    /**
-     * @var string
-     */
     private string $name;
 
-    /**
-     * @var HydratorInterface
-     */
     private HydratorInterface $hydrator;
 
     /**
@@ -34,9 +24,9 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     private ?object $object;
 
     /**
-     * @param string                    $name
-     * @param EntityRepositoryInterface $repository
-     * @param HydratorInterface         $hydrator
+     * @param string                                     $name
+     * @param EntityRepositoryInterface<EntityInterface> $repository
+     * @param HydratorInterface                          $hydrator
      */
     public function __construct(string $name, EntityRepositoryInterface $repository, HydratorInterface $hydrator)
     {

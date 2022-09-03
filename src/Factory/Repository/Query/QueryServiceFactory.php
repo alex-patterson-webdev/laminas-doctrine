@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository\Query;
 
+use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Repository\Query\QueryService;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceInterface;
@@ -16,10 +17,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Repository\Query
- */
 class QueryServiceFactory extends AbstractFactory
 {
     use EntityManagerFactoryProviderTrait;
@@ -30,7 +27,7 @@ class QueryServiceFactory extends AbstractFactory
      * @param string                                     $requestedName
      * @param array<string, mixed>|null                  $options
      *
-     * @return QueryServiceInterface
+     * @return QueryServiceInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -44,7 +41,7 @@ class QueryServiceFactory extends AbstractFactory
     ): QueryServiceInterface {
         $options = $options ?? $this->getServiceOptions($container, $requestedName, 'query_services');
 
-        /** @var class-string<QueryServiceInterface> $className */
+        /** @var class-string<QueryServiceInterface<EntityInterface>> $className */
         $className = $options['class_name'] ?? QueryService::class;
         $entityName = $options['entity_name'] ?? $requestedName;
 

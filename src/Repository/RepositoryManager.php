@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository;
 
+use Arp\Entity\EntityInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository
- */
 final class RepositoryManager extends AbstractPluginManager implements EntityRepositoryProviderInterface
 {
     /**
@@ -22,15 +19,10 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
     protected $autoAddInvokableClass = false;
 
     /**
-     * @var class-string<EntityRepositoryInterface>
+     * @var class-string<EntityRepositoryInterface<EntityInterface>>
      */
     protected $instanceOf = EntityRepositoryInterface::class;
 
-    /**
-     * @param string $entityName
-     *
-     * @return bool
-     */
     public function hasRepository(string $entityName): bool
     {
         return $this->has($entityName);
@@ -40,7 +32,7 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
      * @param string               $entityName
      * @param array<string, mixed> $options
      *
-     * @return EntityRepositoryInterface
+     * @return EntityRepositoryInterface<EntityInterface>
      *
      * @throws InvalidServiceException
      * @throws ServiceNotFoundException

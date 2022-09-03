@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository;
 
+use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Repository\EntityRepository;
 use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
@@ -21,12 +22,7 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\NullLogger;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Repository
- */
 final class EntityRepositoryFactory extends AbstractFactory
 {
     use FactoryLoggerProviderTrait;
@@ -53,7 +49,7 @@ final class EntityRepositoryFactory extends AbstractFactory
      * @param string                                     $requestedName
      * @param array<string, mixed>|null                  $options
      *
-     * @return EntityRepositoryInterface
+     * @return EntityRepositoryInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -109,7 +105,7 @@ final class EntityRepositoryFactory extends AbstractFactory
      * @param string               $entityName
      * @param array<string, mixed> $options
      *
-     * @return class-string<EntityRepositoryInterface>
+     * @return class-string<EntityRepositoryInterface<EntityInterface>>
      */
     private function resolveClassName(string $entityName, array $options = []): string
     {
@@ -170,7 +166,7 @@ final class EntityRepositoryFactory extends AbstractFactory
      * @param array<string, mixed>    $options
      * @param string                  $serviceName
      *
-     * @return QueryServiceInterface
+     * @return QueryServiceInterface<EntityInterface>
      *
      * @throws ContainerExceptionInterface
      * @throws ServiceNotCreatedException
