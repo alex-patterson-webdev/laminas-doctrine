@@ -7,10 +7,6 @@ namespace Arp\LaminasDoctrine\Console\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Helper\Helper;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Console\Helper
- */
 final class EntityManagerHelper extends Helper
 {
     /**

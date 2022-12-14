@@ -10,10 +10,6 @@ use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Console\Option
- */
 final class ObjectManagerOptionFactory extends AbstractFactory
 {
     /**

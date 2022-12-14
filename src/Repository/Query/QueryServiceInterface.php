@@ -9,7 +9,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * @template TEntity as EntityInterface
+ * @template TEntity of EntityInterface
  */
 interface QueryServiceInterface
 {
@@ -19,22 +19,17 @@ interface QueryServiceInterface
     public function getEntityName(): string;
 
     /**
-     * Find a single entity matching the provided identity.
-     *
-     * @param int|string           $id      The identity of the entity to match.
-     * @param array<string, mixed> $options The optional query options.
+     * @param array<string, mixed> $options
      *
      * @return TEntity|null
      *
      * @throws Exception\QueryServiceException
      */
-    public function findOneById($id, array $options = []): ?EntityInterface;
+    public function findOneById(int $id, array $options = []): ?EntityInterface;
 
     /**
-     * Find a single entity matching the provided criteria.
-     *
-     * @param array<string, mixed> $criteria The search criteria that should be matched on.
-     * @param array<string, mixed> $options  The optional query options.
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $options
      *
      * @return TEntity|null
      *
@@ -43,57 +38,54 @@ interface QueryServiceInterface
     public function findOne(array $criteria, array $options = []): ?EntityInterface;
 
     /**
-     * Find a collection of entities that match the provided criteria.
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $options
      *
-     * @param array<string, mixed> $criteria The search criteria that should be matched on.
-     * @param array<string, mixed> $options  The optional query options.
-     *
-     * @return TEntity[]|iterable
+     * @return iterable<int, TEntity>
      *
      * @throws Exception\QueryServiceException
      */
     public function findMany(array $criteria, array $options = []): iterable;
 
     /**
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
+     * @param AbstractQuery|QueryBuilder $queryOrBuilder
+     * @param array<string, mixed> $options
      *
      * @return TEntity|array<mixed>|null
      *
      * @throws Exception\QueryServiceException
      */
-    public function getSingleResultOrNull(object $queryOrBuilder, array $options = []);
+    public function getSingleResultOrNull(
+        AbstractQuery|QueryBuilder $queryOrBuilder,
+        array $options = []
+    ): EntityInterface|array|null;
 
     /**
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
+     * @param AbstractQuery|QueryBuilder $queryOrBuilder
+     * @param array<string, mixed> $options
      *
      * @return int|float|bool|string|null
      *
      * @throws Exception\QueryServiceException
      */
-    public function getSingleScalarResult(object $queryOrBuilder, array $options = []);
+    public function getSingleScalarResult(
+        AbstractQuery|QueryBuilder $queryOrBuilder,
+        array $options = []
+    ): int|float|bool|string|null;
 
     /**
-     * Construct and execute the query.
-     *
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
-     *
-     * @return mixed
+     * @param array<string, mixed> $options
      *
      * @throws Exception\QueryServiceException
      */
-    public function execute(object $queryOrBuilder, array $options = []);
+    public function execute(AbstractQuery|QueryBuilder $queryOrBuilder, array $options = []): mixed;
 
     /**
-     * Return the result set count.
-     *
      * @param array<string, mixed> $criteria
      *
-     * @return mixed
+     * @throws Exception\QueryServiceException
      */
-    public function count(array $criteria);
+    public function count(array $criteria): int;
 
     /**
      * Return a new query builder instance.

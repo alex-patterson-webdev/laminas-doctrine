@@ -29,8 +29,8 @@ class QueryService implements QueryServiceInterface
 
     /**
      * @param class-string<EntityInterface> $entityName
-     * @param EntityManagerInterface        $entityManager
-     * @param LoggerInterface               $logger
+     * @param EntityManagerInterface $entityManager
+     * @param LoggerInterface $logger
      */
     public function __construct(string $entityName, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
@@ -48,15 +48,16 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
+     * @param array<string, mixed> $options
      *
      * @return EntityInterface|null|array<mixed>
      *
      * @throws QueryServiceException
      */
-    public function getSingleResultOrNull(object $queryOrBuilder, array $options = [])
-    {
+    public function getSingleResultOrNull(
+        AbstractQuery|QueryBuilder $queryOrBuilder,
+        array $options = []
+    ): EntityInterface|array|null {
         $result = $this->execute($queryOrBuilder, $options);
 
         if (empty($result)) {
@@ -75,15 +76,17 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
+     * @param AbstractQuery|QueryBuilder $queryOrBuilder
+     * @param array<string, mixed> $options
      *
-     * @return int|mixed|string
+     * @return int|float|bool|string|null
      *
      * @throws QueryServiceException
      */
-    public function getSingleScalarResult(object $queryOrBuilder, array $options = [])
-    {
+    public function getSingleScalarResult(
+        AbstractQuery|QueryBuilder $queryOrBuilder,
+        array $options = []
+    ): int|float|bool|string|null {
         try {
             return $this->getQuery($queryOrBuilder, $options)->getSingleScalarResult();
         } catch (QueryServiceException $e) {
@@ -101,16 +104,11 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Construct and execute the query.
-     *
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<string, mixed>              $options
-     *
-     * @return mixed
+     * @param array<string, mixed> $options
      *
      * @throws QueryServiceException
      */
-    public function execute(object $queryOrBuilder, array $options = [])
+    public function execute(AbstractQuery|QueryBuilder $queryOrBuilder, array $options = []): mixed
     {
         try {
             return $this->getQuery($queryOrBuilder, $options)->execute();
@@ -126,27 +124,20 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Find a single entity matching the provided identity.
-     *
-     * @param mixed                $id      The identity of the entity to match.
-     * @param array<string, mixed> $options The optional query options.
+     * @param array<string, mixed> $options
      *
      * @return EntityInterface|null
      *
      * @throws QueryServiceException
      */
-    public function findOneById($id, array $options = []): ?EntityInterface
+    public function findOneById(int $id, array $options = []): ?EntityInterface
     {
         return $this->findOne(compact('id'), $options);
     }
 
     /**
-     * Find a single entity matching the provided criteria.
-     *
-     * @param array<string, mixed> $criteria The search criteria that should be matched on.
-     * @param array<string, mixed> $options  The optional query options.
-     *
-     * @return EntityInterface|null
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $options
      *
      * @throws QueryServiceException
      */
@@ -176,10 +167,8 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Find a collection of entities that match the provided criteria.
-     *
-     * @param array<string, mixed> $criteria The search criteria that should be matched on.
-     * @param array<string, mixed> $options  The optional query options.
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $options
      *
      * @return iterable<EntityInterface>
      *
@@ -206,11 +195,7 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Return the result set count
-     *
      * @param array<string, mixed> $criteria
-     *
-     * @return int
      *
      * @throws QueryServiceException
      */
@@ -231,12 +216,7 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Set the query builder options.
-     *
-     * @param QueryBuilder         $queryBuilder The query builder to update.
-     * @param array<string, mixed> $options      The query builder options to set.
-     *
-     * @return QueryBuilder
+     * @param array<string, mixed> $options
      */
     protected function prepareQueryBuilder(QueryBuilder $queryBuilder, array $options = []): QueryBuilder
     {
@@ -261,12 +241,7 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Prepare the provided query by setting the $options.
-     *
-     * @param AbstractQuery        $query
      * @param array<string, mixed> $options
-     *
-     * @return AbstractQuery
      *
      * @throws QueryServiceException
      */
@@ -307,13 +282,6 @@ class QueryService implements QueryServiceInterface
         return $query;
     }
 
-    /**
-     * Return a new query builder instance.
-     *
-     * @param string|null $alias The optional query builder alias.
-     *
-     * @return QueryBuilder
-     */
     public function createQueryBuilder(string $alias = null): QueryBuilder
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -326,36 +294,16 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * Resolve the ORM Query instance for a QueryBuilder and set the optional $options
-     *
-     * @param object|AbstractQuery|QueryBuilder $queryOrBuilder
-     * @param array<mixed>                      $options
-     *
-     * @return AbstractQuery
+     * @param array<string, mixed> $options
      *
      * @throws QueryServiceException
      */
-    private function getQuery(object $queryOrBuilder, array $options = []): AbstractQuery
+    private function getQuery(AbstractQuery|QueryBuilder $queryOrBuilder, array $options = []): AbstractQuery
     {
-        if (!$queryOrBuilder instanceof AbstractQuery && !$queryOrBuilder instanceof QueryBuilder) {
-            throw new QueryServiceException(
-                sprintf(
-                    'The queryOrBuilder argument must be an object of type '
-                    . '\'%s\' or \'%s\'; \'%s\' provided in \'%s\'.',
-                    AbstractQuery::class,
-                    QueryBuilder::class,
-                    get_class($queryOrBuilder),
-                    __METHOD__
-                )
-            );
-        }
-
         if ($queryOrBuilder instanceof QueryBuilder) {
-            $query = $this->prepareQueryBuilder($queryOrBuilder, $options)->getQuery();
-        } else {
-            $query = $queryOrBuilder;
+            $queryOrBuilder = $this->prepareQueryBuilder($queryOrBuilder, $options)->getQuery();
         }
 
-        return $this->prepareQuery($query, $options);
+        return $this->prepareQuery($queryOrBuilder, $options);
     }
 }

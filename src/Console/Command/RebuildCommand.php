@@ -13,9 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Inspired by @link https://github.com/doctrine/DoctrineFixturesBundle/issues/50
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Console\Command
  */
 final class RebuildCommand extends Command
 {
@@ -48,11 +45,6 @@ final class RebuildCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws InvalidArgumentException
      * @throws \Exception
      */

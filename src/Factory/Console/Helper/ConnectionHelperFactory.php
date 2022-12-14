@@ -13,27 +13,25 @@ use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\DBAL\Connection;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Console\Helper
- */
 final class ConnectionHelperFactory extends AbstractFactory
 {
     use ObjectManagerArgvInputProviderTrait;
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
+     * @param ContainerInterface $container
+     * @param string $requestedName
      * @param array<string, mixed>|null $options
      *
      * @return ConnectionHelper
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
@@ -44,6 +42,10 @@ final class ConnectionHelperFactory extends AbstractFactory
 
         if (empty($options['connection'])) {
             $options['connection'] = $this->resolveConnection($container, $requestedName);
+        }
+
+        if (!empty($options['default_connection'])) {
+            $options['connection'] = $options['default_connection'];
         }
 
         if (empty($options['connection'])) {
@@ -68,7 +70,7 @@ final class ConnectionHelperFactory extends AbstractFactory
      *
      * @throws ServiceNotCreatedException
      */
-    private function resolveConnection(ContainerInterface $container, string $serviceName)
+    private function resolveConnection(ContainerInterface $container, string $serviceName): Connection|string|null
     {
         try {
             $arguments = new ArgvInput();
@@ -97,16 +99,17 @@ final class ConnectionHelperFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface      $container
+     * @param ContainerInterface $container
      * @param string|Connection|mixed $connection
-     * @param string                  $serviceName
+     * @param string $serviceName
      *
      * @return Connection
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
-    private function getConnection(ContainerInterface $container, $connection, string $serviceName): Connection
+    private function getConnection(ContainerInterface $container, mixed $connection, string $serviceName): Connection
     {
         if (is_string($connection)) {
             $connectionName = $connection;

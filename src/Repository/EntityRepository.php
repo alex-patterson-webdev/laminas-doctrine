@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Repository;
 
 use Arp\Entity\EntityInterface;
-use Arp\LaminasDoctrine\Repository\Exception\EntityNotFoundException;
 use Arp\LaminasDoctrine\Repository\Exception\EntityRepositoryException;
 use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
@@ -18,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 
 /**
- * @template TEntity as EntityInterface
+ * @template Entity of EntityInterface
  * @implements EntityRepositoryInterface<EntityInterface>
  */
 class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface
@@ -29,19 +28,22 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     protected string $entityName;
 
     /**
-     * @var QueryServiceInterface<EntityInterface>
+     * @var QueryServiceInterface<Entity>
      */
     protected QueryServiceInterface $queryService;
 
+    /**
+     * @var PersistServiceInterface<Entity>
+     */
     protected PersistServiceInterface $persistService;
 
     protected LoggerInterface $logger;
 
     /**
-     * @param class-string<EntityInterface>          $entityName
-     * @param QueryServiceInterface<EntityInterface> $queryService
-     * @param PersistServiceInterface                $persistService
-     * @param LoggerInterface                        $logger
+     * @param class-string<EntityInterface> $entityName
+     * @param QueryServiceInterface<Entity> $queryService
+     * @param PersistServiceInterface<Entity> $persistService
+     * @param LoggerInterface $logger
      */
     public function __construct(
         string $entityName,
@@ -68,9 +70,9 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Return a single entity instance matching the provided $id.
      *
-     * @param string|int $id
+     * @param int $id
      *
-     * @return EntityInterface|null
+     * @return Entity|null
      *
      * @throws EntityRepositoryException
      */
@@ -88,13 +90,13 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param string|int $id
+     * @param int $id
      *
-     * @return EntityInterface|null
+     * @return Entity|null
      *
      * @throws EntityRepositoryException
      */
-    public function findOneById($id): ?EntityInterface
+    public function findOneById(int $id): ?EntityInterface
     {
         return $this->find($id);
     }
@@ -104,7 +106,7 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
      *
      * @param array<mixed> $criteria The entity filter criteria.
      *
-     * @return EntityInterface|null
+     * @return Entity|null
      *
      * @throws EntityRepositoryException
      */
@@ -124,7 +126,7 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Return all the entities within the collection.
      *
-     * @return iterable<int, EntityInterface>
+     * @return iterable<int, Entity>
      *
      * @throws EntityRepositoryException
      */
@@ -136,12 +138,12 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Return a collection of entities that match the provided $criteria.
      *
-     * @param array<mixed>      $criteria
+     * @param array<mixed> $criteria
      * @param array<mixed>|null $orderBy
-     * @param int|null          $limit
-     * @param int|null          $offset
+     * @param int|null $limit
+     * @param int|null $offset
      *
-     * @return EntityInterface[]|iterable
+     * @return iterable<int, Entity>
      *
      * @throws EntityRepositoryException
      */
@@ -178,10 +180,10 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Save a single entity instance
      *
-     * @param EntityInterface $entity
-     * @param array<mixed>    $options
+     * @param Entity $entity
+     * @param array<mixed> $options
      *
-     * @return EntityInterface
+     * @return Entity
      *
      * @throws EntityRepositoryException
      */
@@ -201,10 +203,10 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Save a collection of entities in a single transaction
      *
-     * @param iterable<EntityInterface> $collection The collection of entities that should be saved.
-     * @param array<mixed>              $options    the optional save options.
+     * @param iterable<Entity> $collection The collection of entities that should be saved.
+     * @param array<mixed> $options        the optional save options.
      *
-     * @return iterable<EntityInterface>
+     * @return iterable<Entity>
      *
      * @throws EntityRepositoryException If the save cannot be completed
      */
@@ -222,46 +224,15 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param EntityInterface|string|int|mixed $entity
-     * @param array<mixed>                     $options
+     * @param Entity $entity
+     * @param array<mixed> $options
      *
      * @return bool
      *
      * @throws EntityRepositoryException
      */
-    public function delete($entity, array $options = []): bool
+    public function delete(EntityInterface $entity, array $options = []): bool
     {
-        if (is_string($entity) || is_int($entity)) {
-            $id = $entity;
-            $entity = $this->find($id);
-
-            if (null === $entity) {
-                $errorMessage = sprintf(
-                    'Unable to delete entity \'%s::%s\': The entity could not be found',
-                    $this->entityName,
-                    $id
-                );
-
-                $this->logger->error($errorMessage);
-
-                throw new EntityNotFoundException($errorMessage);
-            }
-        } elseif (!$entity instanceof EntityInterface) {
-            $errorMessage = sprintf(
-                'The \'entity\' argument must be a \'string\' or an object of type \'%s\'; '
-                . '\'%s\' provided in \'%s::%s\'',
-                EntityInterface::class,
-                (is_object($entity) ? get_class($entity) : gettype($entity)),
-                static::class,
-                __FUNCTION__
-            );
-
-            $this->logger->error($errorMessage);
-
-            throw new EntityRepositoryException($errorMessage);
-        }
-
-
         try {
             return $this->persistService->delete($entity, $options);
         } catch (\Exception $e) {
@@ -279,8 +250,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * Perform a deletion of a collection of entities
      *
-     * @param iterable<int, EntityInterface> $collection
-     * @param array<mixed>                   $options
+     * @param iterable<int, Entity> $collection
+     * @param array<mixed> $options
      *
      * @return int
      *
@@ -316,7 +287,7 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      *
      * @throws EntityRepositoryException
      */
@@ -374,16 +345,14 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Execute query builder or query instance and return the results.
+     * @param QueryBuilder|AbstractQuery $query
+     * @param array<mixed> $options
      *
-     * @param object|QueryBuilder|AbstractQuery $query
-     * @param array<mixed>                      $options
-     *
-     * @return iterable<int, EntityInterface|array>|mixed
+     * @return mixed
      *
      * @throws EntityRepositoryException
      */
-    protected function executeQuery(object $query, array $options = [])
+    protected function executeQuery(QueryBuilder|AbstractQuery $query, array $options = []): mixed
     {
         try {
             return $this->queryService->execute($query, $options);
@@ -397,18 +366,14 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return a single entity instance. NULL will be returned if the result set contains 0 or more than 1 result.
+     * @param AbstractQuery|QueryBuilder $query
+     * @param array<string, mixed> $options
      *
-     * Optionally control the object hydration with QueryServiceOption::HYDRATE_MODE.
-     *
-     * @param object|AbstractQuery|QueryBuilder $query
-     * @param array<string, mixed>              $options
-     *
-     * @return array<mixed>|EntityInterface|null
+     * @return Entity|null
      *
      * @throws EntityRepositoryException
      */
-    protected function getSingleResultOrNull(object $query, array $options = [])
+    protected function getSingleResultOrNull(AbstractQuery|QueryBuilder $query, array $options = []): ?EntityInterface
     {
         try {
             return $this->queryService->getSingleResultOrNull($query, $options);
@@ -422,18 +387,16 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return a result set containing a single array result. NULL will be returned if the result set
-     * contains 0 or more than 1 result.
-     *
-     * @param object       $query
+     * @param AbstractQuery|QueryBuilder $query
      * @param array<mixed> $options
      *
      * @return array<mixed>|null
      *
      * @throws EntityRepositoryException
      */
-    protected function getSingleArrayResultOrNull(object $query, array $options = []): ?array
+    protected function getSingleArrayResultOrNull(AbstractQuery|QueryBuilder $query, array $options = []): ?array
     {
+        /** @var array<mixed>|null $result */
         $result = $this->getSingleResultOrNull(
             $query,
             array_replace_recursive(
@@ -446,14 +409,14 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param object|AbstractQuery|QueryBuilder $query
-     * @param array<string, mixed>              $options
+     * @param AbstractQuery|QueryBuilder $query
+     * @param array<string, mixed> $options
      *
      * @return int|string|float|bool|null
      *
      * @throws EntityRepositoryException
      */
-    protected function getSingleScalarResult(object $query, array $options = [])
+    protected function getSingleScalarResult(AbstractQuery|QueryBuilder $query, array $options = []): mixed
     {
         try {
             return $this->queryService->getSingleScalarResult($query, $options);

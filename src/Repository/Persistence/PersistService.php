@@ -9,42 +9,23 @@ use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @implements PersistServiceInterface<EntityInterface>
+ */
 class PersistService implements PersistServiceInterface
 {
     /**
-     * @var string
-     */
-    protected string $entityName;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $entityManager;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected LoggerInterface $logger;
-
-    /**
-     * @param string                 $entityName
-     * @param EntityManagerInterface $entityManager
-     * @param LoggerInterface        $logger
+     * @param class-string<EntityInterface> $entityName
      */
     public function __construct(
-        string $entityName,
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger
+        protected readonly string $entityName,
+        protected readonly EntityManagerInterface $entityManager,
+        protected readonly LoggerInterface $logger
     ) {
-        $this->entityName = $entityName;
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     /**
-     * Return the full qualified class name of the entity.
-     *
-     * @return string
+     * @return class-string<EntityInterface>
      */
     public function getEntityName(): string
     {
@@ -52,7 +33,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface          $entity
+     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
      *
      * @return EntityInterface
@@ -69,7 +50,7 @@ class PersistService implements PersistServiceInterface
 
     /**
      * @param iterable<EntityInterface> $collection The collection of entities that should be saved
-     * @param array<string|int, mixed>  $options    the optional save options
+     * @param array<string|int, mixed> $options     the optional save options
      *
      * @return iterable<EntityInterface>
      *
@@ -88,7 +69,7 @@ class PersistService implements PersistServiceInterface
             $saveOptions = array_replace_recursive(
                 [
                     'flush' => !$flush,
-                    'transaction' => !$transaction
+                    'transaction' => !$transaction,
                 ],
                 $options['entity_options'] ?? []
             );
@@ -127,7 +108,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface          $entity
+     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
      *
      * @return EntityInterface
@@ -172,7 +153,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface          $entity
+     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
      *
      * @return EntityInterface
@@ -221,7 +202,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface          $entity
+     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
      *
      * @return bool
@@ -271,7 +252,7 @@ class PersistService implements PersistServiceInterface
 
     /**
      * @param iterable<EntityInterface> $collection
-     * @param array<string|int, mixed>  $options
+     * @param array<string|int, mixed> $options
      *
      * @return int
      *
@@ -290,7 +271,7 @@ class PersistService implements PersistServiceInterface
             $saveOptions = array_replace_recursive(
                 [
                     'flush' => !$flush,
-                    'transaction' => !$transaction
+                    'transaction' => !$transaction,
                 ],
                 $options['entity_options'] ?? []
             );

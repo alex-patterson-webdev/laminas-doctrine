@@ -35,6 +35,8 @@ use Arp\LaminasDoctrine\Factory\Service\Connection\ConnectionFactoryFactory;
 use Arp\LaminasDoctrine\Factory\Service\Connection\ConnectionManagerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerContainerFactory;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerProviderFactory;
+use Arp\LaminasDoctrine\Factory\Validator\IsEntityMatchValidatorFactory;
+use Arp\LaminasDoctrine\Factory\Validator\IsEntityNoMatchValidatorFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceManager;
@@ -51,6 +53,8 @@ use Arp\LaminasDoctrine\Service\Connection\ConnectionManager;
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerContainer;
 use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
+use Arp\LaminasDoctrine\Validator\IsEntityMatchValidator;
+use Arp\LaminasDoctrine\Validator\IsEntityNoMatchValidator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
@@ -81,7 +85,7 @@ return [
                 'entity_manager' => 'orm_default',
             ],
         ],
-        'hydrators'     => [
+        'hydrators' => [
             EntityHydrator::class => [
                 'entity_manager' => 'orm_default',
             ],
@@ -94,11 +98,11 @@ return [
         'shared' => [
             'EntityEventDispatcher' => false,
         ],
-        'aliases'   => [
+        'aliases' => [
             DoctrineConfigInterface::class => DoctrineConfig::class,
 
             MappingDriver::class => MappingDriverChain::class,
-            Cache::class         => ArrayCache::class,
+            Cache::class => ArrayCache::class,
 
             // Configuration
             ConfigurationManager::class => ConfigurationManagerInterface::class,
@@ -112,48 +116,55 @@ return [
             DoctrineConfig::class => DoctrineConfigFactory::class,
 
             // Configuration
-            ConfigurationConfigs::class          => ConfigurationConfigsFactory::class,
+            ConfigurationConfigs::class => ConfigurationConfigsFactory::class,
             ConfigurationManagerInterface::class => ConfigurationManagerFactory::class,
-            ConfigurationFactoryService::class   => ConfigurationFactoryFactory::class,
-            Configuration::class                 => ConfigurationFactory::class,
+            ConfigurationFactoryService::class => ConfigurationFactoryFactory::class,
+            Configuration::class => ConfigurationFactory::class,
 
             // Connection
-            ConnectionConfigs::class          => ConnectionConfigsFactory::class,
+            ConnectionConfigs::class => ConnectionConfigsFactory::class,
             ConnectionManagerInterface::class => ConnectionManagerFactory::class,
             ConnectionFactoryInterface::class => ConnectionFactoryFactory::class,
 
             // EntityManager
-            EntityManagerConfigs::class   => EntityManagerConfigsFactory::class,
-            EntityManagerProvider::class  => EntityManagerProviderFactory::class,
+            EntityManagerConfigs::class => EntityManagerConfigsFactory::class,
+            EntityManagerProvider::class => EntityManagerProviderFactory::class,
             EntityManagerContainer::class => EntityManagerContainerFactory::class,
 
             // Repository
-            RepositoryManager::class        => RepositoryManagerFactory::class,
-            RepositoryFactory::class        => RepositoryFactoryFactory::class,
-            QueryServiceManager::class      => QueryServiceManagerFactory::class,
-            PersistServiceManager::class    => PersistServiceManagerFactory::class,
-            QueryService::class             => QueryServiceFactory::class,
-            PersistService::class           => PersistServiceFactory::class,
+            RepositoryManager::class => RepositoryManagerFactory::class,
+            RepositoryFactory::class => RepositoryFactoryFactory::class,
+            QueryServiceManager::class => QueryServiceManagerFactory::class,
+            PersistServiceManager::class => PersistServiceManagerFactory::class,
+            QueryService::class => QueryServiceFactory::class,
+            PersistService::class => PersistServiceFactory::class,
 
             // Drivers
-            MappingDriverChain::class         => MappingDriverChainFactory::class,
-            AnnotationDriver::class           => AnnotationDriverFactory::class,
-            AnnotationReader::class           => InvokableFactory::class,
+            MappingDriverChain::class => MappingDriverChainFactory::class,
+            AnnotationDriver::class => AnnotationDriverFactory::class,
+            AnnotationReader::class => InvokableFactory::class,
 
             // Cache
-            ArrayCache::class                 => ArrayCacheFactory::class,
+            ArrayCache::class => ArrayCacheFactory::class,
 
             // DataFixtures
-            DataFixtureManager::class         => DataFixtureManagerFactory::class,
-            Loader::class                     => LoaderFactory::class,
-            ORMExecutor::class                => OrmExecutorFactory::class,
-            ORMPurger::class                  => OrmPurgerFactory::class,
+            DataFixtureManager::class => DataFixtureManagerFactory::class,
+            Loader::class => LoaderFactory::class,
+            ORMExecutor::class => OrmExecutorFactory::class,
+            ORMPurger::class => OrmPurgerFactory::class,
         ],
     ],
 
     'hydrators' => [
         'factories' => [
             EntityHydrator::class => EntityHydratorFactory::class,
+        ],
+    ],
+
+    'validators' => [
+        'factories' => [
+            IsEntityMatchValidator::class => IsEntityMatchValidatorFactory::class,
+            IsEntityNoMatchValidator::class => IsEntityNoMatchValidatorFactory::class,
         ],
     ],
 

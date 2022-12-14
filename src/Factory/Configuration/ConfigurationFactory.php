@@ -7,6 +7,8 @@ namespace Arp\LaminasDoctrine\Factory\Configuration;
 use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\Cache\Cache;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Repository\RepositoryFactory;
@@ -14,12 +16,9 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Configuration
- */
 final class ConfigurationFactory extends AbstractFactory
 {
     /**
@@ -36,13 +35,14 @@ final class ConfigurationFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $serviceName
-     * @param array<mixed>|null                          $options
+     * @param string $serviceName
+     * @param array<mixed>|null $options
      *
      * @return Configuration
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
@@ -100,6 +100,10 @@ final class ConfigurationFactory extends AbstractFactory
             );
         }
 
+        if (!empty($options['types'])) {
+            $this->registerCustomTypes($options['types']);
+        }
+
         // @todo EntityResolver
         // @todo setNamingStrategy() and setQuoteStrategy()
         // @todo 2nd Level Cache
@@ -109,17 +113,21 @@ final class ConfigurationFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface           $container
+     * @param ServiceLocatorInterface $container
      * @param string|array<mixed>|MappingDriver $driver
-     * @param string                            $serviceName
+     * @param string $serviceName
      *
      * @return MappingDriver
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
-    private function getMappingDriver(ServiceLocatorInterface $container, $driver, string $serviceName): MappingDriver
-    {
+    private function getMappingDriver(
+        ServiceLocatorInterface $container,
+        string|array|MappingDriver $driver,
+        string $serviceName
+    ): MappingDriver {
         if (is_string($driver)) {
             /** @var DoctrineConfigInterface $doctrineConfig */
             $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $serviceName);
@@ -151,16 +159,17 @@ final class ConfigurationFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface   $container
+     * @param ServiceLocatorInterface $container
      * @param string|array<mixed>|Cache $cache
-     * @param string                    $serviceName
+     * @param string $serviceName
      *
      * @return Cache
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
-    private function getCache(ServiceLocatorInterface $container, $cache, string $serviceName): Cache
+    private function getCache(ServiceLocatorInterface $container, string|array|Cache $cache, string $serviceName): Cache
     {
         if (is_string($cache)) {
             /** @var DoctrineConfigInterface $doctrineConfig */
@@ -193,24 +202,19 @@ final class ConfigurationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface       $container
-     * @param string|RepositoryFactory $factory
-     * @param string                   $serviceName
-     *
-     * @return RepositoryFactory
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function getRepositoryFactory(
         ContainerInterface $container,
-        $factory,
+        string|RepositoryFactory $factory,
         string $serviceName
     ): RepositoryFactory {
         if (is_string($factory)) {
             if ($container->has($factory)) {
                 $factory = $this->getService($container, $factory, $serviceName);
-            } elseif (class_exists($factory, true) && is_a($factory, RepositoryFactory::class, true)) {
+            } elseif (class_exists($factory) && is_a($factory, RepositoryFactory::class, true)) {
                 $factory = new $factory();
             }
         }
@@ -232,13 +236,14 @@ final class ConfigurationFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface $container
-     * @param string             $serviceName
-     * @param array<mixed>|null  $options
+     * @param string $serviceName
+     * @param array<mixed>|null $options
      *
      * @return array<mixed>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function getOptions(ContainerInterface $container, string $serviceName, ?array $options): array
     {
@@ -259,5 +264,29 @@ final class ConfigurationFactory extends AbstractFactory
         }
 
         return array_replace_recursive($this->defaultOptions, $options);
+    }
+
+    /**
+     * @param array<string, string> $types
+     *
+     * @throws ServiceNotCreatedException
+     */
+    private function registerCustomTypes(array $types): void
+    {
+        foreach ($types as $typeName => $typeClassName) {
+            try {
+                if (Type::hasType($typeName)) {
+                    Type::overrideType($typeName, $typeClassName);
+                } else {
+                    Type::addType($typeName, $typeClassName);
+                }
+            } catch (DBALException $e) {
+                throw new ServiceNotCreatedException(
+                    sprintf('The doctrine type \'%s\' could not be registered', $typeName),
+                    $e->getCode(),
+                    $e
+                );
+            }
+        }
     }
 }

@@ -12,10 +12,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class ConnectionFactory implements ConnectionFactoryInterface
 {
     /**
@@ -46,7 +42,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
         array $defaultConfig = []
     ) {
         $this->configurationManager = $configurationManager;
-        $this->factoryWrapper = \Closure::fromCallable($factory ?? [$this, 'doCreate']);
+        $this->factoryWrapper = ($factory ?? [$this, 'doCreate'])(...);
         $this->defaultConfig = $defaultConfig;
     }
 
@@ -83,9 +79,9 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * Default factory creation callable
      *
-     * @param array<mixed>       $config
+     * @param array<mixed> $config
      * @param Configuration|null $configuration
-     * @param EventManager|null  $eventManager
+     * @param EventManager|null $eventManager
      *
      * @return Connection
      *
@@ -96,6 +92,16 @@ final class ConnectionFactory implements ConnectionFactoryInterface
         ?Configuration $configuration,
         ?EventManager $eventManager = null
     ): Connection {
-        return DriverManager::getConnection($config, $configuration, $eventManager);
+        $connection = DriverManager::getConnection($config, $configuration, $eventManager);
+
+        if (!empty($config['doctrine_type_mappings'])) {
+            $platform = $connection->getDatabasePlatform();
+            foreach ($config['doctrine_type_mappings'] as $databaseType => $doctrineType) {
+                /** @noinspection NullPointerExceptionInspection */
+                $platform->registerDoctrineTypeMapping($databaseType, $doctrineType);
+            }
+        }
+
+        return $connection;
     }
 }

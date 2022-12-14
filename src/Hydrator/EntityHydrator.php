@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator;
 
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\Laminas\Hydrator\DoctrineObject;
 use Doctrine\Laminas\Hydrator\Strategy\AbstractCollectionStrategy;
 use Laminas\Hydrator\Exception\InvalidArgumentException;
@@ -11,15 +13,12 @@ use Laminas\Hydrator\Exception\RuntimeException;
 use Laminas\Hydrator\Filter\FilterProviderInterface;
 
 /**
- * When using hydrators and PHP 7.4+ type hinted properties, there will be times where our entity classes will be
+ * When using hydrators and PHP 7.4+ type hinted properties, there will be times when our entity classes will be
  * instantiated via reflection (due to the Doctrine/Laminas hydration processes). This instantiation will bypass the
  * entity's __construct() and therefore not initialise the default class property values. This will lead to
  * "Typed property must not be accessed before initialization" fatal errors, despite using the hydrators in their
  * intended way. This class extends the existing DoctrineObject in order to first check if the requested property has
  * been instantiated before attempting to use it as part of the extractByValue() method.
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Hydrator
  */
 final class EntityHydrator extends DoctrineObject
 {
@@ -137,7 +136,7 @@ final class EntityHydrator extends DoctrineObject
             } elseif (in_array($isser, $methods, true)) {
                 $data[$dataFieldName] = $this->extractValue($fieldName, $object->$isser(), $object);
             } elseif (
-                0 === strpos($fieldName, 'is')
+                str_starts_with($fieldName, 'is')
                 && in_array($fieldName, $methods, true)
                 && ctype_upper($fieldName[2])
             ) {
@@ -157,7 +156,6 @@ final class EntityHydrator extends DoctrineObject
      * @return bool
      *
      * @throws RuntimeException
-     * @throws \ReflectionException
      */
     protected function isInitialisedFieldName(object $object, string $fieldName): bool
     {
@@ -184,7 +182,6 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionProperty
      *
      * @throws RuntimeException
-     * @throws \ReflectionException
      */
     private function getReflectionProperty(object $object, string $fieldName): \ReflectionProperty
     {
@@ -225,7 +222,6 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionClass<object>
      *
      * @throws RuntimeException
-     * @throws \ReflectionException
      */
     private function getReflectionClass(string $className): \ReflectionClass
     {
@@ -242,7 +238,7 @@ final class EntityHydrator extends DoctrineObject
      *
      * @return array<string|int, mixed>
      */
-    protected function getFindCriteria(array $identifier, $value): array
+    protected function getFindCriteria(array $identifier, mixed $value): array
     {
         $find = [];
         foreach ($identifier as $field) {
@@ -277,11 +273,10 @@ final class EntityHydrator extends DoctrineObject
      * @return \ReflectionClass<object>
      *
      * @throws RuntimeException
-     * @throws \ReflectionException
      */
     private function createReflectionClass(string $className): \ReflectionClass
     {
-        if (!class_exists($className, true)) {
+        if (!class_exists($className)) {
             throw new RuntimeException(
                 sprintf(
                     'The hydrator was unable to create a reflection instance for class \'%s\': %s',
@@ -292,5 +287,13 @@ final class EntityHydrator extends DoctrineObject
         }
 
         return new \ReflectionClass($className);
+    }
+
+    protected function handleTypeConversions($value, $typeOfField): mixed
+    {
+        if ($value !== null && $typeOfField === 'bigint') {
+            return (int)$value;
+        }
+        return parent::handleTypeConversions($value, $typeOfField);
     }
 }

@@ -9,26 +9,23 @@ use Arp\LaminasDoctrine\Repository\Exception\EntityRepositoryException;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
- * @template TEntity as EntityInterface
- * @extends ObjectRepository<EntityInterface>
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository
+ * @template Entity of EntityInterface
+ * @extends ObjectRepository<Entity>
  */
 interface EntityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param string|int $id
+     * @param int $id
      *
-     * @return EntityInterface|null
+     * @return Entity|null
      *
      * @throws EntityRepositoryException
      */
-    public function findOneById($id): ?EntityInterface;
+    public function findOneById(int $id): ?EntityInterface;
 
     /**
-     * @param EntityInterface $entity
-     * @param array<mixed>    $options
+     * @param Entity $entity
+     * @param array<mixed> $options
      *
      * @return EntityInterface
      *
@@ -39,10 +36,10 @@ interface EntityRepositoryInterface extends ObjectRepository
     /**
      * Save a collection of entities in a single transaction
      *
-     * @param iterable<EntityInterface> $collection The collection of entities that should be saved.
-     * @param array<mixed>              $options    the optional save options.
+     * @param iterable<Entity> $collection The collection of entities that should be saved.
+     * @param array<mixed> $options                 the optional save options.
      *
-     * @return iterable<EntityInterface>
+     * @return iterable<Entity>
      *
      * @throws EntityRepositoryException If the save cannot be completed
      */
@@ -51,20 +48,20 @@ interface EntityRepositoryInterface extends ObjectRepository
     /**
      * Delete an entity
      *
-     * @param EntityInterface|int|string $entity
-     * @param array<mixed>               $options
+     * @param Entity $entity
+     * @param array<mixed> $options
      *
      * @return bool
      *
      * @throws EntityRepositoryException
      */
-    public function delete($entity, array $options = []): bool;
+    public function delete(EntityInterface $entity, array $options = []): bool;
 
     /**
      * Perform a deletion of a collection of entities
      *
-     * @param iterable<EntityInterface> $collection
-     * @param array<mixed>              $options
+     * @param iterable<Entity> $collection
+     * @param array<mixed> $options
      *
      * @return int
      *
@@ -78,7 +75,7 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function clear(): void;
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      *
      * @throws EntityRepositoryException
      */

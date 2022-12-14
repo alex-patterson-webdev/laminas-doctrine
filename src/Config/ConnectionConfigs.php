@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Config;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Config
- */
 class ConnectionConfigs
 {
     /**

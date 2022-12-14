@@ -10,26 +10,26 @@ use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Console\Helper
- */
 final class EntityManagerHelperFactory extends AbstractFactory
 {
     use ObjectManagerArgvInputProviderTrait;
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
+     * @param ContainerInterface $container
+     * @param string $requestedName
      * @param array<string, mixed>|null $options
      *
      * @return EntityManagerHelper
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
@@ -41,6 +41,10 @@ final class EntityManagerHelperFactory extends AbstractFactory
         // Attempt to fetch the name of the entity manager from command line arguments
         if (empty($options['entity_manager'])) {
             $options['entity_manager'] = $this->getEntityManagerArgvInput();
+        }
+
+        if (!empty($options['default_object_manager'])) {
+            $options['entity_manager'] = $options['default_object_manager'];
         }
 
         if (empty($options['entity_manager'])) {

@@ -65,6 +65,14 @@ return [
                     ObjectManagerOption::class,
                 ]
             ],
+
+            Helper\EntityManagerHelper::class => [
+                'default_object_manager' => 'orm_default',
+            ],
+
+            Helper\ConnectionHelper::class => [
+                'default_connection' => 'orm_default',
+            ]
         ]
     ],
 

@@ -57,11 +57,7 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return Connection
-     *
-     * @throws \Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException
+     * @throws ConnectionManagerException
      */
     public function getConnection(string $name): Connection
     {
@@ -84,7 +80,7 @@ final class ConnectionManager implements ConnectionManagerInterface
      *
      * @return Connection
      *
-     * @throws \Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException
+     * @throws ConnectionManagerException
      */
     private function create(string $name, array $config): Connection
     {
@@ -115,10 +111,6 @@ final class ConnectionManager implements ConnectionManagerInterface
         }
     }
 
-    /**
-     * @param string     $name
-     * @param Connection $connection
-     */
     public function setConnection(string $name, Connection $connection): void
     {
         $this->connections[$name] = $connection;

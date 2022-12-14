@@ -9,10 +9,6 @@ use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Service
- */
 final class ConfigurationFactoryFactory extends AbstractFactory
 {
     /**
