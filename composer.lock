@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8143aeb2b0f3272e864107df8d19592a",
+    "content-hash": "6d609f48d0c9dfe083ff4b4ac67eebbf",
     "packages": [
         {
             "name": "alex-patterson-webdev/date-time",
@@ -55,16 +55,16 @@
         },
         {
             "name": "alex-patterson-webdev/entity",
-            "version": "2.0.0",
+            "version": "dev-feature/3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alex-patterson-webdev/entity.git",
-                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da"
+                "reference": "8615ec95484b2dab192f9e457e5be19ecb7abbdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alex-patterson-webdev/entity/zipball/84cfb3d93c8857028cc95e035a261c86a2afa9da",
-                "reference": "84cfb3d93c8857028cc95e035a261c86a2afa9da",
+                "url": "https://api.github.com/repos/alex-patterson-webdev/entity/zipball/8615ec95484b2dab192f9e457e5be19ecb7abbdc",
+                "reference": "8615ec95484b2dab192f9e457e5be19ecb7abbdc",
                 "shasum": ""
             },
             "require": {
@@ -96,9 +96,9 @@
             "description": "Shared library of domain objects, traits and interfaces",
             "support": {
                 "issues": "https://github.com/alex-patterson-webdev/entity/issues",
-                "source": "https://github.com/alex-patterson-webdev/entity/tree/2.0.0"
+                "source": "https://github.com/alex-patterson-webdev/entity/tree/feature/3.0.0"
             },
-            "time": "2022-03-20T21:43:28+00:00"
+            "time": "2022-12-14T18:01:18+00:00"
         },
         {
             "name": "alex-patterson-webdev/laminas-date-time",
@@ -6159,12 +6159,14 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "alex-patterson-webdev/entity": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4 || >=8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }
