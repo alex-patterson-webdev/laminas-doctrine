@@ -15,6 +15,7 @@ use Psr\Container\ContainerExceptionInterface;
 final class EntityManagerProvider implements EntityManagerProviderInterface
 {
     /**
+     * @param ContainerInterface<EntityManagerInterface> $container
      * @param array<string, EntityManagerInterface|array<mixed>> $entityManagers
      *
      * @throws EntityManagerProviderException

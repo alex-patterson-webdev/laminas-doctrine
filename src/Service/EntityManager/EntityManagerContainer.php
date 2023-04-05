@@ -8,6 +8,10 @@ use Arp\LaminasDoctrine\Service\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 
+/**
+ * @extends AbstractPluginManager<EntityManagerInterface>
+ * @implements ContainerInterface<EntityManagerInterface>
+ */
 final class EntityManagerContainer extends AbstractPluginManager implements ContainerInterface
 {
     /**

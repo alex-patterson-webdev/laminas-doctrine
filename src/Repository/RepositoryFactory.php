@@ -17,6 +17,8 @@ final class RepositoryFactory implements RepositoryFactoryInterface
     }
 
     /**
+     * @phpstan-return ObjectRepository<object>
+     *
      * @throws \Exception
      */
     public function getRepository(EntityManagerInterface $entityManager, $entityName): ObjectRepository

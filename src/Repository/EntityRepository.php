@@ -105,6 +105,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * @param array<mixed> $criteria
      * @param array<mixed>|null $orderBy
+     * @param int $limit
+     * @param int $offset
      *
      * @return iterable<int, Entity>
      *
@@ -325,7 +327,9 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     protected function getSingleResultOrNull(AbstractQuery|QueryBuilder $query, array $options = []): ?EntityInterface
     {
         try {
-            return $this->queryService->getSingleResultOrNull($query, $options);
+            $entity = $this->queryService->getSingleResultOrNull($query, $options);
+
+            return ($entity instanceof EntityInterface) ? $entity : null;
         } catch (QueryServiceException $e) {
             $errorMessage = sprintf('Failed to perform query for entity type \'%s\'', $this->entityName);
 

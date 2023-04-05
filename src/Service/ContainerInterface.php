@@ -7,6 +7,10 @@ namespace Arp\LaminasDoctrine\Service;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\PluginManagerInterface;
 
+/**
+ * @template T
+ * @extends PluginManagerInterface<T>
+ */
 interface ContainerInterface extends PluginManagerInterface
 {
     /**

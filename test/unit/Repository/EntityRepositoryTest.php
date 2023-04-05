@@ -32,7 +32,7 @@ final class EntityRepositoryTest extends TestCase
     private QueryServiceInterface $queryService;
 
     /**
-     * @var PersistServiceInterface&MockObject
+     * @var PersistServiceInterface<EntityInterface>&MockObject
      */
     private PersistServiceInterface $persistService;
 

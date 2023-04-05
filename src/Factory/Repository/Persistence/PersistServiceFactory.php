@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository\Persistence;
 
+use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Factory\Service\EntityManager\EntityManagerFactoryProviderTrait;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
@@ -16,10 +17,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Repository\Persistence
- */
 final class PersistServiceFactory extends AbstractFactory
 {
     use EntityManagerFactoryProviderTrait;
@@ -27,10 +24,9 @@ final class PersistServiceFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array<mixed>|null                          $options
+     * @param array<mixed>|null $options
      *
-     * @return PersistServiceInterface
+     * @return PersistServiceInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

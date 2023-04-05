@@ -12,7 +12,7 @@ use Doctrine\ORM\Configuration;
 final class ConfigurationManager implements ConfigurationManagerInterface
 {
     /**
-     * @var array<int, Configuration>
+     * @var array<string, Configuration>
      */
     private array $configurations = [];
 

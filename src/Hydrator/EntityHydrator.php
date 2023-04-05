@@ -159,20 +159,7 @@ final class EntityHydrator extends DoctrineObject
      */
     protected function isInitialisedFieldName(object $object, string $fieldName): bool
     {
-        $property = $this->getReflectionProperty($object, $fieldName);
-
-        $isPublic = $property->isPublic();
-        if (!$isPublic) {
-            $property->setAccessible(true);
-        }
-
-        $initialized = $property->isInitialized($object);
-
-        if (!$isPublic) {
-            $property->setAccessible(false);
-        }
-
-        return $initialized;
+        return $this->getReflectionProperty($object, $fieldName)->isInitialized($object);
     }
 
     /**
@@ -289,7 +276,11 @@ final class EntityHydrator extends DoctrineObject
         return new \ReflectionClass($className);
     }
 
-    protected function handleTypeConversions($value, $typeOfField): mixed
+    /**
+     * @param mixed $value
+     * @param string $typeOfField
+     */
+    protected function handleTypeConversions(mixed $value, $typeOfField): mixed
     {
         if ($value !== null && $typeOfField === 'bigint') {
             return (int)$value;

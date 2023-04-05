@@ -9,6 +9,9 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
+/**
+ * @extends AbstractPluginManager<EntityRepositoryInterface>
+ */
 final class RepositoryManager extends AbstractPluginManager implements EntityRepositoryProviderInterface
 {
     protected $autoAddInvokableClass = false;
@@ -25,6 +28,8 @@ final class RepositoryManager extends AbstractPluginManager implements EntityRep
 
     /**
      * @param array<string, mixed> $options
+     *
+     * @return EntityRepositoryInterface<EntityInterface>
      *
      * @throws InvalidServiceException
      * @throws ServiceNotFoundException

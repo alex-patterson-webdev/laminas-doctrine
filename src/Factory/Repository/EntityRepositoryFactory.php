@@ -46,8 +46,7 @@ final class EntityRepositoryFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array<string, mixed>|null                  $options
+     * @param array<string, mixed>|null $options
      *
      * @return EntityRepositoryInterface<EntityInterface>
      *
@@ -102,7 +101,6 @@ final class EntityRepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param string               $entityName
      * @param array<string, mixed> $options
      *
      * @return class-string<EntityRepositoryInterface<EntityInterface>>
@@ -129,12 +127,9 @@ final class EntityRepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $container
-     * @param string                  $entityName
-     * @param array<string, mixed>    $options
-     * @param string                  $serviceName
+     * @param array<string, mixed> $options
      *
-     * @return PersistServiceInterface
+     * @return PersistServiceInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -162,9 +157,7 @@ final class EntityRepositoryFactory extends AbstractFactory
 
     /**
      * @param ServiceLocatorInterface $container
-     * @param string                  $entityName
-     * @param array<string, mixed>    $options
-     * @param string                  $serviceName
+     * @param array<string, mixed> $options
      *
      * @return QueryServiceInterface<EntityInterface>
      *

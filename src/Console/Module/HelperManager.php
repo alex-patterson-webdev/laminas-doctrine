@@ -7,6 +7,9 @@ namespace Arp\LaminasDoctrine\Console\Module;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Symfony\Component\Console\Helper\HelperInterface;
 
+/**
+ * @extends AbstractPluginManager<HelperInterface>
+ */
 final class HelperManager extends AbstractPluginManager
 {
     /**
