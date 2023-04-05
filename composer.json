@@ -18,16 +18,21 @@
     "alex-patterson-webdev/laminas-monolog": "^0.1.0",
     "doctrine/cache": "^2.2",
     "doctrine/data-fixtures": "^1.4",
-    "doctrine/doctrine-laminas-hydrator": "^2",
     "doctrine/orm": "^2.8",
     "symfony/cache": "^6.2"
   },
   "require-dev": {
+    "doctrine/doctrine-laminas-hydrator": "^3.0",
+    "laminas/laminas-validator": "^2.26",
     "phpspec/prophecy": "^1.15.0",
     "phpunit/phpunit": "^9.5",
     "squizlabs/php_codesniffer": "^3.6",
     "phpstan/phpstan": "^1.4.8",
     "friendsofphp/php-cs-fixer": "^3.6.0"
+  },
+  "suggest": {
+    "doctrine/doctrine-laminas-hydrator": "You should install this package to use the provided hydrators",
+    "laminas/laminas-validator": "You should install this package to use the provided validators"
   },
   "autoload": {
     "psr-4": {
