@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine;
 
 use Arp\LaminasDoctrine\Repository\RepositoryFactory;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 return [
     'doctrine' => [
@@ -18,13 +18,13 @@ return [
             'orm_default' => [
                 'repository_factory' => RepositoryFactory::class,
                 'generate_proxies'   => false,
-                'metadata_cache'     => 'array',
-                'query_cache'        => 'array',
-                'result_cache'       => 'array',
-                'hydration_cache'    => 'array',
+                'metadata_cache'     => 'array_metadata_cache',
+                'query_cache'        => 'array_query_cache',
+                'result_cache'       => 'array_result_cache',
+                'hydration_cache'    => 'array_hydration_cache',
                 'driver'             => 'driver_chain_default',
                 'proxy_dir'          => 'data/Doctrine/Proxy',
-                'proxy_namespace'    => 'Arp\Proxy',
+                'proxy_namespace'    => 'Arp\\Proxy',
                 'filters'            => [],
                 'datetime_functions' => [],
                 'string_functions'   => [],
@@ -45,7 +45,7 @@ return [
         'driver' => [
             'annotation_driver_default' => [
                 'class' => AnnotationDriver::class,
-                'cache' => 'array',
+                'cache' => 'array_annotation_driver_cache',
                 'paths' => [
 
                 ],
@@ -58,9 +58,25 @@ return [
             ],
         ],
         'cache' => [
-            'array' => [
-                'class' => ArrayCache::class,
-                'namespace' => 'DoctrineModule',
+            'array_metadata_cache' => [
+                'class' => ArrayAdapter::class,
+                'namespace' => 'metadata_cache'
+            ],
+            'array_query_cache' => [
+                'class' => ArrayAdapter::class,
+                'namespace' => 'query_cache'
+            ],
+            'array_result_cache' => [
+                'class' => ArrayAdapter::class,
+                'namespace' => 'result_cache'
+            ],
+            'array_hydration_cache' => [
+                'class' => ArrayAdapter::class,
+                'namespace' => 'hydration_cache'
+            ],
+            'array_annotation_driver_cache' => [
+                'class' => ArrayAdapter::class,
+                'namespace' => 'annotation_cache',
             ],
         ],
     ],

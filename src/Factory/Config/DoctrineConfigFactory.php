@@ -17,11 +17,7 @@ use Psr\Container\ContainerInterface;
 final class DoctrineConfigFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
      * @param array<string, mixed>|null $options
-     *
-     * @return DoctrineConfig
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

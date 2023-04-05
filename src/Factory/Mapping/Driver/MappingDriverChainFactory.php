@@ -8,22 +8,19 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Mapping\Driver
- */
 final class MappingDriverChainFactory extends AbstractDriverFactory
 {
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array<mixed>|null                          $options
-     *
-     * @return MappingDriverChain
+     * @param array<mixed>|null $options
      *
      * @throws ServiceNotCreatedException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(
         ContainerInterface $container,
@@ -47,16 +44,17 @@ final class MappingDriverChainFactory extends AbstractDriverFactory
     }
 
     /**
-     * @param ServiceLocatorInterface           $container
      * @param MappingDriver|string|array<mixed> $driver
-     * @param string                            $serviceName
      *
-     * @return MappingDriver
-     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws ServiceNotCreatedException
      */
-    private function createDriver(ServiceLocatorInterface $container, $driver, string $serviceName): MappingDriver
-    {
+    private function createDriver(
+        ServiceLocatorInterface $container,
+        MappingDriver|string|array $driver,
+        string $serviceName
+    ): MappingDriver {
         if (is_string($driver)) {
             $driver = $this->getOptions($container, $driver);
         }

@@ -14,11 +14,7 @@ use Psr\Container\ContainerInterface;
 final class EntityManagerConfigsFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return EntityManagerConfigs
+     * @param array<mixed>|null $options
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

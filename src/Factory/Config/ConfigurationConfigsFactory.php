@@ -14,11 +14,7 @@ use Psr\Container\ContainerInterface;
 final class ConfigurationConfigsFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
      * @param array<mixed>|null $options
-     *
-     * @return ConfigurationConfigs
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

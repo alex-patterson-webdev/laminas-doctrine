@@ -10,7 +10,8 @@ use Arp\LaminasDoctrine\Config\DoctrineConfig;
 use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasDoctrine\Config\EntityManagerConfigs;
 use Arp\LaminasDoctrine\Data\DataFixtureManager;
-use Arp\LaminasDoctrine\Factory\Cache\ArrayCacheFactory;
+use Arp\LaminasDoctrine\Factory\Cache\Adapter\ArrayAdapterFactory;
+use Arp\LaminasDoctrine\Factory\Cache\CacheFactory;
 use Arp\LaminasDoctrine\Factory\Config\ConfigurationConfigsFactory;
 use Arp\LaminasDoctrine\Factory\Config\ConnectionConfigsFactory;
 use Arp\LaminasDoctrine\Factory\Config\DoctrineConfigFactory;
@@ -56,7 +57,6 @@ use Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider;
 use Arp\LaminasDoctrine\Validator\IsEntityMatchValidator;
 use Arp\LaminasDoctrine\Validator\IsEntityNoMatchValidator;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
@@ -66,6 +66,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 return [
     'arp' => [
@@ -102,7 +103,6 @@ return [
             DoctrineConfigInterface::class => DoctrineConfig::class,
 
             MappingDriver::class => MappingDriverChain::class,
-            Cache::class => ArrayCache::class,
 
             // Configuration
             ConfigurationManager::class => ConfigurationManagerInterface::class,
@@ -145,7 +145,8 @@ return [
             AnnotationReader::class => InvokableFactory::class,
 
             // Cache
-            ArrayCache::class => ArrayCacheFactory::class,
+            Cache::class => CacheFactory::class,
+            ArrayAdapter::class => ArrayAdapterFactory::class,
 
             // DataFixtures
             DataFixtureManager::class => DataFixtureManagerFactory::class,

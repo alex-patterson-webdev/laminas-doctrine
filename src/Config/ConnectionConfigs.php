@@ -7,31 +7,19 @@ namespace Arp\LaminasDoctrine\Config;
 class ConnectionConfigs
 {
     /**
-     * @var array<string, mixed>
-     */
-    private array $configs;
-
-    /**
      * @param array<mixed> $configs
      */
-    public function __construct(array $configs)
+    public function __construct(private array $configs)
     {
-        $this->configs = $configs;
+        $this->setConnectionConfigs($configs);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasConnectionConfig(string $name): bool
     {
         return isset($this->configs[$name]);
     }
 
     /**
-     * @param string $name
-     *
      * @return array<string, mixed>
      */
     public function getConnectionConfig(string $name): array
@@ -50,7 +38,6 @@ class ConnectionConfigs
     }
 
     /**
-     * @param string               $name
      * @param array<string, mixed> $connectionConfig
      */
     public function setConnectionConfig(string $name, array $connectionConfig): void
