@@ -9,24 +9,10 @@ use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationFactoryExce
 use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerException;
 use Doctrine\ORM\Configuration;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class ConfigurationManager implements ConfigurationManagerInterface
 {
     /**
-     * @var ConfigurationFactoryInterface
-     */
-    private ConfigurationFactoryInterface $configurationFactory;
-
-    /**
-     * @var ConfigurationConfigs
-     */
-    private ConfigurationConfigs $configs;
-
-    /**
-     * @var Configuration[]
+     * @var array<int, Configuration>
      */
     private array $configurations = [];
 
@@ -34,27 +20,18 @@ final class ConfigurationManager implements ConfigurationManagerInterface
      * @param ConfigurationFactoryInterface $configurationFactory
      * @param ConfigurationConfigs          $configs
      */
-    public function __construct(ConfigurationFactoryInterface $configurationFactory, ConfigurationConfigs $configs)
-    {
-        $this->configurationFactory = $configurationFactory;
-        $this->configs = $configs;
+    public function __construct(
+        private readonly ConfigurationFactoryInterface $configurationFactory,
+        private readonly ConfigurationConfigs $configs
+    ) {
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasConfiguration(string $name): bool
     {
         return isset($this->configurations[$name]) || $this->configs->hasConfigurationConfig($name);
     }
 
     /**
-     * @param string $name
-     *
-     * @return Configuration
-     *
      * @throws ConfigurationManagerException
      */
     public function getConfiguration(string $name): Configuration
@@ -88,17 +65,12 @@ final class ConfigurationManager implements ConfigurationManagerInterface
         }
     }
 
-    /**
-     * @param string        $name
-     * @param Configuration $configuration
-     */
     public function setConfiguration(string $name, Configuration $configuration): void
     {
         $this->configurations[$name] = $configuration;
     }
 
     /**
-     * @param string               $name
      * @param array<string, mixed> $config
      */
     public function addConfigurationConfig(string $name, array $config): void
@@ -107,10 +79,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param string               $name
      * @param array<string, mixed> $config
-     *
-     * @return Configuration
      *
      * @throws ConfigurationManagerException
      */
@@ -120,7 +89,7 @@ final class ConfigurationManager implements ConfigurationManagerInterface
             return $this->configurationFactory->create($config);
         } catch (ConfigurationFactoryException $e) {
             throw new ConfigurationManagerException(
-                sprintf('Failed to create doctrine configuration \'%s\': %s', $name, $e->getMessage()),
+                sprintf('Failed to create doctrine configuration \'%s\'', $name),
                 $e->getCode(),
                 $e
             );

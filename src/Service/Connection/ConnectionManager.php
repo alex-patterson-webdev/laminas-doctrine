@@ -9,26 +9,12 @@ use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionFactoryException;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Doctrine\DBAL\Connection;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class ConnectionManager implements ConnectionManagerInterface
 {
-    /**
-     * @var ConnectionConfigs
-     */
-    private ConnectionConfigs $configs;
-
     /**
      * @var Connection[]
      */
     private array $connections = [];
-
-    /**
-     * @var ConnectionFactoryInterface
-     */
-    private ConnectionFactoryInterface $factory;
 
     /**
      * @param ConnectionConfigs          $configs
@@ -36,21 +22,13 @@ final class ConnectionManager implements ConnectionManagerInterface
      * @param Connection[]               $connections
      */
     public function __construct(
-        ConnectionConfigs $configs,
-        ConnectionFactoryInterface $factory,
+        private readonly ConnectionConfigs $configs,
+        private readonly ConnectionFactoryInterface $factory,
         array $connections
     ) {
-        $this->configs = $configs;
-        $this->factory = $factory;
-
         $this->setConnections($connections);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasConnection(string $name): bool
     {
         return isset($this->connections[$name]) || $this->configs->hasConnectionConfig($name);
@@ -75,10 +53,7 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string       $name
      * @param array<mixed> $config
-     *
-     * @return Connection
      *
      * @throws ConnectionManagerException
      */
@@ -117,7 +92,6 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string       $name
      * @param array<mixed> $config
      */
     public function addConnectionConfig(string $name, array $config): void

@@ -15,8 +15,6 @@ use Doctrine\Persistence\ObjectRepository;
 interface EntityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param int $id
-     *
      * @return Entity|null
      *
      * @throws EntityRepositoryException
@@ -27,43 +25,33 @@ interface EntityRepositoryInterface extends ObjectRepository
      * @param Entity $entity
      * @param array<mixed> $options
      *
-     * @return EntityInterface
+     * @return Entity
      *
      * @throws EntityRepositoryException
      */
     public function save(EntityInterface $entity, array $options = []): EntityInterface;
 
     /**
-     * Save a collection of entities in a single transaction
-     *
-     * @param iterable<Entity> $collection The collection of entities that should be saved.
-     * @param array<mixed> $options                 the optional save options.
+     * @param iterable<Entity> $collection
+     * @param array<mixed> $options
      *
      * @return iterable<Entity>
      *
-     * @throws EntityRepositoryException If the save cannot be completed
+     * @throws EntityRepositoryException
      */
     public function saveCollection(iterable $collection, array $options = []): iterable;
 
     /**
-     * Delete an entity
-     *
      * @param Entity $entity
      * @param array<mixed> $options
-     *
-     * @return bool
      *
      * @throws EntityRepositoryException
      */
     public function delete(EntityInterface $entity, array $options = []): bool;
 
     /**
-     * Perform a deletion of a collection of entities
-     *
      * @param iterable<Entity> $collection
      * @param array<mixed> $options
-     *
-     * @return int
      *
      * @throws EntityRepositoryException
      */

@@ -23,43 +23,20 @@ use Psr\Log\LoggerInterface;
 class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface
 {
     /**
-     * @var class-string<EntityInterface>
-     */
-    protected string $entityName;
-
-    /**
-     * @var QueryServiceInterface<Entity>
-     */
-    protected QueryServiceInterface $queryService;
-
-    /**
-     * @var PersistServiceInterface<Entity>
-     */
-    protected PersistServiceInterface $persistService;
-
-    protected LoggerInterface $logger;
-
-    /**
      * @param class-string<EntityInterface> $entityName
      * @param QueryServiceInterface<Entity> $queryService
      * @param PersistServiceInterface<Entity> $persistService
      * @param LoggerInterface $logger
      */
     public function __construct(
-        string $entityName,
-        QueryServiceInterface $queryService,
-        PersistServiceInterface $persistService,
-        LoggerInterface $logger
+        private readonly string $entityName,
+        private readonly QueryServiceInterface $queryService,
+        private readonly PersistServiceInterface $persistService,
+        private readonly LoggerInterface $logger
     ) {
-        $this->entityName = $entityName;
-        $this->queryService = $queryService;
-        $this->persistService = $persistService;
-        $this->logger = $logger;
     }
 
     /**
-     * Return the fully qualified class name of the mapped entity instance.
-     *
      * @return class-string<EntityInterface>
      */
     public function getClassName(): string
@@ -68,10 +45,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return a single entity instance matching the provided $id.
-     *
-     * @param int $id
-     *
      * @return Entity|null
      *
      * @throws EntityRepositoryException
@@ -90,8 +63,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param int $id
-     *
      * @return Entity|null
      *
      * @throws EntityRepositoryException
@@ -102,8 +73,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return a single entity instance matching the provided $criteria.
-     *
      * @param array<mixed> $criteria The entity filter criteria.
      *
      * @return Entity|null
@@ -124,8 +93,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return all the entities within the collection.
-     *
      * @return iterable<int, Entity>
      *
      * @throws EntityRepositoryException
@@ -136,12 +103,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Return a collection of entities that match the provided $criteria.
-     *
      * @param array<mixed> $criteria
      * @param array<mixed>|null $orderBy
-     * @param int|null $limit
-     * @param int|null $offset
      *
      * @return iterable<int, Entity>
      *
@@ -178,8 +141,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Save a single entity instance
-     *
      * @param Entity $entity
      * @param array<mixed> $options
      *
@@ -201,14 +162,12 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Save a collection of entities in a single transaction
-     *
-     * @param iterable<Entity> $collection The collection of entities that should be saved.
-     * @param array<mixed> $options        the optional save options.
+     * @param iterable<Entity> $collection
+     * @param array<mixed> $options
      *
      * @return iterable<Entity>
      *
-     * @throws EntityRepositoryException If the save cannot be completed
+     * @throws EntityRepositoryException
      */
     public function saveCollection(iterable $collection, array $options = []): iterable
     {
@@ -226,8 +185,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     /**
      * @param Entity $entity
      * @param array<mixed> $options
-     *
-     * @return bool
      *
      * @throws EntityRepositoryException
      */
@@ -248,12 +205,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * Perform a deletion of a collection of entities
-     *
      * @param iterable<int, Entity> $collection
      * @param array<mixed> $options
-     *
-     * @return int
      *
      * @throws EntityRepositoryException
      */
@@ -345,10 +298,7 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param QueryBuilder|AbstractQuery $query
      * @param array<mixed> $options
-     *
-     * @return mixed
      *
      * @throws EntityRepositoryException
      */
@@ -366,7 +316,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param AbstractQuery|QueryBuilder $query
      * @param array<string, mixed> $options
      *
      * @return Entity|null
@@ -387,7 +336,6 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
-     * @param AbstractQuery|QueryBuilder $query
      * @param array<mixed> $options
      *
      * @return array<mixed>|null
@@ -396,20 +344,25 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
      */
     protected function getSingleArrayResultOrNull(AbstractQuery|QueryBuilder $query, array $options = []): ?array
     {
-        /** @var array<mixed>|null $result */
-        $result = $this->getSingleResultOrNull(
-            $query,
-            array_replace_recursive(
-                $options,
-                [QueryServiceOption::HYDRATION_MODE => AbstractQuery::HYDRATE_ARRAY]
-            )
+        $options = array_replace_recursive(
+            $options,
+            [QueryServiceOption::HYDRATION_MODE => AbstractQuery::HYDRATE_ARRAY]
         );
+
+        try {
+            $result = $this->queryService->getSingleResultOrNull($query, $options);
+        } catch (QueryServiceException $e) {
+            $errorMessage = sprintf('Failed to perform query for entity type \'%s\'', $this->entityName);
+
+            $this->logger->error($errorMessage, ['exception' => $e, 'entity_name' => $this->entityName]);
+
+            throw new EntityRepositoryException($errorMessage, $e->getCode(), $e);
+        }
 
         return is_array($result) ? $result : null;
     }
 
     /**
-     * @param AbstractQuery|QueryBuilder $query
      * @param array<string, mixed> $options
      *
      * @return int|string|float|bool|null

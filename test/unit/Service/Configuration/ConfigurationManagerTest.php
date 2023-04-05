@@ -16,21 +16,18 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers  \Arp\LaminasDoctrine\Service\Configuration\ConfigurationManager
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\LaminasDoctrine\Service\Configuration
  */
 final class ConfigurationManagerTest extends TestCase
 {
     /**
      * @var ConfigurationFactoryInterface&MockObject
      */
-    private $configurationFactory;
+    private ConfigurationFactoryInterface $configurationFactory;
 
     /**
      * @var ConfigurationConfigs&MockObject
      */
-    private $configs;
+    private ConfigurationConfigs $configs;
 
     /**
      * Prepare the test case dependencies
@@ -122,8 +119,10 @@ final class ConfigurationManagerTest extends TestCase
             ->willReturn($config);
 
         $exceptionCode = 1234;
-        $exceptionMessage = 'This is a test exception message for ' . __FUNCTION__;
-        $exception = new ConfigurationFactoryException($exceptionMessage, $exceptionCode);
+        $exception = new ConfigurationFactoryException(
+            'This is a test exception message for ' . __FUNCTION__,
+            $exceptionCode
+        );
 
         $this->configurationFactory->expects($this->once())
             ->method('create')
@@ -133,7 +132,7 @@ final class ConfigurationManagerTest extends TestCase
         $this->expectException(ConfigurationManagerException::class);
         $this->expectExceptionCode($exceptionCode);
         $this->expectExceptionMessage(
-            sprintf('Failed to create doctrine configuration \'%s\': %s', $name, $exceptionMessage),
+            sprintf('Failed to create doctrine configuration \'%s\'', $name),
         );
 
         $manager->getConfiguration($name);
@@ -186,9 +185,9 @@ final class ConfigurationManagerTest extends TestCase
         $manager = new ConfigurationManager($this->configurationFactory, $this->configs);
 
         $configs = [
-            'fred'  => $this->createMock(Configuration::class),
-            'bob'   => $this->createMock(Configuration::class),
-            'dick'  => $this->createMock(Configuration::class),
+            'fred' => $this->createMock(Configuration::class),
+            'bob' => $this->createMock(Configuration::class),
+            'dick' => $this->createMock(Configuration::class),
             'harry' => $this->createMock(Configuration::class),
         ];
 
@@ -207,10 +206,10 @@ final class ConfigurationManagerTest extends TestCase
         $manager = new ConfigurationManager($this->configurationFactory, $this->configs);
 
         $configs = [
-            'fred'     => [
+            'fred' => [
                 'test' => 123,
             ],
-            'bob'      => [
+            'bob' => [
                 'test' => 456,
             ],
             'jennifer' => [
@@ -287,7 +286,7 @@ final class ConfigurationManagerTest extends TestCase
                 'Barney',
                 [
                     'fred' => $this->createMock(Configuration::class),
-                    'bob'  => $this->createMock(Configuration::class),
+                    'bob' => $this->createMock(Configuration::class),
                 ],
             ],
         ];

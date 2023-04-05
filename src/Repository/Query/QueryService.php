@@ -19,24 +19,15 @@ use Psr\Log\LoggerInterface;
 class QueryService implements QueryServiceInterface
 {
     /**
-     * @var class-string<EntityInterface>
-     */
-    protected string $entityName;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected LoggerInterface $logger;
-
-    /**
      * @param class-string<EntityInterface> $entityName
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface $logger
      */
-    public function __construct(string $entityName, EntityManagerInterface $entityManager, LoggerInterface $logger)
-    {
-        $this->entityName = $entityName;
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly string $entityName,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     /**
@@ -125,8 +116,6 @@ class QueryService implements QueryServiceInterface
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @return EntityInterface|null
      *
      * @throws QueryServiceException
      */

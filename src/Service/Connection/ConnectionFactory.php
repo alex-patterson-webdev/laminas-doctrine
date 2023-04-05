@@ -15,11 +15,6 @@ use Doctrine\DBAL\Exception;
 final class ConnectionFactory implements ConnectionFactoryInterface
 {
     /**
-     * @var ConfigurationManagerInterface
-     */
-    private ConfigurationManagerInterface $configurationManager;
-
-    /**
      * @var \Closure
      */
     private \Closure $factoryWrapper;
@@ -30,30 +25,22 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     private array $defaultConfig;
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @param callable|null                 $factory
-     * @param array<mixed>                  $defaultConfig
+     * @param array<mixed> $defaultConfig
      *
-     * @noinspection ProperNullCoalescingOperatorUsageInspection [$this, 'doCreate'] is of type callable
+     * @noinspection ProperNullCoalescingOperatorUsageInspection
      */
     public function __construct(
-        ConfigurationManagerInterface $configurationManager,
+        private readonly ConfigurationManagerInterface $configurationManager,
         ?callable $factory = null,
         array $defaultConfig = []
     ) {
-        $this->configurationManager = $configurationManager;
         $this->factoryWrapper = ($factory ?? [$this, 'doCreate'])(...);
         $this->defaultConfig = $defaultConfig;
     }
 
     /**
-     * Create a new connection from the provided $config
-     *
-     * @param array<mixed>              $config
+     * @param array<mixed> $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|null         $eventManager
-     *
-     * @return Connection
      *
      * @throws ConnectionFactoryException
      */
@@ -77,13 +64,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     }
 
     /**
-     * Default factory creation callable
-     *
      * @param array<mixed> $config
-     * @param Configuration|null $configuration
-     * @param EventManager|null $eventManager
-     *
-     * @return Connection
      *
      * @throws Exception
      */

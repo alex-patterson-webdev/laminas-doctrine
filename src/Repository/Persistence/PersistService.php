@@ -33,10 +33,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
-     *
-     * @return EntityInterface
      *
      * @throws PersistenceException
      */
@@ -49,8 +46,8 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param iterable<EntityInterface> $collection The collection of entities that should be saved
-     * @param array<string|int, mixed> $options     the optional save options
+     * @param iterable<EntityInterface> $collection
+     * @param array<string|int, mixed>  $options
      *
      * @return iterable<EntityInterface>
      *
@@ -108,10 +105,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
-     *
-     * @return EntityInterface
      *
      * @throws PersistenceException
      */
@@ -153,10 +147,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
-     *
-     * @return EntityInterface
      *
      * @throws PersistenceException
      */
@@ -202,10 +193,7 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface $entity
      * @param array<string|int, mixed> $options
-     *
-     * @return bool
      *
      * @throws PersistenceException
      */
@@ -252,9 +240,7 @@ class PersistService implements PersistServiceInterface
 
     /**
      * @param iterable<EntityInterface> $collection
-     * @param array<string|int, mixed> $options
-     *
-     * @return int
+     * @param array<string|int, mixed>  $options
      *
      * @throws PersistenceException
      */
@@ -308,8 +294,6 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * Perform a flush of the unit of work.
-     *
      * @throws PersistenceException
      */
     public function flush(): void
@@ -328,10 +312,6 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * Release managed entities from the identity map.
-     *
-     * @return void
-     *
      * @throws PersistenceException
      */
     public function clear(): void
@@ -350,8 +330,6 @@ class PersistService implements PersistServiceInterface
     }
 
     /**
-     * @param EntityInterface $entity
-     *
      * @throws PersistenceException
      */
     public function refresh(EntityInterface $entity): void

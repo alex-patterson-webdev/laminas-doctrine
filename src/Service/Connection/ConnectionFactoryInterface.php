@@ -12,13 +12,8 @@ use Doctrine\DBAL\Connection;
 interface ConnectionFactoryInterface
 {
     /**
-     * Create a new connection from the provided $params
-     *
      * @param array<mixed>              $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|null         $eventManager
-     *
-     * @return Connection
      *
      * @throws ConnectionFactoryException
      */
