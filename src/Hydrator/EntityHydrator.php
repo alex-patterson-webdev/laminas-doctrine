@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator;
 
-use DateTime;
-use DateTimeImmutable;
 use Doctrine\Laminas\Hydrator\DoctrineObject;
 use Doctrine\Laminas\Hydrator\Strategy\AbstractCollectionStrategy;
+use Doctrine\ORM\Proxy\Proxy;
 use Laminas\Hydrator\Exception\InvalidArgumentException;
 use Laminas\Hydrator\Exception\RuntimeException;
 use Laminas\Hydrator\Filter\FilterProviderInterface;
@@ -150,15 +149,13 @@ final class EntityHydrator extends DoctrineObject
     /**
      * Check if the provided $fieldName is initialised for the given $object
      *
-     * @param object $object
-     * @param string $fieldName
-     *
-     * @return bool
-     *
      * @throws RuntimeException
      */
     protected function isInitialisedFieldName(object $object, string $fieldName): bool
     {
+        if ($object instanceof Proxy) {
+            return true;
+        }
         return $this->getReflectionProperty($object, $fieldName)->isInitialized($object);
     }
 
@@ -282,9 +279,14 @@ final class EntityHydrator extends DoctrineObject
      */
     protected function handleTypeConversions(mixed $value, $typeOfField): mixed
     {
+        if ($typeOfField === 'string' && $value instanceof \BackedEnum) {
+            return $value;
+        }
+
         if ($value !== null && $typeOfField === 'bigint') {
             return (int)$value;
         }
+
         return parent::handleTypeConversions($value, $typeOfField);
     }
 }

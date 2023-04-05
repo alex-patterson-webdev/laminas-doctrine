@@ -70,4 +70,25 @@ abstract class AbstractEntityValidator extends AbstractValidator
 
         return $criteria;
     }
+
+    /**
+     * @param string $messageKey
+     * @param mixed|null $value
+     *
+     * @return void
+     */
+    protected function error($messageKey, mixed $value = null): void
+    {
+        if (empty($this->abstractOptions['messageVariables'])) {
+            $this->abstractOptions['messageVariables'] = array_combine($this->fieldNames, $this->fieldNames);
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $errorFieldName => $errorFieldValue) {
+                $this->{$errorFieldName} = $errorFieldValue;
+            }
+        }
+
+        parent::error($messageKey, $value);
+    }
 }

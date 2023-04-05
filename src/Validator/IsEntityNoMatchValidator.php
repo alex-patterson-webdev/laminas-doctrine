@@ -39,7 +39,7 @@ final class IsEntityNoMatchValidator extends AbstractEntityValidator
         }
 
         // We matched at least one entity with the provided criteria
-        $this->error(self::IS_MATCH);
+        $this->error(self::IS_MATCH, $criteria);
         return false;
     }
 }

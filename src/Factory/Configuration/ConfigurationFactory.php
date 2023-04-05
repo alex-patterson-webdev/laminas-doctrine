@@ -104,8 +104,8 @@ final class ConfigurationFactory extends AbstractFactory
             );
         }
 
-        if (!empty($options['types'])) {
-            $this->registerCustomTypes($options['types']);
+        if (!empty($options['type'])) {
+            $this->registerCustomTypes($options['type']);
         }
 
 
