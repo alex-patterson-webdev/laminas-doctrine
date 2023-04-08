@@ -6,6 +6,7 @@ namespace Arp\LaminasDoctrine\Factory\Configuration;
 
 use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasFactory\AbstractFactory;
+use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
@@ -108,8 +109,6 @@ final class ConfigurationFactory extends AbstractFactory
             $this->registerCustomTypes($options['type']);
         }
 
-
-
         // @todo EntityResolver
         // @todo setNamingStrategy() and setQuoteStrategy()
         // @todo 2nd Level Cache
@@ -173,24 +172,11 @@ final class ConfigurationFactory extends AbstractFactory
         string $serviceName
     ): CacheItemPoolInterface {
         if (is_string($cache)) {
-            /** @var DoctrineConfigInterface $doctrineConfig */
-            $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $serviceName);
-
-            if (!$doctrineConfig instanceof DoctrineConfigInterface || !$doctrineConfig->hasCacheConfig($cache)) {
-                throw new ServiceNotCreatedException(
-                    sprintf(
-                        'The cache configuration \'%s\' could not be found for service \'%s\'',
-                        $cache,
-                        $serviceName
-                    )
-                );
-            }
-
-            $cache = $doctrineConfig->getCacheConfig($cache);
+            $cache = $this->buildService($container, Cache::class, ['name' => $cache], $serviceName);
         }
 
-        if (is_array($cache)) {
-            $cache = $this->buildService($container, DoctrineProvider::class, $cache, $serviceName);
+        if ($cache instanceof DoctrineProvider) {
+            $cache = $cache->getPool();
         }
 
         if (!$cache instanceof CacheItemPoolInterface) {

@@ -86,6 +86,14 @@ return [
                 'entity_manager' => 'orm_default',
             ],
         ],
+        'cache' => [
+            ArrayAdapter::class => [
+                'store_serialized' => true,
+                'default_lifetime' => 0,
+                'max_lifetime' => 0,
+                'max_items' => 0,
+            ],
+        ],
         'hydrators' => [
             EntityHydrator::class => [
                 'entity_manager' => 'orm_default',

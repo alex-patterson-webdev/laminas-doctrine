@@ -26,13 +26,12 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
      * @param class-string<EntityInterface> $entityName
      * @param QueryServiceInterface<Entity> $queryService
      * @param PersistServiceInterface<Entity> $persistService
-     * @param LoggerInterface $logger
      */
     public function __construct(
-        private readonly string $entityName,
-        private readonly QueryServiceInterface $queryService,
-        private readonly PersistServiceInterface $persistService,
-        private readonly LoggerInterface $logger
+        protected readonly string $entityName,
+        protected readonly QueryServiceInterface $queryService,
+        protected readonly PersistServiceInterface $persistService,
+        protected readonly LoggerInterface $logger
     ) {
     }
 

@@ -8,10 +8,13 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -51,11 +54,9 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
 
         $reader = $this->getReader($container, $options['reader'], $requestedName);
 
-        if (!empty($options['cache'])) {
-            $reader = new PsrCachedReader(
-                new IndexedReader($reader),
-                $this->getCache($container, $options['cache'], $requestedName)
-            );
+        if (!empty($options['cache']) && $container instanceof ServiceLocatorInterface) {
+            $cache = $this->getCache($container, $options['cache'], $requestedName);
+            $reader = new PsrCachedReader(new IndexedReader($reader), $cache);
         }
 
         return new AnnotationDriver($reader, $options['paths'] ?? []);
@@ -92,12 +93,19 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
      * @throws ServiceNotCreatedException
      */
     private function getCache(
-        ContainerInterface $container,
+        ServiceLocatorInterface $container,
         string|CacheItemPoolInterface $cache,
         string $serviceName
     ): CacheItemPoolInterface {
         if (is_string($cache)) {
-            $cache = $this->getService($container, $cache, $serviceName);
+            if ($container->has($cache)) {
+                $cache = $container->get($cache);
+            } else {
+                /** @var DoctrineProvider $provider */
+                $provider = $this->buildService($container, Cache::class, ['name' => $cache], $serviceName);
+
+                $cache = $provider->getPool();
+            }
         }
 
         if (!$cache instanceof CacheItemPoolInterface) {

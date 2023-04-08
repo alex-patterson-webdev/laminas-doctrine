@@ -28,7 +28,7 @@ final class ArrayAdapterFactory extends AbstractFactory
         try {
             return new ArrayAdapter(
                 $options['default_lifetime'] ?? 0,
-                $options['store_serialized'] ?? 0,
+                $options['store_serialized'] ?? false,
                 $options['max_lifetime'] ?? 0,
                 $options['max_items'] ?? 0,
             );
