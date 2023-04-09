@@ -5,42 +5,39 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\IndexedReader;
+use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Mapping\Driver
- */
 final class AnnotationDriverFactory extends AbstractDriverFactory
 {
     /**
-     * @noinspection PhpMissingParamTypeInspection
-     *
-     * @param ContainerInterface        $container
-     * @param string                    $serviceName
      * @param array<string, mixed>|null $options
-     *
-     * @return MappingDriver
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container, $serviceName, array $options = null): MappingDriver
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): MappingDriver
     {
-        $options = $options ?? $this->getOptions($container, $serviceName, $options);
+        $options = $options ?? $this->getOptions($container, $requestedName, $options);
 
         $className = $options['class'] ?? null;
         if (empty($className)) {
             throw new ServiceNotCreatedException(
-                sprintf('The required \'class\' configuration option is missing for service \'%s\'', $serviceName)
+                sprintf('The required \'class\' configuration option is missing for service \'%s\'', $requestedName)
             );
         }
 
@@ -53,27 +50,24 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
             );
         }
 
-        if (empty($options['reader'])) {
-            $options['reader'] = AnnotationReader::class;
+        $options['reader'] ??= AnnotationReader::class;
+
+        $reader = $this->getReader($container, $options['reader'], $requestedName);
+
+        if (!empty($options['cache']) && $container instanceof ServiceLocatorInterface) {
+            $cache = $this->getCache($container, $options['cache'], $requestedName);
+            $reader = new PsrCachedReader(new IndexedReader($reader), $cache);
         }
 
-        return new AnnotationDriver(
-            $this->getReader($container, $options['reader'], $serviceName),
-            $options['paths'] ?? []
-        );
+        return new AnnotationDriver($reader, $options['paths'] ?? []);
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param string|Reader      $reader
-     * @param string             $serviceName
-     *
-     * @return Reader
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
-    private function getReader(ContainerInterface $container, $reader, string $serviceName): Reader
+    private function getReader(ContainerInterface $container, string|Reader $reader, string $serviceName): Reader
     {
         if (is_string($reader)) {
             $reader = $this->getService($container, $reader, $serviceName);
@@ -90,7 +84,41 @@ final class AnnotationDriverFactory extends AbstractDriverFactory
             );
         }
 
-        // @todo We should allow for $cache option
-        return new CachedReader(new IndexedReader($reader), new ArrayCache());
+        return $reader;
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
+     */
+    private function getCache(
+        ServiceLocatorInterface $container,
+        string|CacheItemPoolInterface $cache,
+        string $serviceName
+    ): CacheItemPoolInterface {
+        if (is_string($cache)) {
+            if ($container->has($cache)) {
+                $cache = $container->get($cache);
+            } else {
+                /** @var DoctrineProvider $provider */
+                $provider = $this->buildService($container, Cache::class, ['name' => $cache], $serviceName);
+
+                $cache = $provider->getPool();
+            }
+        }
+
+        if (!$cache instanceof CacheItemPoolInterface) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The cache must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
+                    CacheItemPoolInterface::class,
+                    is_object($cache) ? get_class($cache) : gettype($cache),
+                    $serviceName,
+                )
+            );
+        }
+
+        return $cache;
     }
 }

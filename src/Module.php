@@ -10,14 +10,16 @@ use Arp\LaminasDoctrine\Console\Module\Feature\HelperConfigProviderInterface;
 use Arp\LaminasDoctrine\Console\Module\HelperManager;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
 use Laminas\ModuleManager\ModuleManager;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine
- */
 final class Module
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function init(ModuleManager $moduleManager): void
     {
         /** @var ContainerInterface $serviceManager */
@@ -42,8 +44,6 @@ final class Module
     }
 
     /**
-     * Return the module configuration array.
-     *
      * @return array<mixed>
      */
     public function getConfig(): array

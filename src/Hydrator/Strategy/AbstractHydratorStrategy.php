@@ -4,23 +4,19 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\Entity\EntityInterface;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Laminas\Hydrator\Strategy\StrategyInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Hydrator\Strategy
- */
 abstract class AbstractHydratorStrategy implements StrategyInterface
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var EntityRepositoryInterface<EntityInterface>
      */
     protected EntityRepositoryInterface $repository;
 
     /**
-     * @param EntityRepositoryInterface $repository
+     * @param EntityRepositoryInterface<EntityInterface> $repository
      */
     public function __construct(EntityRepositoryInterface $repository)
     {

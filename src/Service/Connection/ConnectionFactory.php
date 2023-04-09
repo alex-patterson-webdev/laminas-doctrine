@@ -12,17 +12,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class ConnectionFactory implements ConnectionFactoryInterface
 {
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    private ConfigurationManagerInterface $configurationManager;
-
     /**
      * @var \Closure
      */
@@ -34,30 +25,22 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     private array $defaultConfig;
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @param callable|null                 $factory
-     * @param array<mixed>                  $defaultConfig
+     * @param array<mixed> $defaultConfig
      *
-     * @noinspection ProperNullCoalescingOperatorUsageInspection [$this, 'doCreate'] is of type callable
+     * @noinspection ProperNullCoalescingOperatorUsageInspection
      */
     public function __construct(
-        ConfigurationManagerInterface $configurationManager,
+        private readonly ConfigurationManagerInterface $configurationManager,
         ?callable $factory = null,
         array $defaultConfig = []
     ) {
-        $this->configurationManager = $configurationManager;
-        $this->factoryWrapper = \Closure::fromCallable($factory ?? [$this, 'doCreate']);
+        $this->factoryWrapper = ($factory ?? [$this, 'doCreate'])(...);
         $this->defaultConfig = $defaultConfig;
     }
 
     /**
-     * Create a new connection from the provided $config
-     *
-     * @param array<mixed>              $config
+     * @param array<mixed> $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|null         $eventManager
-     *
-     * @return Connection
      *
      * @throws ConnectionFactoryException
      */
@@ -81,13 +64,7 @@ final class ConnectionFactory implements ConnectionFactoryInterface
     }
 
     /**
-     * Default factory creation callable
-     *
-     * @param array<mixed>       $config
-     * @param Configuration|null $configuration
-     * @param EventManager|null  $eventManager
-     *
-     * @return Connection
+     * @param array<mixed> $config
      *
      * @throws Exception
      */
@@ -96,6 +73,16 @@ final class ConnectionFactory implements ConnectionFactoryInterface
         ?Configuration $configuration,
         ?EventManager $eventManager = null
     ): Connection {
-        return DriverManager::getConnection($config, $configuration, $eventManager);
+        $connection = DriverManager::getConnection($config, $configuration, $eventManager);
+
+        if (!empty($config['doctrine_type_mappings'])) {
+            $platform = $connection->getDatabasePlatform();
+            foreach ($config['doctrine_type_mappings'] as $databaseType => $doctrineType) {
+                /** @noinspection NullPointerExceptionInspection */
+                $platform->registerDoctrineTypeMapping($databaseType, $doctrineType);
+            }
+        }
+
+        return $connection;
     }
 }

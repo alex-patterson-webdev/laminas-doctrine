@@ -8,8 +8,8 @@ use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\PluginManagerInterface;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
+ * @template T
+ * @extends PluginManagerInterface<T>
  */
 interface ContainerInterface extends PluginManagerInterface
 {
@@ -21,19 +21,19 @@ interface ContainerInterface extends PluginManagerInterface
      *
      * @throws ContainerModificationsNotAllowedException
      * @noinspection PhpMissingParamTypeInspection
+     * @noinspection PhpMissingReturnTypeInspection
      */
     public function setService($name, $service);
 
     /**
-     * Specify a factory for a given service name.
-     *
-     * @param string          $name
+     * @param string $name
      * @param string|callable $factory
      *
      * @return mixed
      *
      * @throws ContainerModificationsNotAllowedException
      * @noinspection PhpMissingParamTypeInspection
+     * @noinspection PhpMissingReturnTypeInspection
      */
     public function setFactory($name, $factory);
 }

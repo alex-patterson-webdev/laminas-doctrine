@@ -11,18 +11,10 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Config
- */
 final class ConnectionConfigsFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return ConnectionConfigs
+     * @param array<mixed>|null $options
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

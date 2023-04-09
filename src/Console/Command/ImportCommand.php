@@ -14,10 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Console\Command
- */
 final class ImportCommand extends Command
 {
     /**
@@ -25,14 +21,8 @@ final class ImportCommand extends Command
      */
     private array $fixtures;
 
-    /**
-     * @var ORMExecutor
-     */
     private ORMExecutor $executor;
 
-    /**
-     * @var ORMPurger|null
-     */
     private ?ORMPurger $purger;
 
     /**

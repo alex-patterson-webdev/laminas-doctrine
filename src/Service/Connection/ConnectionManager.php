@@ -9,26 +9,12 @@ use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionFactoryException;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Doctrine\DBAL\Connection;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class ConnectionManager implements ConnectionManagerInterface
 {
-    /**
-     * @var ConnectionConfigs
-     */
-    private ConnectionConfigs $configs;
-
     /**
      * @var Connection[]
      */
     private array $connections = [];
-
-    /**
-     * @var ConnectionFactoryInterface
-     */
-    private ConnectionFactoryInterface $factory;
 
     /**
      * @param ConnectionConfigs          $configs
@@ -36,32 +22,20 @@ final class ConnectionManager implements ConnectionManagerInterface
      * @param Connection[]               $connections
      */
     public function __construct(
-        ConnectionConfigs $configs,
-        ConnectionFactoryInterface $factory,
+        private readonly ConnectionConfigs $configs,
+        private readonly ConnectionFactoryInterface $factory,
         array $connections
     ) {
-        $this->configs = $configs;
-        $this->factory = $factory;
-
         $this->setConnections($connections);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasConnection(string $name): bool
     {
         return isset($this->connections[$name]) || $this->configs->hasConnectionConfig($name);
     }
 
     /**
-     * @param string $name
-     *
-     * @return Connection
-     *
-     * @throws \Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException
+     * @throws ConnectionManagerException
      */
     public function getConnection(string $name): Connection
     {
@@ -79,12 +53,9 @@ final class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param string       $name
      * @param array<mixed> $config
      *
-     * @return Connection
-     *
-     * @throws \Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException
+     * @throws ConnectionManagerException
      */
     private function create(string $name, array $config): Connection
     {
@@ -115,17 +86,12 @@ final class ConnectionManager implements ConnectionManagerInterface
         }
     }
 
-    /**
-     * @param string     $name
-     * @param Connection $connection
-     */
     public function setConnection(string $name, Connection $connection): void
     {
         $this->connections[$name] = $connection;
     }
 
     /**
-     * @param string       $name
      * @param array<mixed> $config
      */
     public function addConnectionConfig(string $name, array $config): void

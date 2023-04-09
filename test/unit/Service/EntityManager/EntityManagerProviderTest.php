@@ -17,21 +17,18 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers  \Arp\LaminasDoctrine\Service\EntityManager\EntityManagerProvider
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\LaminasDoctrine\Service
  */
 final class EntityManagerProviderTest extends TestCase
 {
     /**
      * @var EntityManagerConfigs&MockObject
      */
-    private $config;
+    private EntityManagerConfigs $config;
 
     /**
-     * @var ContainerInterface&MockObject
+     * @var ContainerInterface<EntityManagerInterface>&MockObject
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * Prepare the test case dependencies

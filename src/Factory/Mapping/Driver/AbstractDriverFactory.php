@@ -7,12 +7,10 @@ namespace Arp\LaminasDoctrine\Factory\Mapping\Driver;
 use Arp\LaminasDoctrine\Config\DoctrineConfigInterface;
 use Arp\LaminasFactory\AbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Mapping\Driver
- */
 abstract class AbstractDriverFactory extends AbstractFactory
 {
     /**
@@ -21,13 +19,13 @@ abstract class AbstractDriverFactory extends AbstractFactory
     protected array $defaultOptions = [];
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $driverName
      * @param array<string, mixed>|null $options
      *
      * @return array<string, mixed>
      *
      * @throws ServiceNotCreatedException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getOptions(ContainerInterface $container, string $driverName, ?array $options = null): array
     {

@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Query;
 
-use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\Entity\EntityInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Query
+ * @extends AbstractPluginManager<QueryServiceInterface>
  */
-class QueryServiceManager extends AbstractPluginManager
+final class QueryServiceManager extends AbstractPluginManager
 {
+    /**
+     * @var class-string<QueryServiceInterface<EntityInterface>>
+     */
     protected $instanceOf = QueryServiceInterface::class;
 }

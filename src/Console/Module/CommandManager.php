@@ -8,8 +8,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Console\Module
+ * @extends AbstractPluginManager<Command>
  */
 class CommandManager extends AbstractPluginManager
 {

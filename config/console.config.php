@@ -33,8 +33,8 @@ return [
                     RebuildCommand::class,
 
                     // DBAL Commands
-                    ReservedWordsCommand::class,
-                    RunSqlCommand::class,
+                    //ReservedWordsCommand::class,
+                    //RunSqlCommand::class,
 
                     // ORM Commands
                     Command\ClearCache\CollectionRegionCommand::class,
@@ -65,6 +65,14 @@ return [
                     ObjectManagerOption::class,
                 ]
             ],
+
+            Helper\EntityManagerHelper::class => [
+                'default_object_manager' => 'orm_default',
+            ],
+
+            Helper\ConnectionHelper::class => [
+                'default_connection' => 'orm_default',
+            ]
         ]
     ],
 

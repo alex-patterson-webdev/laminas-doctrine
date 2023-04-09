@@ -9,20 +9,11 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 interface ConnectionFactoryInterface
 {
     /**
-     * Create a new connection from the provided $params
-     *
      * @param array<mixed>              $config
      * @param Configuration|string|null $configuration
-     * @param EventManager|null         $eventManager
-     *
-     * @return Connection
      *
      * @throws ConnectionFactoryException
      */

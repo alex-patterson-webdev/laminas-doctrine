@@ -3,3 +3,5 @@ parameters:
   paths:
     - src/
     - test/
+includes:
+  - vendor/phpstan/phpstan-mockery/extension.neon

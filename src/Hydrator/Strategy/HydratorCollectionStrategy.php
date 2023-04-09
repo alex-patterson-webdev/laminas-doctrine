@@ -4,39 +4,26 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Hydrator\Strategy;
 
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
 use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Hydrator\Strategy\Exception\RuntimeException;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Hydrator\Strategy\Exception\InvalidArgumentException;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Hydrator\Strategy
- */
 class HydratorCollectionStrategy extends AbstractHydratorStrategy implements HydrationObjectAwareInterface
 {
-    /**
-     * @var string
-     */
     private string $name;
 
-    /**
-     * @var HydratorInterface
-     */
     private HydratorInterface $hydrator;
 
-    /**
-     * @var object|EntityInterface|null
-     */
     private ?object $object;
 
     /**
-     * @param string                    $name
-     * @param EntityRepositoryInterface $repository
-     * @param HydratorInterface         $hydrator
+     * @param string $name
+     * @param EntityRepositoryInterface<EntityInterface> $repository
+     * @param HydratorInterface $hydrator
      */
     public function __construct(string $name, EntityRepositoryInterface $repository, HydratorInterface $hydrator)
     {
@@ -47,10 +34,10 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param mixed                     $value
+     * @param mixed $value
      * @param array<string, mixed>|null $data
      *
-     * @return iterable|EntityInterface[]
+     * @return iterable<int, EntityInterface>
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
@@ -107,8 +94,6 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param object $object
-     *
      * @return EntityInterface[]
      *
      * @throws InvalidArgumentException
@@ -135,10 +120,6 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param object $object
-     *
-     * @return bool
-     *
      * @throws InvalidArgumentException
      */
     private function isInitialized(object $object): bool
@@ -158,30 +139,18 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
             );
         }
 
-        $isPublic = $reflectionProperty->isPublic();
-        if (!$isPublic) {
-            $reflectionProperty->setAccessible(true);
-        }
-
-        $isInitialized = $reflectionProperty->isInitialized($object);
-
-        if (!$isPublic) {
-            $reflectionProperty->setAccessible(false);
-        }
-
-        return $isInitialized;
+        return $reflectionProperty->isInitialized($object);
     }
 
     /**
-     * @param string $entityName
-     * @param mixed  $value
+     * @param iterable<int, EntityInterface|int|string|array<mixed>> $value
      *
-     * @return array<EntityInterface>
+     * @return array<int, EntityInterface>
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    private function prepareCollectionValues(string $entityName, $value): array
+    private function prepareCollectionValues(string $entityName, iterable $value): array
     {
         $collection = [];
         foreach ($value as $item) {
@@ -195,7 +164,6 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
                 continue;
             }
 
-            // Attempt to resolve the identity of the item
             $id = $this->resolveId($item);
 
             $entity = empty($id)
@@ -207,14 +175,13 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
                 : $entity;
         }
 
-        return array_filter($collection, static fn ($item) => null !== $item);
+        return array_filter(
+            $collection,
+            static fn ($item) => (isset($item) && $item instanceof EntityInterface)
+        );
     }
 
     /**
-     * @param string $entityName
-     *
-     * @return object
-     *
      * @throws RuntimeException
      */
     private function createInstance(string $entityName): object
@@ -241,15 +208,10 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param string $entityName
-     * @param mixed  $id
-     *
-     * @return object
-     *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    private function getById(string $entityName, $id): object
+    private function getById(string $entityName, int|string $id): object
     {
         try {
             $entity = $this->repository->find($id);
@@ -280,7 +242,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @param EntityInterface[] $items
+     * @param array<int, EntityInterface> $items
      *
      * @return ArrayCollection<int, EntityInterface>
      */
@@ -289,22 +251,13 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
         return new ArrayCollection($items);
     }
 
-    /**
-     * @noinspection PhpUnusedPrivateMethodInspection It is used as a user defined callback in array_udiff()
-     *
-     * @param EntityInterface $a
-     * @param EntityInterface $b
-     *
-     * @return int
-     */
     private function compareEntities(EntityInterface $a, EntityInterface $b): int
     {
         return strcmp(spl_object_hash($a), spl_object_hash($b));
     }
 
     /**
-     * @param mixed       $value
-     * @param object|null $object
+     * @param mixed $value
      *
      * @return iterable<EntityInterface>
      */
@@ -313,17 +266,11 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
         return $value;
     }
 
-    /**
-     * @param object|null $object
-     */
     public function setObject(?object $object): void
     {
         $this->object = $object;
     }
 
-    /**
-     * @return object|null
-     */
     public function getObject(): ?object
     {
         return $this->object;

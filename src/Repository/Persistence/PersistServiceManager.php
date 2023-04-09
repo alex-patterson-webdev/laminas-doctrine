@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Repository\Persistence;
 
-use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
+use Arp\Entity\EntityInterface;
 use Laminas\ServiceManager\AbstractPluginManager;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Repository\Persistence
+ * @extends AbstractPluginManager<PersistServiceInterface>
  */
 class PersistServiceManager extends AbstractPluginManager
 {
+    /**
+     * @var class-string<PersistServiceInterface<EntityInterface>>
+     */
     protected $instanceOf = PersistServiceInterface::class;
 }

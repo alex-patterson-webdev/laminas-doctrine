@@ -12,45 +12,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Psr\Container\ContainerExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Service
- */
 final class EntityManagerProvider implements EntityManagerProviderInterface
 {
     /**
-     * @var EntityManagerConfigs
-     */
-    private EntityManagerConfigs $configs;
-
-    /**
-     * @var ContainerInterface
-     */
-    private ContainerInterface $container;
-
-    /**
-     * @param EntityManagerConfigs                               $configs
-     * @param ContainerInterface                                 $container
+     * @param ContainerInterface<EntityManagerInterface> $container
      * @param array<string, EntityManagerInterface|array<mixed>> $entityManagers
      *
      * @throws EntityManagerProviderException
      */
     public function __construct(
-        EntityManagerConfigs $configs,
-        ContainerInterface $container,
+        private readonly EntityManagerConfigs $configs,
+        private readonly ContainerInterface $container,
         array $entityManagers = []
     ) {
-        $this->configs = $configs;
-        $this->container = $container;
-
         $this->setEntityManagers($entityManagers);
     }
 
     /**
-     * @param string $name
-     *
-     * @return EntityManagerInterface
-     *
      * @throws EntityManagerProviderException
      */
     public function getEntityManager(string $name): EntityManagerInterface
@@ -82,10 +60,6 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return EntityManagerInterface
-     *
      * @throws EntityManagerProviderException
      */
     public function refresh(string $name): EntityManagerInterface
@@ -114,9 +88,6 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
-     * Set the configuration options for a single entity manager with the provided $name
-     *
-     * @param string               $name
      * @param array<string, mixed> $config
      */
     public function setEntityManagerConfig(string $name, array $config): void
@@ -124,22 +95,12 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
         $this->configs->setEntityManagerConfig($name, $config);
     }
 
-    /**
-     * Check if the entity manager is registered with the provider
-     *
-     * @param string $name The name of the entity manager to check
-     *
-     * @return bool
-     */
     public function hasEntityManager(string $name): bool
     {
         return $this->container->has($name) || $this->configs->hasEntityManagerConfig($name);
     }
 
     /**
-     * @param string                 $name
-     * @param EntityManagerInterface $entityManager
-     *
      * @throws EntityManagerProviderException
      */
     public function setEntityManager(string $name, EntityManagerInterface $entityManager): void
@@ -172,11 +133,7 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     }
 
     /**
-     * @param string               $name
      * @param array<string, mixed> $config
-     * @param string|null          $factoryClassName
-     *
-     * @return EntityManagerInterface
      *
      * @throws EntityManagerProviderException
      */
@@ -201,9 +158,6 @@ final class EntityManagerProvider implements EntityManagerProviderInterface
     /**
      * Add a manual factory service entry for entity manager $name, so we do not need to explicitly define it each
      * time with the 'entity_manager_container'
-     *
-     * @param string $name
-     * @param string $factoryClassName
      *
      * @throws EntityManagerProviderException
      */

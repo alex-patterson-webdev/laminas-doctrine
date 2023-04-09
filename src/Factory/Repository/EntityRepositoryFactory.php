@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Arp\LaminasDoctrine\Factory\Repository;
 
-use Arp\DoctrineEntityRepository\EntityRepository;
-use Arp\DoctrineEntityRepository\EntityRepositoryInterface;
-use Arp\DoctrineEntityRepository\Persistence\PersistService;
-use Arp\DoctrineEntityRepository\Persistence\PersistServiceInterface;
-use Arp\DoctrineEntityRepository\Query\QueryService;
-use Arp\DoctrineEntityRepository\Query\QueryServiceInterface;
+use Arp\Entity\EntityInterface;
+use Arp\LaminasDoctrine\Repository\EntityRepository;
+use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
+use Arp\LaminasDoctrine\Repository\Query\QueryService;
+use Arp\LaminasDoctrine\Repository\Query\QueryServiceInterface;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
 use Arp\LaminasFactory\AbstractFactory;
 use Arp\LaminasMonolog\Factory\FactoryLoggerProviderTrait;
@@ -22,11 +23,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Repository
- */
-final class RepositoryFactory extends AbstractFactory
+final class EntityRepositoryFactory extends AbstractFactory
 {
     use FactoryLoggerProviderTrait;
 
@@ -36,23 +33,22 @@ final class RepositoryFactory extends AbstractFactory
      * @var array<mixed>
      */
     private array $defaultOptions = [
-        'logger' => 'EntityRepositoryLogger',
+        'logger' => null,
         'query_service' => [
             'service_name' => QueryService::class,
-            'logger' => 'EntityQueryLogger',
+            'logger' => null,
         ],
         'persist_service' => [
             'service_name' => PersistService::class,
-            'logger' => 'EntityPersistLogger',
+            'logger' => null,
         ],
     ];
 
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array<string, mixed>|null                  $options
+     * @param array<string, mixed>|null $options
      *
-     * @return EntityRepositoryInterface
+     * @return EntityRepositoryInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -96,23 +92,18 @@ final class RepositoryFactory extends AbstractFactory
 
         $className = $this->resolveClassName($entityName, $options);
 
-        /** @var EntityRepositoryInterface $repository */
-        /** @noinspection PhpUnnecessaryLocalVariableInspection */
-        $repository = new $className(
+        return new $className(
             $entityName,
             $queryService,
             $persistService,
             $this->getLogger($container, $options['logger'] ?? null, $requestedName)
         );
-
-        return $repository;
     }
 
     /**
-     * @param string               $entityName
      * @param array<string, mixed> $options
      *
-     * @return string
+     * @return class-string<EntityRepositoryInterface<EntityInterface>>
      */
     private function resolveClassName(string $entityName, array $options = []): string
     {
@@ -136,12 +127,9 @@ final class RepositoryFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $container
-     * @param string                  $entityName
-     * @param array<string, mixed>    $options
-     * @param string                  $serviceName
+     * @param array<string, mixed> $options
      *
-     * @return PersistServiceInterface
+     * @return PersistServiceInterface<EntityInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -169,11 +157,9 @@ final class RepositoryFactory extends AbstractFactory
 
     /**
      * @param ServiceLocatorInterface $container
-     * @param string                  $entityName
-     * @param array<string, mixed>    $options
-     * @param string                  $serviceName
+     * @param array<string, mixed> $options
      *
-     * @return QueryServiceInterface
+     * @return QueryServiceInterface<EntityInterface>
      *
      * @throws ContainerExceptionInterface
      * @throws ServiceNotCreatedException

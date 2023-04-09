@@ -13,26 +13,26 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrineFixtures\Factory\Data
- */
 final class OrmExecutorFactory extends AbstractFactory
 {
     use ObjectManagerArgvInputProviderTrait;
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
+     * @param ContainerInterface $container
+     * @param string $requestedName
      * @param array<string, mixed>|null $options
      *
      * @return ORMExecutor
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ORMExecutor
     {
@@ -65,17 +65,15 @@ final class OrmExecutorFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface    $container
-     * @param ORMPurger|string|null $purger
-     * @param string                $serviceName
-     *
-     * @return ORMPurger|null
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
-    private function getPurger(ContainerInterface $container, $purger, string $serviceName): ?ORMPurger
-    {
+    private function getPurger(
+        ContainerInterface $container,
+        ORMPurger|string|null $purger,
+        string $serviceName
+    ): ?ORMPurger {
         if (null === $purger) {
             return null;
         }

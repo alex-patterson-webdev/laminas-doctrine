@@ -6,25 +6,12 @@ namespace Arp\LaminasDoctrine\Factory\Service\EntityManager;
 
 use Symfony\Component\Console\Input\ArgvInput;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Service
- */
 trait ObjectManagerArgvInputProviderTrait
 {
-    /**
-     * @var string
-     */
     private string $parameterOption = '--object-manager';
 
-    /**
-     * @var string
-     */
-    private string $defaultEntityManagerArgvInput = '';
+    private string $defaultEntityManagerArgvInput = 'orm_default';
 
-    /**
-     * @return string
-     */
     public function getEntityManagerArgvInput(): string
     {
         $arguments = new ArgvInput();
@@ -36,9 +23,6 @@ trait ObjectManagerArgvInputProviderTrait
         return $this->defaultEntityManagerArgvInput;
     }
 
-    /**
-     * @param string $defaultEntityManagerArgvInput
-     */
     public function setDefaultEntityManagerArgvInput(string $defaultEntityManagerArgvInput): void
     {
         $this->defaultEntityManagerArgvInput = $defaultEntityManagerArgvInput;
