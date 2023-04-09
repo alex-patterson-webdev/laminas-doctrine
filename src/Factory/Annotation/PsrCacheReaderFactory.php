@@ -57,10 +57,11 @@ final class PsrCacheReaderFactory extends AbstractFactory
      */
     private function getReader(ContainerInterface $container, Reader|string $reader, string $requestedName): Reader
     {
-        if (is_string($reader)) {
-            $reader = $this->getService($container, $reader, $requestedName);
+        if ($reader instanceof Reader) {
+            return $reader;
         }
 
+        $reader = $this->getService($container, $reader, $requestedName);
         if (!$reader instanceof Reader) {
             throw new ServiceNotCreatedException(
                 sprintf(
@@ -87,34 +88,22 @@ final class PsrCacheReaderFactory extends AbstractFactory
         string|array|CacheItemPoolInterface $cache,
         string $requestedName
     ): CacheItemPoolInterface {
-        if (is_string($cache)) {
-            /** @var DoctrineConfigInterface $doctrineConfig */
-            $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $requestedName);
-
-            if (!$doctrineConfig instanceof DoctrineConfigInterface || !$doctrineConfig->hasCacheConfig($cache)) {
-                throw new ServiceNotCreatedException(
-                    sprintf(
-                        'The cache configuration \'%s\' could not be found for service \'%s\'',
-                        $cache,
-                        $requestedName,
-                    )
-                );
-            }
-
-            $cache = $doctrineConfig->getCacheConfig($cache);
+        if (is_string($cache) && $container->has($cache)) {
+            $cache = $container->get($cache);
         }
 
-        if (is_array($cache) && $container instanceof ServiceLocatorInterface) {
-            if (empty($cache['class'])) {
-                throw new ServiceNotCreatedException(
-                    sprintf(
-                        'The required cache \'class\' configuration option is missing for service \'%s\'',
-                        $requestedName
-                    ),
-                );
-            }
+        if (is_string($cache)) {
+            $cache = $this->getCacheConfig($container, $cache, $requestedName);
+        }
 
-            $cache = $this->buildService($container, $cache['class'], $cache['options'] ?? [], $requestedName);
+        if (is_array($cache)) {
+            if (empty($cache['class'])) {
+                throw new ServiceNotCreatedException(sprintf(
+                    'The required \'class\' configuration option is missing for service \'%s\'',
+                    $requestedName,
+                ));
+            }
+            $cache = $this->getService($container, $cache['class'], $requestedName);
         }
 
         if (!$cache instanceof CacheItemPoolInterface) {
@@ -129,5 +118,30 @@ final class PsrCacheReaderFactory extends AbstractFactory
         }
 
         return $cache;
+    }
+
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws ContainerExceptionInterface
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
+     */
+    private function getCacheConfig(ContainerInterface $container, string $name, string $requestedName): array
+    {
+        /** @var DoctrineConfigInterface $doctrineConfig */
+        $doctrineConfig = $this->getService($container, DoctrineConfigInterface::class, $requestedName);
+
+        if (!$doctrineConfig instanceof DoctrineConfigInterface || !$doctrineConfig->hasCacheConfig($name)) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The cache configuration \'%s\' could not be found for service \'%s\'',
+                    $name,
+                    $requestedName,
+                )
+            );
+        }
+
+        return $doctrineConfig->getCacheConfig($name);
     }
 }
