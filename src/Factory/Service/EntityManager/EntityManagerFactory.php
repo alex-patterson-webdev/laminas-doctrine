@@ -10,23 +10,21 @@ use Arp\LaminasDoctrine\Service\Configuration\Exception\ConfigurationManagerExce
 use Arp\LaminasDoctrine\Service\Connection\ConnectionManagerInterface;
 use Arp\LaminasDoctrine\Service\Connection\Exception\ConnectionManagerException;
 use Arp\LaminasFactory\AbstractFactory;
+use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 final class EntityManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
+     * @param ContainerInterface&ServiceLocatorInterface $container
      * @param array<string, mixed>|null $options
-     *
-     * @return EntityManager
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
@@ -39,16 +37,6 @@ final class EntityManagerFactory extends AbstractFactory
 
         $entityManagerConfig = $options ?? $configs->getEntityManagerConfig($requestedName);
 
-        $configuration = $entityManagerConfig['configuration'] ?? null;
-        if (null === $configuration) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'configuration\' configuration option is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
-
         $connection = $entityManagerConfig['connection'] ?? null;
         if (null === $connection) {
             throw new ServiceNotCreatedException(
@@ -59,11 +47,23 @@ final class EntityManagerFactory extends AbstractFactory
             );
         }
 
-        $configuration = $this->getConfiguration($container, $configuration, $requestedName);
-        $connection = $this->getConnection($container, $connection, $requestedName);
+        $configuration = $entityManagerConfig['configuration'] ?? null;
+        if (null === $configuration) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The required \'configuration\' configuration option is missing for service \'%s\'',
+                    $requestedName
+                )
+            );
+        }
 
+        $eventManager = $entityManagerConfig['event_manager'] ?? null;
         try {
-            return EntityManager::create($connection, $configuration);
+            return new EntityManager(
+                $this->getConnection($container, $connection, $requestedName),
+                $this->getConfiguration($container, $configuration, $requestedName),
+                $this->getEventManager($container, $eventManager, $requestedName),
+            );
         } catch (\Throwable $e) {
             throw new ServiceNotCreatedException(
                 sprintf('Failed to create entity manager instance \'%s\': %s', $requestedName, $e->getMessage()),
@@ -74,100 +74,22 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface|ServiceManager $container
-     * @param Configuration|string|array<string, mixed>|mixed $configuration
-     * @param string $serviceName
-     *
-     * @return Configuration
-     *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
-     * @throws ContainerExceptionInterface
-     */
-    private function getConfiguration(ContainerInterface $container, $configuration, string $serviceName): Configuration
-    {
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $this->getService($container, ConfigurationManagerInterface::class, $serviceName);
-
-        if (is_array($configuration)) {
-            $configurationManager->addConfigurationConfig($serviceName, $configuration);
-            $configuration = $serviceName;
-        }
-
-        if (is_string($configuration)) {
-            $configuration = $this->loadConfiguration($configurationManager, $configuration, $serviceName);
-        }
-
-        if (!$configuration instanceof Configuration) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The configuration must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
-                    Configuration::class,
-                    (is_object($configuration) ? get_class($configuration) : gettype($configuration)),
-                    $serviceName
-                )
-            );
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @param string $name
-     * @param string $serviceName
-     *
-     * @return Configuration
-     *
-     * @throws ServiceNotCreatedException
-     */
-    private function loadConfiguration(
-        ConfigurationManagerInterface $configurationManager,
-        string $name,
-        string $serviceName
-    ): Configuration {
-        if (!$configurationManager->hasConfiguration($name)) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'Failed to load configuration \'%s\' for service \'%s\': '
-                    . 'The configuration has not been registered with the configuration manager',
-                    $name,
-                    $serviceName
-                )
-            );
-        }
-
-        try {
-            return $configurationManager->getConfiguration($name);
-        } catch (ConfigurationManagerException $e) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'Failed to load configuration \'%s\' for service \'%s\': %s',
-                    $name,
-                    $serviceName,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-    }
-
-    /**
-     * Resolve the required Doctrine Connection instance to use from the provided $connection.
-     *
      * @param ContainerInterface $container
-     * @param string|array<string, mixed>|Connection|mixed $connection
-     * @param string $serviceName
-     *
-     * @return Connection
+     * @param string|array<string, mixed>|Connection $connection
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
      */
-    private function getConnection(ContainerInterface $container, $connection, string $serviceName): Connection
-    {
+    private function getConnection(
+        ContainerInterface $container,
+        string|array|Connection $connection,
+        string $serviceName
+    ): Connection {
+        if ($connection instanceof Connection) {
+            return $connection;
+        }
+
         /** @var ConnectionManagerInterface $connectionManager */
         $connectionManager = $this->getService($container, ConnectionManagerInterface::class, $serviceName);
 
@@ -176,22 +98,7 @@ final class EntityManagerFactory extends AbstractFactory
             $connection = $serviceName;
         }
 
-        if (is_string($connection)) {
-            $connection = $this->loadConnection($connectionManager, $connection, $serviceName);
-        }
-
-        if (!$connection instanceof Connection) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The connection must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
-                    Connection::class,
-                    (is_object($connection) ? get_class($connection) : gettype($connection)),
-                    $serviceName
-                )
-            );
-        }
-
-        return $connection;
+        return $this->loadConnection($connectionManager, $connection, $serviceName);
     }
 
     /**
@@ -223,15 +130,105 @@ final class EntityManagerFactory extends AbstractFactory
             return $connectionManager->getConnection($name);
         } catch (ConnectionManagerException $e) {
             throw new ServiceNotCreatedException(
-                sprintf(
-                    'Failed to load connection \'%s\' for service \'%s\': %s',
-                    $name,
-                    $serviceName,
-                    $e->getMessage()
-                ),
+                sprintf('Failed to load connection \'%s\' for service \'%s\'', $name, $serviceName),
                 $e->getCode(),
                 $e
             );
         }
+    }
+
+    /**
+     * @param Configuration|string|array<string, mixed> $configuration
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     */
+    private function getConfiguration(
+        ServiceLocatorInterface $container,
+        string|array|Configuration $configuration,
+        string $serviceName
+    ): Configuration {
+        if (is_object($configuration)) {
+            return $configuration;
+        }
+
+        /** @var ConfigurationManagerInterface $configurationManager */
+        $configurationManager = $this->getService($container, ConfigurationManagerInterface::class, $serviceName);
+
+        if (is_array($configuration)) {
+            $configurationManager->addConfigurationConfig($serviceName, $configuration);
+            $configuration = $serviceName;
+        }
+
+        return $this->loadConfiguration($configurationManager, $configuration, $serviceName);
+    }
+
+    /**
+     * @param ConfigurationManagerInterface $configurationManager
+     * @param string $name
+     * @param string $serviceName
+     *
+     * @return Configuration
+     *
+     * @throws ServiceNotCreatedException
+     */
+    private function loadConfiguration(
+        ConfigurationManagerInterface $configurationManager,
+        string $name,
+        string $serviceName
+    ): Configuration {
+        if (!$configurationManager->hasConfiguration($name)) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'Failed to load configuration \'%s\' for service \'%s\': '
+                    . 'The configuration has not been registered with the configuration manager',
+                    $name,
+                    $serviceName
+                )
+            );
+        }
+
+        try {
+            return $configurationManager->getConfiguration($name);
+        } catch (ConfigurationManagerException $e) {
+            throw new ServiceNotCreatedException(
+                sprintf('Failed to load configuration \'%s\' for service \'%s\'', $name, $serviceName),
+                $e->getCode(),
+                $e
+            );
+        }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
+     */
+    private function getEventManager(
+        ContainerInterface $container,
+        string|EventManager|null $eventManager,
+        string $serviceName
+    ): EventManager {
+        $eventManager ??= new EventManager();
+
+        if (is_object($eventManager)) {
+            return $eventManager;
+        }
+
+        $eventManager = $this->getService($container, $eventManager, $serviceName);
+
+        if (!$eventManager instanceof EventManager) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'The event manager must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
+                    EventManager::class,
+                    is_object($eventManager) ? get_class($eventManager) : gettype($eventManager),
+                    $serviceName,
+                ),
+            );
+        }
+
+        return $eventManager;
     }
 }
