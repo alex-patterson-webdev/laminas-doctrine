@@ -26,12 +26,6 @@ final class ConnectionFactoryFactory extends AbstractFactory
     ];
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return ConnectionFactory
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface

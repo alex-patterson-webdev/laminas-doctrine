@@ -74,7 +74,6 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
      * @param string|array<string, mixed>|Connection $connection
      *
      * @throws ServiceNotCreatedException
@@ -102,12 +101,6 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ConnectionManagerInterface $connectionManager
-     * @param string $name
-     * @param string $serviceName
-     *
-     * @return Connection
-     *
      * @throws ServiceNotCreatedException
      */
     private function loadConnection(
@@ -165,12 +158,6 @@ final class EntityManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
-     * @param string $name
-     * @param string $serviceName
-     *
-     * @return Configuration
-     *
      * @throws ServiceNotCreatedException
      */
     private function loadConfiguration(

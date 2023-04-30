@@ -16,11 +16,7 @@ use Psr\Container\NotFoundExceptionInterface;
 trait EntityManagerFactoryProviderTrait
 {
     /**
-     * @param ContainerInterface                  $container
      * @param string|EntityManagerInterface|mixed $name
-     * @param string                              $serviceName
-     *
-     * @return EntityManagerInterface
      *
      * @throws ServiceNotCreatedException
      * @throws ContainerExceptionInterface
@@ -28,7 +24,7 @@ trait EntityManagerFactoryProviderTrait
      */
     protected function getEntityManager(
         ContainerInterface $container,
-        $name,
+        mixed $name,
         string $serviceName
     ): EntityManagerInterface {
         $entityManager = $name;

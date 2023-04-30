@@ -20,12 +20,6 @@ use Psr\Container\ContainerInterface;
 final class HydratorStrategyFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return HydratorStrategy
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws InvalidArgumentException

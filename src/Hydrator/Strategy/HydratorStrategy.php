@@ -11,17 +11,14 @@ use Laminas\Hydrator\Strategy\HydratorStrategy as LaminasHydratorStrategy;
 
 final class HydratorStrategy extends AbstractHydratorStrategy
 {
-    private LaminasHydratorStrategy $hydratorStrategy;
-
     /**
      * @param EntityRepositoryInterface<EntityInterface> $repository
-     * @param LaminasHydratorStrategy                    $hydratorStrategy
      */
-    public function __construct(EntityRepositoryInterface $repository, LaminasHydratorStrategy $hydratorStrategy)
-    {
+    public function __construct(
+        EntityRepositoryInterface $repository,
+        private readonly LaminasHydratorStrategy $hydratorStrategy
+    ) {
         parent::__construct($repository);
-
-        $this->hydratorStrategy = $hydratorStrategy;
     }
 
     /**

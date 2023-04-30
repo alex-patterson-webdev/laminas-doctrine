@@ -6,10 +6,6 @@ namespace Arp\LaminasDoctrine\Data;
 
 use Arp\LaminasDoctrine\Data\Repository\ReferenceRepository;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Data
- */
 abstract class AbstractFixture extends \Doctrine\Common\DataFixtures\AbstractFixture
 {
     /**
@@ -17,19 +13,12 @@ abstract class AbstractFixture extends \Doctrine\Common\DataFixtures\AbstractFix
      */
     protected $referenceRepository;
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasCollectionReference(string $name): bool
     {
         return $this->referenceRepository->hasCollectionReference($name);
     }
 
     /**
-     * @param string $name
-     *
      * @return iterable<mixed>
      *
      * @throws \OutOfBoundsException
@@ -40,7 +29,6 @@ abstract class AbstractFixture extends \Doctrine\Common\DataFixtures\AbstractFix
     }
 
     /**
-     * @param string          $name
      * @param iterable<mixed> $collection
      */
     public function setCollectionReference(string $name, iterable $collection): void
@@ -49,7 +37,6 @@ abstract class AbstractFixture extends \Doctrine\Common\DataFixtures\AbstractFix
     }
 
     /**
-     * @param string          $name
      * @param iterable<mixed> $collection
      *
      * @throws \BadFunctionCallException

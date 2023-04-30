@@ -13,10 +13,7 @@ final class ConfigurationFactoryFactory extends AbstractFactory
 {
     /**
      * @param ContainerInterface&ServiceLocatorInterface $container
-     * @param string                                     $requestedName
-     * @param array<string, mixed>|null                  $options
-     *
-     * @return ConfigurationFactory
+     * @param array<string, mixed>|null $options
      */
     public function __invoke(
         ContainerInterface $container,

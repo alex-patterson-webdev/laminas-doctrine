@@ -15,12 +15,6 @@ use Psr\Container\ContainerInterface;
 final class HelperManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param array<mixed>|null $options
-     *
-     * @return HelperManager
-     *
      * @throws InvalidArgumentException
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

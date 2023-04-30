@@ -23,12 +23,6 @@ final class ConnectionHelperFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return ConnectionHelper
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
@@ -63,11 +57,6 @@ final class ConnectionHelperFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $serviceName
-     *
-     * @return Connection|string|null
-     *
      * @throws ServiceNotCreatedException
      */
     private function resolveConnection(ContainerInterface $container, string $serviceName): Connection|string|null
@@ -99,11 +88,7 @@ final class ConnectionHelperFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
      * @param string|Connection|mixed $connection
-     * @param string $serviceName
-     *
-     * @return Connection
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

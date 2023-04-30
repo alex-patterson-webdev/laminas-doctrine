@@ -12,18 +12,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class ObjectManagerOptionFactory extends AbstractFactory
 {
-    /**
-     * @var string|null
-     */
     private ?string $defaultObjectManagerName = null;
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return ObjectManagerOption
-     *
      * @throws ServiceNotCreatedException
      */
     public function __invoke(
