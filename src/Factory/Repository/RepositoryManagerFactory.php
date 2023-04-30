@@ -12,19 +12,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Repository
- */
 final class RepositoryManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return RepositoryManager
-     *
      * @throws InvalidArgumentException
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException

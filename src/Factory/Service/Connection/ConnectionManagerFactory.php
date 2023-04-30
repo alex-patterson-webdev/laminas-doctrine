@@ -17,12 +17,6 @@ use Psr\Container\ContainerInterface;
 final class ConnectionManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return ConnectionManager
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface

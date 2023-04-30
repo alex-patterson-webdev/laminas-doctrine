@@ -20,27 +20,14 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Console
- */
 final class DoctrineApplicationFactory extends AbstractFactory
 {
     private const NAME_UNKNOWN = 'UNKNOWN';
     private const VERSION_UNKNOWN = 'UNKNOWN';
 
-    /**
-     * @var string
-     */
     private string $defaultClassName = DoctrineApplication::class;
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return DoctrineApplication
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
@@ -109,19 +96,13 @@ final class DoctrineApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface            $container
-     * @param CommandLoaderInterface|string $commandLoader
-     * @param string                        $serviceName
-     *
-     * @return CommandLoaderInterface
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
      */
     private function getCommandLoader(
         ContainerInterface $container,
-        $commandLoader,
+        CommandLoaderInterface|string $commandLoader,
         string $serviceName
     ): CommandLoaderInterface {
         if (is_string($commandLoader)) {
@@ -143,9 +124,7 @@ final class DoctrineApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param array<mixed>       $data
-     * @param string             $serviceName
+     * @param array<mixed> $data
      *
      * @return array<mixed>
      *
@@ -183,11 +162,9 @@ final class DoctrineApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param array<mixed>       $helperConfig
-     * @param string             $serviceName
+     * @param array<mixed> $helperConfig
      *
-     * @return HelperInterface[]
+     * @return array<string, HelperInterface>
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -224,12 +201,7 @@ final class DoctrineApplicationFactory extends AbstractFactory
     }
 
     /**
-     * Add a collection of options to all currently registered commands
-     *
-     * @param ContainerInterface $container
-     * @param Application        $application
-     * @param array<mixed>       $inputOptions
-     * @param string             $serviceName
+     * @param array<mixed> $inputOptions
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

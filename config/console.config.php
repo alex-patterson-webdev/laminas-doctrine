@@ -18,8 +18,6 @@ use Arp\LaminasDoctrine\Factory\Console\Module\CommandManagerFactory;
 use Arp\LaminasDoctrine\Factory\Console\Module\HelperManagerFactory;
 use Arp\LaminasDoctrine\Console\Module\CommandManager;
 use Arp\LaminasDoctrine\Console\Module\HelperManager;
-use Doctrine\DBAL\Tools\Console\Command\ReservedWordsCommand;
-use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\ORM\Tools\Console\Command;
 
 return [
@@ -33,8 +31,6 @@ return [
                     RebuildCommand::class,
 
                     // DBAL Commands
-                    //ReservedWordsCommand::class,
-                    //RunSqlCommand::class,
 
                     // ORM Commands
                     Command\ClearCache\CollectionRegionCommand::class,

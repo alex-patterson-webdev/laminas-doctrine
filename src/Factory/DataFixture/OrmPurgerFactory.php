@@ -10,26 +10,20 @@ use Arp\LaminasFactory\AbstractFactory;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Data
- */
 final class OrmPurgerFactory extends AbstractFactory
 {
     use ObjectManagerArgvInputProviderTrait;
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return ORMPurger
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ORMPurger
     {

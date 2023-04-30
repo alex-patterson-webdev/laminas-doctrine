@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Arp\LaminasDoctrine\Data\Repository;
 
 /**
- * Extended reference repository (outside of an available interface) we add the ability to set a collection
+ * Extended reference repository (outside an available interface) we add the ability to set a collection
  * of referenced entities
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Data\Repository
  */
 class ReferenceRepository extends \Doctrine\Common\DataFixtures\ReferenceRepository
 {
@@ -19,8 +16,6 @@ class ReferenceRepository extends \Doctrine\Common\DataFixtures\ReferenceReposit
     private array $collectionReferences = [];
 
     /**
-     * @param string $name
-     *
      * @return array<string|int, object>
      *
      * @throws \OutOfBoundsException
@@ -39,18 +34,12 @@ class ReferenceRepository extends \Doctrine\Common\DataFixtures\ReferenceReposit
         return $collection;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function hasCollectionReference(string $name): bool
     {
         return array_key_exists($name, $this->collectionReferences);
     }
 
     /**
-     * @param string          $name
      * @param iterable<mixed> $collection
      *
      * @throws \BadFunctionCallException
@@ -69,7 +58,6 @@ class ReferenceRepository extends \Doctrine\Common\DataFixtures\ReferenceReposit
     }
 
     /**
-     * @param string                       $name
      * @param iterable<string, object> $collection
      */
     public function setCollectionReference(string $name, iterable $collection): void

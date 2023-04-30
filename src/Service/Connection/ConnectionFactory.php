@@ -14,9 +14,6 @@ use Doctrine\DBAL\Exception;
 
 final class ConnectionFactory implements ConnectionFactoryInterface
 {
-    /**
-     * @var \Closure
-     */
     private \Closure $factoryWrapper;
 
     /**

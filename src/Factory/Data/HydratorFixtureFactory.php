@@ -14,19 +14,10 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Factory class that will construct a class that extends AbstractHydratorFixture based on configuration options.
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Data
  */
 final class HydratorFixtureFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return FixtureInterface
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface

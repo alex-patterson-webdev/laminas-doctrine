@@ -24,11 +24,9 @@ abstract class AbstractHydratorStrategy implements StrategyInterface
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return mixed
+     * @param array<mixed>|EntityInterface|string|int $value
      */
-    protected function resolveId($value)
+    protected function resolveId(mixed $value): mixed
     {
         if (is_array($value)) {
             $id = $value['id'] ?? null;

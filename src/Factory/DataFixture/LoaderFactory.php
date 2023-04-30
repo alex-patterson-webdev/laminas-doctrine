@@ -13,21 +13,12 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasDoctrine\Factory\Service
- */
 final class LoaderFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface        $container
-     * @param string                    $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return Loader
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): Loader
     {
@@ -61,14 +52,13 @@ final class LoaderFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface             $container
      * @param array<string|FixtureInterface> $fixtures
-     * @param string                         $requestedName
      *
-     * @return array<FixtureInterface>
+     * @return array<int, FixtureInterface>
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function getFixtures(ContainerInterface $container, array $fixtures, string $requestedName): array
     {

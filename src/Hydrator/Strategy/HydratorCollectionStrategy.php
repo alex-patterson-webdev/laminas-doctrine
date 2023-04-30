@@ -21,9 +21,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     private ?object $object;
 
     /**
-     * @param string $name
      * @param EntityRepositoryInterface<EntityInterface> $repository
-     * @param HydratorInterface $hydrator
      */
     public function __construct(string $name, EntityRepositoryInterface $repository, HydratorInterface $hydrator)
     {
@@ -94,7 +92,7 @@ class HydratorCollectionStrategy extends AbstractHydratorStrategy implements Hyd
     }
 
     /**
-     * @return EntityInterface[]
+     * @return array<int, EntityInterface>
      *
      * @throws InvalidArgumentException
      */

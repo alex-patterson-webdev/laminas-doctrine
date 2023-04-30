@@ -17,36 +17,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ImportCommand extends Command
 {
     /**
-     * @var FixtureInterface[]
-     */
-    private array $fixtures;
-
-    private ORMExecutor $executor;
-
-    private ?ORMPurger $purger;
-
-    /**
      * @param FixtureInterface[] $fixtures
-     * @param ORMExecutor        $executor
-     * @param ORMPurger|null     $purger
      *
      * @throws LogicException
      */
-    public function __construct(array $fixtures, ORMExecutor $executor, ?ORMPurger $purger = null)
-    {
-        $this->fixtures = $fixtures;
-        $this->executor = $executor;
-        $this->purger = $purger;
-
+    public function __construct(
+        private readonly array $fixtures,
+        private readonly ORMExecutor $executor,
+        private readonly ?ORMPurger $purger = null,
+    ) {
         parent::__construct();
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws InvalidArgumentException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -74,8 +57,6 @@ final class ImportCommand extends Command
     }
 
     /**
-     * Configure the command's options
-     *
      * @throws InvalidArgumentException
      */
     protected function configure(): void

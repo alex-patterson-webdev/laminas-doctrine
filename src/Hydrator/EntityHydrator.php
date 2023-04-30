@@ -252,8 +252,6 @@ final class EntityHydrator extends DoctrineObject
     }
 
     /**
-     * @param string $className
-     *
      * @return \ReflectionClass<object>
      *
      * @throws RuntimeException

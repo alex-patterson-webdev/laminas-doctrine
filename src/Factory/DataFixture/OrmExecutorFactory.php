@@ -23,12 +23,6 @@ final class OrmExecutorFactory extends AbstractFactory
     use EntityManagerFactoryProviderTrait;
 
     /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param array<string, mixed>|null $options
-     *
-     * @return ORMExecutor
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
