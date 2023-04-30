@@ -13,9 +13,9 @@
   "require": {
     "php": ">=8.1",
     "alex-patterson-webdev/entity": "^3.0",
-    "alex-patterson-webdev/laminas-date-time": "^0.2.0",
-    "alex-patterson-webdev/laminas-factory": "^3.0.0",
-    "alex-patterson-webdev/laminas-monolog": "^0.1.0",
+    "alex-patterson-webdev/laminas-date-time": "^0.4.0",
+    "alex-patterson-webdev/laminas-factory": "^4.0.0",
+    "alex-patterson-webdev/laminas-monolog": "^0.2.0",
     "doctrine/cache": "^2.2",
     "doctrine/data-fixtures": "^1.4",
     "doctrine/orm": "^2.8",
@@ -44,6 +44,11 @@
   "autoload-dev": {
     "psr-4": {
       "ArpTest\\LaminasDoctrine\\": "test/unit/"
+    }
+  },
+  "extra": {
+    "laminas": {
+      "module": "Arp\\LaminasDoctrine"
     }
   },
   "scripts": {
