@@ -17,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 
 /**
- * @template Entity of EntityInterface
+ * @template Entity
  * @implements EntityRepositoryInterface<EntityInterface>
  */
 class EntityRepository implements EntityRepositoryInterface, TransactionServiceInterface

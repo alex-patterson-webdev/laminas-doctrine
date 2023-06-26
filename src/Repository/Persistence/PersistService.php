@@ -18,18 +18,9 @@ class PersistService implements PersistServiceInterface
      * @param class-string<EntityInterface> $entityName
      */
     public function __construct(
-        protected readonly string $entityName,
         protected readonly EntityManagerInterface $entityManager,
         protected readonly LoggerInterface $logger
     ) {
-    }
-
-    /**
-     * @return class-string<EntityInterface>
-     */
-    public function getEntityName(): string
-    {
-        return $this->entityName;
     }
 
     /**
