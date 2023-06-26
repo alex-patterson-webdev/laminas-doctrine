@@ -40,6 +40,7 @@ use Arp\LaminasDoctrine\Factory\Validator\IsEntityMatchValidatorFactory;
 use Arp\LaminasDoctrine\Factory\Validator\IsEntityNoMatchValidatorFactory;
 use Arp\LaminasDoctrine\Hydrator\EntityHydrator;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
+use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceManager;
 use Arp\LaminasDoctrine\Repository\Query\QueryService;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceManager;
@@ -118,6 +119,8 @@ return [
             // Connection
             ConnectionManager::class => ConnectionManagerInterface::class,
             ConnectionFactory::class => ConnectionFactoryInterface::class,
+
+            PersistServiceInterface::class => PersistService::class,
         ],
         'factories' => [
             // Config

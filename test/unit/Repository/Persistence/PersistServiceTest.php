@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace ArpTest\LaminasDoctrine\Repository\Persistance;
+namespace ArpTest\LaminasDoctrine\Repository\Persistence;
 
-use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
@@ -19,11 +18,6 @@ use Psr\Log\LoggerInterface;
 final class PersistServiceTest extends TestCase
 {
     /**
-     * @var class-string<EntityInterface>
-     */
-    private string $entityName;
-
-    /**
      * @var EntityManagerInterface&MockObject
      */
     private EntityManagerInterface $entityManager;
@@ -33,31 +27,23 @@ final class PersistServiceTest extends TestCase
      */
     private LoggerInterface $logger;
 
+    private PersistService $persistService;
+
     public function setUp(): void
     {
-        $this->entityName = EntityInterface::class;
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+
+        $this->persistService = new PersistService($this->entityManager, $this->logger);
     }
 
     public function testImplementsPersistServiceInterface(): void
     {
-        $persistService = new PersistService($this->entityName, $this->entityManager, $this->logger);
-
-        $this->assertInstanceOf(PersistServiceInterface::class, $persistService);
-    }
-
-    public function testGetEntityName(): void
-    {
-        $persistService = new PersistService($this->entityName, $this->entityManager, $this->logger);
-
-        $this->assertSame($this->entityName, $persistService->getEntityName());
+        $this->assertInstanceOf(PersistServiceInterface::class, $this->persistService);
     }
 
     public function testFlushWillThrowPersistenceExceptionOnError(): void
     {
-        $persistService = new PersistService($this->entityName, $this->entityManager, $this->logger);
-
         $exceptionMessage = 'This is a test exception message for ' . __FUNCTION__;
         $exceptionCode = 717;
 
@@ -69,13 +55,13 @@ final class PersistServiceTest extends TestCase
 
         $this->logger->expects($this->once())
             ->method('error')
-            ->with($exceptionMessage, ['exception' => $exception, 'entity_name' => $this->entityName]);
+            ->with($exceptionMessage, ['exception' => $exception]);
 
         $this->expectException(PersistenceException::class);
-        $this->expectExceptionMessage(sprintf('Failed to flush entity of type \'%s\'', $this->entityName));
+        $this->expectExceptionMessage('Failed to flush');
         $this->expectExceptionCode($exceptionCode);
 
-        $persistService->flush();
+        $this->persistService->flush();
     }
 
     /**
@@ -83,10 +69,8 @@ final class PersistServiceTest extends TestCase
      */
     public function testFlushWillProxyToEntityManagerFlush(): void
     {
-        $persistService = new PersistService($this->entityName, $this->entityManager, $this->logger);
-
         $this->entityManager->expects($this->once())->method('flush');
 
-        $persistService->flush();
+        $this->persistService->flush();
     }
 }

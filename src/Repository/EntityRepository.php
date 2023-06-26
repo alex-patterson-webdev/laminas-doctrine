@@ -142,6 +142,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @param Entity $entity
      * @param array<mixed> $options
      *
@@ -163,6 +165,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @param iterable<Entity> $collection
      * @param array<mixed> $options
      *
@@ -184,6 +188,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @param Entity $entity
      * @param array<mixed> $options
      *
@@ -206,6 +212,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @param iterable<int, Entity> $collection
      * @param array<mixed> $options
      *
@@ -225,6 +233,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @throws EntityRepositoryException
      */
     public function clear(): void
@@ -241,6 +251,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @param Entity $entity
      *
      * @throws EntityRepositoryException
@@ -262,6 +274,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @throws EntityRepositoryException
      */
     public function beginTransaction(): void
@@ -278,6 +292,8 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
     }
 
     /**
+     * @deprecated Please use the PersistServiceInterface directly
+     *
      * @throws EntityRepositoryException
      */
     public function commitTransaction(): void
@@ -293,6 +309,9 @@ class EntityRepository implements EntityRepositoryInterface, TransactionServiceI
         }
     }
 
+    /**
+     * @deprecated Please use the PersistServiceInterface directly
+     */
     public function rollbackTransaction(): void
     {
         $this->persistService->rollbackTransaction();

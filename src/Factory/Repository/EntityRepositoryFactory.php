@@ -7,7 +7,6 @@ namespace Arp\LaminasDoctrine\Factory\Repository;
 use Arp\Entity\EntityInterface;
 use Arp\LaminasDoctrine\Repository\EntityRepository;
 use Arp\LaminasDoctrine\Repository\EntityRepositoryInterface;
-use Arp\LaminasDoctrine\Repository\Persistence\PersistService;
 use Arp\LaminasDoctrine\Repository\Persistence\PersistServiceInterface;
 use Arp\LaminasDoctrine\Repository\Query\QueryService;
 use Arp\LaminasDoctrine\Repository\Query\QueryServiceInterface;
@@ -39,7 +38,7 @@ final class EntityRepositoryFactory extends AbstractFactory
             'logger' => null,
         ],
         'persist_service' => [
-            'service_name' => PersistService::class,
+            'service_name' => PersistServiceInterface::class,
             'logger' => null,
         ],
     ];
@@ -142,14 +141,14 @@ final class EntityRepositoryFactory extends AbstractFactory
         string $serviceName
     ): PersistServiceInterface {
         $options = array_replace_recursive(
-            $this->getServiceOptions($container, PersistService::class),
+            $this->getServiceOptions($container, PersistServiceInterface::class),
             $options
         );
         $options['entity_name'] ??= $entityName;
 
         return $this->buildService(
             $container,
-            $options['service_name'] ?? PersistService::class,
+            $options['service_name'] ?? PersistServiceInterface::class,
             $options,
             $serviceName
         );

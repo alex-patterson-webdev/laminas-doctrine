@@ -14,9 +14,6 @@ use Psr\Log\LoggerInterface;
  */
 class PersistService implements PersistServiceInterface
 {
-    /**
-     * @param class-string<EntityInterface> $entityName
-     */
     public function __construct(
         protected readonly EntityManagerInterface $entityManager,
         protected readonly LoggerInterface $logger
@@ -80,18 +77,14 @@ class PersistService implements PersistServiceInterface
                 $this->rollbackTransaction();
             }
             throw $e;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($transaction) {
                 $this->rollbackTransaction();
             }
 
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to save collection of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to save collection', $e->getCode(), $e);
         }
     }
 
@@ -100,7 +93,7 @@ class PersistService implements PersistServiceInterface
      *
      * @throws PersistenceException
      */
-    protected function update(EntityInterface $entity, array $options = []): EntityInterface
+    private function update(EntityInterface $entity, array $options = []): EntityInterface
     {
         $transaction = (bool)($options['transaction'] ?? false);
         $flush = (bool)($options['flush'] ?? true);
@@ -122,18 +115,14 @@ class PersistService implements PersistServiceInterface
         } catch (PersistenceException $e) {
             $this->rollbackTransaction();
             throw $e;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($transaction) {
                 $this->rollbackTransaction();
             }
 
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to update entity of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to update entity', $e->getCode(), $e);
         }
     }
 
@@ -142,17 +131,17 @@ class PersistService implements PersistServiceInterface
      *
      * @throws PersistenceException
      */
-    protected function insert(EntityInterface $entity, array $options = []): EntityInterface
+    private function insert(EntityInterface $entity, array $options = []): EntityInterface
     {
         $transaction = (bool)($options['transaction'] ?? false);
         $flush = (bool)($options['flush'] ?? true);
 
         try {
-            $this->entityManager->persist($entity);
-
             if ($transaction) {
                 $this->beginTransaction();
             }
+
+            $this->entityManager->persist($entity);
 
             if ($flush) {
                 $this->flush();
@@ -168,18 +157,14 @@ class PersistService implements PersistServiceInterface
                 $this->rollbackTransaction();
             }
             throw $e;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($transaction) {
                 $this->rollbackTransaction();
             }
 
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to insert entity of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to insert entity', $e->getCode(), $e);
         }
     }
 
@@ -214,18 +199,14 @@ class PersistService implements PersistServiceInterface
                 $this->rollbackTransaction();
             }
             throw $e;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($transaction) {
                 $this->rollbackTransaction();
             }
 
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to delete entity of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to delete entity', $e->getCode(), $e);
         }
     }
 
@@ -269,18 +250,14 @@ class PersistService implements PersistServiceInterface
             }
 
             return $deletedCount;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($transaction) {
                 $this->beginTransaction();
             }
 
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to save collection of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to save collection of type \'%s\'', $e->getCode(), $e);
         }
     }
 
@@ -291,14 +268,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->flush();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to flush entity of type \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to flush', $e->getCode(), $e);
         }
     }
 
@@ -309,14 +282,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->clear();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('The clear  operation failed for entity \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('The clear  operation failed for entity \'%s\'', $e->getCode(), $e);
         }
     }
 
@@ -327,14 +296,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->refresh($entity);
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('The refresh operation failed for entity \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('The refresh operation failed', $e->getCode(), $e);
         }
     }
 
@@ -345,14 +310,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->beginTransaction();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to start transaction for entity \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to start transaction', $e->getCode(), $e);
         }
     }
 
@@ -363,14 +324,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->commit();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to commit transaction for entity \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to commit transaction', $e->getCode(), $e);
         }
     }
 
@@ -381,14 +338,10 @@ class PersistService implements PersistServiceInterface
     {
         try {
             $this->entityManager->rollback();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e, 'entity_name' => $this->entityName]);
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
-            throw new PersistenceException(
-                sprintf('Failed to rollback transaction for entity \'%s\'', $this->entityName),
-                $e->getCode(),
-                $e
-            );
+            throw new PersistenceException('Failed to rollback transaction', $e->getCode(), $e);
         }
     }
 }

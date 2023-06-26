@@ -13,11 +13,6 @@ use Arp\LaminasDoctrine\Repository\Persistence\Exception\PersistenceException;
 interface PersistServiceInterface extends TransactionServiceInterface
 {
     /**
-     * @return class-string<TEntity>
-     */
-    public function getEntityName(): string;
-
-    /**
      * @param TEntity $entity
      * @param array<string, mixed> $options
      *

@@ -40,16 +40,6 @@ final class PersistServiceFactory extends AbstractFactory
     ): PersistServiceInterface {
         $options = array_replace_recursive($this->getServiceOptions($container, $requestedName), $options ?? []);
 
-        $entityName = $options['entity_name'] ?? null;
-        if (empty($entityName)) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'The required \'entity_name\' configuration option is missing for service \'%s\'',
-                    $requestedName
-                )
-            );
-        }
-
         $entityManager = $options['entity_manager'] ?? null;
         if (empty($entityManager)) {
             throw new ServiceNotCreatedException(
@@ -61,7 +51,6 @@ final class PersistServiceFactory extends AbstractFactory
         }
 
         return new PersistService(
-            $entityName,
             $this->getEntityManager($container, $entityManager, $requestedName),
             $this->getLogger($container, $options['logger'] ?? null, $requestedName)
         );
